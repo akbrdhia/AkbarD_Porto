@@ -1,16 +1,33 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { ChevronRight, ChevronDown, ChevronLeft, ChevronUp, Folder, FileText, Terminal, X, Minus, Square, Maximize2, Play, Loader } from 'lucide-react';
+import React, { useState, useEffect, useRef } from "react";
+import {
+  ChevronRight,
+  ChevronDown,
+  ChevronLeft,
+  ChevronUp,
+  Folder,
+  FileText,
+  Terminal,
+  X,
+  Minus,
+  Square,
+  Maximize2,
+  Play,
+  Loader,
+} from "lucide-react";
 
 const Portfolio = () => {
   const [loading, setLoading] = useState(true);
-  const [openFolders, setOpenFolders] = useState({ 'Portfolio': true, 'app': true });
-  const [activeFile, setActiveFile] = useState('About.kt');
-  const [openTabs, setOpenTabs] = useState(['About.kt']);
-  const [terminalInput, setTerminalInput] = useState('');
+  const [openFolders, setOpenFolders] = useState({
+    Portfolio: true,
+    app: true,
+  });
+  const [activeFile, setActiveFile] = useState("About.kt");
+  const [openTabs, setOpenTabs] = useState(["About.kt"]);
+  const [terminalInput, setTerminalInput] = useState("");
   const [terminalHistory, setTerminalHistory] = useState([]);
   const [commandHistory, setCommandHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
-  const [currentPath, setCurrentPath] = useState('~/Portfolio');
+  const [currentPath, setCurrentPath] = useState("~/Portfolio");
   const [sidebarWidth, setSidebarWidth] = useState(250);
   const [terminalHeight, setTerminalHeight] = useState(200);
   const [isDraggingSidebar, setIsDraggingSidebar] = useState(false);
@@ -28,7 +45,7 @@ const Portfolio = () => {
   const [isBuilding, setIsBuilding] = useState(false);
   const [gradleSyncing, setGradleSyncing] = useState(true);
   const [cursorPosition, setCursorPosition] = useState({ line: 1, column: 1 });
-  const [buildStatus, setBuildStatus] = useState('Ready');
+  const [buildStatus, setBuildStatus] = useState("Ready");
   const terminalEndRef = useRef(null);
   const terminalInputRef = useRef(null);
   const editorContentRef = useRef(null);
@@ -39,8 +56,8 @@ const Portfolio = () => {
       setIsMobile(window.innerWidth < 768);
     };
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   // Loading animation
@@ -56,8 +73,8 @@ const Portfolio = () => {
     if (!loading) {
       const timer = setTimeout(() => {
         setGradleSyncing(false);
-        setBuildStatus('Build successful in 3.2s');
-        showNotification('Gradle sync completed', 'success');
+        setBuildStatus("Build successful in 3.2s");
+        showNotification("Gradle sync completed", "success");
       }, 4000);
       return () => clearTimeout(timer);
     }
@@ -89,10 +106,13 @@ const Portfolio = () => {
   useEffect(() => {
     if (!loading && autoTypingIndex < welcomeMessages.length) {
       const timer = setTimeout(() => {
-        setTerminalHistory(prev => [...prev, { 
-          type: 'output', 
-          text: welcomeMessages[autoTypingIndex] 
-        }]);
+        setTerminalHistory((prev) => [
+          ...prev,
+          {
+            type: "output",
+            text: welcomeMessages[autoTypingIndex],
+          },
+        ]);
         setAutoTypingIndex(autoTypingIndex + 1);
       }, 200);
       return () => clearTimeout(timer);
@@ -100,14 +120,14 @@ const Portfolio = () => {
   }, [loading, autoTypingIndex]);
 
   useEffect(() => {
-    terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    terminalEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [terminalHistory]);
 
   // Cursor blinking
   useEffect(() => {
     if (isTyping) {
       const interval = setInterval(() => {
-        setShowCursor(prev => !prev);
+        setShowCursor((prev) => !prev);
       }, 500);
       return () => clearInterval(interval);
     } else {
@@ -116,11 +136,11 @@ const Portfolio = () => {
   }, [isTyping]);
 
   // Notification system
-  const showNotification = (message, type = 'info') => {
+  const showNotification = (message, type = "info") => {
     const id = Date.now();
-    setNotifications(prev => [...prev, { id, message, type }]);
+    setNotifications((prev) => [...prev, { id, message, type }]);
     setTimeout(() => {
-      setNotifications(prev => prev.filter(n => n.id !== id));
+      setNotifications((prev) => prev.filter((n) => n.id !== id));
     }, 3000);
   };
 
@@ -144,13 +164,13 @@ const Portfolio = () => {
     };
 
     if (isDraggingSidebar) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
     }
 
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
     };
   }, [isDraggingSidebar]);
 
@@ -174,34 +194,34 @@ const Portfolio = () => {
     };
 
     if (isDraggingTerminal) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
     }
 
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
     };
   }, [isDraggingTerminal]);
 
   // ============= FILE STRUCTURE & CONTENTS =============
   const fileStructure = {
-    'Portfolio': {
-      type: 'folder',
+    Portfolio: {
+      type: "folder",
       children: {
-        'app': {
-          type: 'folder',
+        app: {
+          type: "folder",
           children: {
-            'About.kt': { type: 'file' },
-            'Skills.kt': { type: 'file' },
-            'Projects.kt': { type: 'file' },
-            'Experience.kt': { type: 'file' },
-            'Contact.kt': { type: 'file' },
-          }
+            "About.kt": { type: "file" },
+            "Skills.kt": { type: "file" },
+            "Projects.kt": { type: "file" },
+            "Experience.kt": { type: "file" },
+            "Contact.kt": { type: "file" },
+          },
         },
-        'README.md': { type: 'file' }
-      }
-    }
+        "README.md": { type: "file" },
+      },
+    },
   };
 
   const PERSONAL_INFO = {
@@ -215,11 +235,11 @@ const Portfolio = () => {
     bio: `I'm an Android Developer and UI/UX enthusiast driven by the art of crafting smooth, meaningful digital experiences.
       I specialize in building modern Android apps with Kotlin, designing clean, human-centered interfaces, 
       and connecting everything through powerful backends built with Laravel or Express.
-      For me, coding isn't just problem-solving — it's storytelling through logic and design.`
+      For me, coding isn't just problem-solving — it's storytelling through logic and design.`,
   };
 
   const fileContents = {
-    'About.kt': `package com.${PERSONAL_INFO.username.toLowerCase()}.portfolio
+    "About.kt": `package com.${PERSONAL_INFO.username.toLowerCase()}.portfolio
 
 /**
  * About Me
@@ -251,7 +271,7 @@ class AboutMe {
     }
 }`,
 
-    'Skills.kt': `package com.${PERSONAL_INFO.username.toLowerCase()}.portfolio
+    "Skills.kt": `package com.${PERSONAL_INFO.username.toLowerCase()}.portfolio
 
 /**
  * Technical Skills & Technologies
@@ -298,7 +318,7 @@ object TechStack {
     }
 }`,
 
-    'Projects.kt': `package com.${PERSONAL_INFO.username.toLowerCase()}.portfolio
+    "Projects.kt": `package com.${PERSONAL_INFO.username.toLowerCase()}.portfolio
 
 /**
  * Featured Projects
@@ -330,7 +350,9 @@ class MyProjects {
             description = "Business management application",
             tech = listOf("Kotlin", "Room DB", "MVVM"),
             status = "Beta",
-            githubUrl = "https://github.com/${PERSONAL_INFO.github}/manager-usaha",
+            githubUrl = "https://github.com/${
+              PERSONAL_INFO.github
+            }/manager-usaha",
             demoUrl = "https://manager-usaha.com"
         ),
         
@@ -348,13 +370,15 @@ class MyProjects {
             description = "Festival and event discovery platform",
             tech = listOf("React", "Node.js", "MongoDB"),
             status = "Live",
-            githubUrl = "https://github.com/${PERSONAL_INFO.github}/festivaloka",
+            githubUrl = "https://github.com/${
+              PERSONAL_INFO.github
+            }/festivaloka",
             demoUrl = "https://festivaloka.com"
         )
     )
 }`,
 
-    'Experience.kt': `package com.${PERSONAL_INFO.username.toLowerCase()}.portfolio
+    "Experience.kt": `package com.${PERSONAL_INFO.username.toLowerCase()}.portfolio
 
 /**
  * Work Experience & Background
@@ -401,7 +425,7 @@ class WorkExperience {
     }
 }`,
 
-    'Contact.kt': `package com.${PERSONAL_INFO.username.toLowerCase()}.portfolio
+    "Contact.kt": `package com.${PERSONAL_INFO.username.toLowerCase()}.portfolio
 
 /**
  * Contact Information
@@ -445,7 +469,7 @@ fun main() {
     ContactInfo.reachOut()
 }`,
 
-    'README.md': `# ${PERSONAL_INFO.username} Portfolio
+    "README.md": `# ${PERSONAL_INFO.username} Portfolio
 
 ## 👨‍💻 ${PERSONAL_INFO.role}
 
@@ -474,7 +498,7 @@ ${PERSONAL_INFO.bio}
 
 ---
 Built with React | Styled like Android Studio
-`
+`,
   };
 
   // Auto-typing logic
@@ -483,7 +507,7 @@ Built with React | Styled like Android Studio
       setIsTyping(true);
       setCurrentTypingLine(0);
       setCurrentTypingChar(0);
-      
+
       // Scroll to top
       if (editorContentRef.current) {
         editorContentRef.current.scrollTop = 0;
@@ -495,131 +519,179 @@ Built with React | Styled like Android Studio
 
   useEffect(() => {
     if (isTyping && fileContents[activeFile]) {
-      const lines = fileContents[activeFile].split('\n');
-      
+      const lines = fileContents[activeFile].split("\n");
+
       if (currentTypingLine < lines.length) {
         const currentLine = lines[currentTypingLine];
-        
+
         if (currentTypingChar < currentLine.length) {
           const timeout = setTimeout(() => {
             setCurrentTypingChar(currentTypingChar + 1);
-            setCursorPosition({ 
-              line: currentTypingLine + 1, 
-              column: currentTypingChar + 2 
+            setCursorPosition({
+              line: currentTypingLine + 1,
+              column: currentTypingChar + 2,
             });
-          }, 10);
+          }, 5);
           return () => clearTimeout(timeout);
         } else {
           const timeout = setTimeout(() => {
             setCurrentTypingLine(currentTypingLine + 1);
             setCurrentTypingChar(0);
-          }, 50);
+          }, 20);
           return () => clearTimeout(timeout);
         }
       } else {
         setIsTyping(false);
-        setTypedFiles(prev => ({ ...prev, [activeFile]: true }));
+        setTypedFiles((prev) => ({ ...prev, [activeFile]: true }));
       }
     }
   }, [isTyping, currentTypingLine, currentTypingChar, activeFile]);
 
   // Get displayed content
   const getDisplayedContent = () => {
-    if (!fileContents[activeFile]) return '';
-    
+    if (!fileContents[activeFile]) return "";
+
     if (typedFiles[activeFile]) {
       return fileContents[activeFile];
     }
-    
+
     if (isTyping) {
-      const lines = fileContents[activeFile].split('\n');
+      const lines = fileContents[activeFile].split("\n");
       const displayedLines = lines.slice(0, currentTypingLine + 1);
       if (displayedLines.length > 0) {
         const lastLineIndex = displayedLines.length - 1;
-        displayedLines[lastLineIndex] = displayedLines[lastLineIndex].substring(0, currentTypingChar);
+        displayedLines[lastLineIndex] = displayedLines[lastLineIndex].substring(
+          0,
+          currentTypingChar
+        );
       }
-      return displayedLines.join('\n');
+      return displayedLines.join("\n");
     }
-    
-    return '';
+
+    return "";
   };
 
   // ============= SYNTAX HIGHLIGHTING =============
   const highlightKotlin = (code) => {
-    const keywords = ['package', 'class', 'object', 'val', 'var', 'fun', 'const', 'data', 'listOf', 'mapOf', 'println', 'forEach', 'forEachIndexed', 'import', 'return'];
-    const types = ['String', 'List', 'Map', 'Int', 'Boolean'];
-    
+    const keywords = [
+      "package",
+      "class",
+      "object",
+      "val",
+      "var",
+      "fun",
+      "const",
+      "data",
+      "listOf",
+      "mapOf",
+      "println",
+      "forEach",
+      "forEachIndexed",
+      "import",
+      "return",
+    ];
+    const types = ["String", "List", "Map", "Int", "Boolean"];
+
     let highlighted = code;
-    
+
     // Comments
-    highlighted = highlighted.replace(/\/\*\*[\s\S]*?\*\//g, (match) => `<span style="color: #808080; font-style: italic;">${match}</span>`);
-    highlighted = highlighted.replace(/\/\/.*/g, (match) => `<span style="color: #808080; font-style: italic;">${match}</span>`);
-    
+    highlighted = highlighted.replace(
+      /\/\*\*[\s\S]*?\*\//g,
+      (match) =>
+        `<span style="color: #808080; font-style: italic;">${match}</span>`
+    );
+    highlighted = highlighted.replace(
+      /\/\/.*/g,
+      (match) =>
+        `<span style="color: #808080; font-style: italic;">${match}</span>`
+    );
+
     // Strings
-    highlighted = highlighted.replace(/"([^"]*)"/g, '<span style="color: #6A8759;">\"$1\"</span>');
-    highlighted = highlighted.replace(/"""[\s\S]*?"""/g, (match) => `<span style="color: #6A8759;">${match}</span>`);
-    
+    highlighted = highlighted.replace(
+      /"([^"]*)"/g,
+      '<span style="color: #6A8759;">"$1"</span>'
+    );
+    highlighted = highlighted.replace(
+      /"""[\s\S]*?"""/g,
+      (match) => `<span style="color: #6A8759;">${match}</span>`
+    );
+
     // Keywords
-    keywords.forEach(keyword => {
-      const regex = new RegExp(`\\b${keyword}\\b`, 'g');
-      highlighted = highlighted.replace(regex, `<span style="color: #CC7832;">${keyword}</span>`);
+    keywords.forEach((keyword) => {
+      const regex = new RegExp(`\\b${keyword}\\b`, "g");
+      highlighted = highlighted.replace(
+        regex,
+        `<span style="color: #CC7832;">${keyword}</span>`
+      );
     });
-    
+
     // Types
-    types.forEach(type => {
-      const regex = new RegExp(`\\b${type}\\b`, 'g');
-      highlighted = highlighted.replace(regex, `<span style="color: #A9B7C6; font-weight: bold;">${type}</span>`);
+    types.forEach((type) => {
+      const regex = new RegExp(`\\b${type}\\b`, "g");
+      highlighted = highlighted.replace(
+        regex,
+        `<span style="color: #A9B7C6; font-weight: bold;">${type}</span>`
+      );
     });
-    
+
     // Functions
-    highlighted = highlighted.replace(/\b([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/g, '<span style="color: #FFC66D;">$1</span>(');
-    
+    highlighted = highlighted.replace(
+      /\b([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/g,
+      '<span style="color: #FFC66D;">$1</span>('
+    );
+
     return highlighted;
   };
 
   // Build functionality
   const handleBuild = () => {
     setIsBuilding(true);
-    setBuildStatus('Building...');
-    showNotification('Build started', 'info');
-    
+    setBuildStatus("Building...");
+    showNotification("Build started", "info");
+
     const buildLogs = [
-      '',
-      '> Task :app:preBuild UP-TO-DATE',
-      '> Task :app:preDebugBuild UP-TO-DATE',
-      '> Task :app:compileDebugKotlin',
-      '> Task :app:javaPreCompileDebug',
-      '> Task :app:compileDebugJavaWithJavac',
-      '> Task :app:compileDebugSources',
-      '> Task :app:mergeDebugResources',
-      '> Task :app:processDebugManifest',
-      '> Task :app:processDebugResources',
-      '> Task :app:kaptGenerateStubsDebugKotlin',
-      '> Task :app:kaptDebugKotlin',
-      '> Task :app:mergeDebugAssets',
-      '> Task :app:packageDebug',
-      '> Task :app:assembleDebug',
-      '',
-      'BUILD SUCCESSFUL in 3s',
-      '42 actionable tasks: 12 executed, 30 up-to-date',
-      '',
-      '✓ Build completed successfully',
-      '📦 APK generated: app-debug.apk (8.4 MB)',
-      '🎯 Ready to install on device',
-      ''
+      "",
+      "> Task :app:preBuild UP-TO-DATE",
+      "> Task :app:preDebugBuild UP-TO-DATE",
+      "> Task :app:compileDebugKotlin",
+      "> Task :app:javaPreCompileDebug",
+      "> Task :app:compileDebugJavaWithJavac",
+      "> Task :app:compileDebugSources",
+      "> Task :app:mergeDebugResources",
+      "> Task :app:processDebugManifest",
+      "> Task :app:processDebugResources",
+      "> Task :app:kaptGenerateStubsDebugKotlin",
+      "> Task :app:kaptDebugKotlin",
+      "> Task :app:mergeDebugAssets",
+      "> Task :app:packageDebug",
+      "> Task :app:assembleDebug",
+      "",
+      "BUILD SUCCESSFUL in 3s",
+      "42 actionable tasks: 12 executed, 30 up-to-date",
+      "",
+      "✓ Build completed successfully",
+      "📦 APK generated: app-debug.apk (8.4 MB)",
+      "🎯 Ready to install on device",
+      "",
     ];
 
     buildLogs.forEach((log, index) => {
       setTimeout(() => {
-        setTerminalHistory(prev => [...prev, { 
-          type: log.includes('✓') || log.includes('SUCCESSFUL') ? 'output' : 'output', 
-          text: log 
-        }]);
-        
+        setTerminalHistory((prev) => [
+          ...prev,
+          {
+            type:
+              log.includes("✓") || log.includes("SUCCESSFUL")
+                ? "output"
+                : "output",
+            text: log,
+          },
+        ]);
+
         if (index === buildLogs.length - 1) {
           setIsBuilding(false);
-          setBuildStatus('Build successful in 3.2s');
-          showNotification('Build completed successfully', 'success');
+          setBuildStatus("Build successful in 3.2s");
+          showNotification("Build completed successfully", "success");
         }
       }, index * 150);
     });
@@ -627,76 +699,82 @@ Built with React | Styled like Android Studio
 
   // ============= FILE OPERATIONS =============
   const toggleFolder = (folderName) => {
-    setOpenFolders(prev => ({
+    setOpenFolders((prev) => ({
       ...prev,
-      [folderName]: !prev[folderName]
+      [folderName]: !prev[folderName],
     }));
   };
 
   const openFile = (fileName) => {
     if (!openTabs.includes(fileName)) {
       if (openTabs.length >= 5) {
-        showNotification('Maximum 5 tabs allowed', 'error');
+        showNotification("Maximum 5 tabs allowed", "error");
         return;
       }
       setOpenTabs([...openTabs, fileName]);
     }
     setActiveFile(fileName);
-    showNotification(`Opened ${fileName}`, 'success');
-    
+    showNotification(`Opened ${fileName}`, "success");
+
     // Scroll to top
     setTimeout(() => {
       if (editorContentRef.current) {
-        editorContentRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+        editorContentRef.current.scrollTo({ top: 0, behavior: "smooth" });
       }
     }, 100);
   };
 
   const closeTab = (fileName, e) => {
     e.stopPropagation();
-    const newTabs = openTabs.filter(tab => tab !== fileName);
+    const newTabs = openTabs.filter((tab) => tab !== fileName);
     setOpenTabs(newTabs);
-    
+
     // Remove from typed files so it will re-type when opened again
-    setTypedFiles(prev => {
+    setTypedFiles((prev) => {
       const updated = { ...prev };
       delete updated[fileName];
       return updated;
     });
-    
+
     if (activeFile === fileName && newTabs.length > 0) {
       setActiveFile(newTabs[newTabs.length - 1]);
     }
-    showNotification(`Closed ${fileName}`, 'info');
+    showNotification(`Closed ${fileName}`, "info");
   };
 
   // Get breadcrumb path
   const getBreadcrumb = () => {
-    if (activeFile === 'README.md') {
-      return 'Portfolio > README.md';
+    if (activeFile === "README.md") {
+      return "Portfolio > README.md";
     }
     return `Portfolio > app > ${activeFile}`;
   };
 
   // ============= TERMINAL COMMANDS =============
   const handleTerminalCommand = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       const command = terminalInput.trim();
       if (command) {
-        setCommandHistory(prev => [...prev.slice(-9), command]);
-        setTerminalHistory(prev => [...prev, { type: 'input', text: `${currentPath} $ ${command}` }]);
+        setCommandHistory((prev) => [...prev.slice(-9), command]);
+        setTerminalHistory((prev) => [
+          ...prev,
+          { type: "input", text: `${currentPath} $ ${command}` },
+        ]);
         processCommand(command);
       }
-      setTerminalInput('');
+      setTerminalInput("");
       setHistoryIndex(-1);
-    } else if (e.key === 'ArrowUp') {
+    } else if (e.key === "ArrowUp") {
       e.preventDefault();
       if (commandHistory.length > 0) {
-        const newIndex = historyIndex < commandHistory.length - 1 ? historyIndex + 1 : historyIndex;
+        const newIndex =
+          historyIndex < commandHistory.length - 1
+            ? historyIndex + 1
+            : historyIndex;
         setHistoryIndex(newIndex);
         setTerminalInput(commandHistory[commandHistory.length - 1 - newIndex]);
       }
-    } else if (e.key === 'ArrowDown') {
+    } else if (e.key === "ArrowDown") {
       e.preventDefault();
       if (historyIndex > 0) {
         const newIndex = historyIndex - 1;
@@ -704,175 +782,223 @@ Built with React | Styled like Android Studio
         setTerminalInput(commandHistory[commandHistory.length - 1 - newIndex]);
       } else {
         setHistoryIndex(-1);
-        setTerminalInput('');
+        setTerminalInput("");
       }
     }
   };
 
   const processCommand = (command) => {
-    const args = command.split(' ');
+    const args = command.split(" ");
     const cmd = args[0].toLowerCase();
 
-    switch(cmd) {
-      case 'help':
-        setTerminalHistory(prev => [...prev, 
-          { type: 'output', text: '' },
-          { type: 'output', text: '📚 Available commands:' },
-          { type: 'output', text: '  help           - Show this help message' },
-          { type: 'output', text: '  ls             - List files' },
-          { type: 'output', text: '  cd <file>      - Open file (e.g., cd about)' },
-          { type: 'output', text: '  clear          - Clear terminal' },
-          { type: 'output', text: '  whoami         - Display user info' },
-          { type: 'output', text: '  pwd            - Print working directory' },
-          { type: 'output', text: '  contact        - Show contact information' },
-          { type: 'output', text: '  projects       - List all projects' },
-          { type: 'output', text: '  build          - Run Gradle build' },
-          { type: 'output', text: '' },
-          { type: 'output', text: '🎉 Easter eggs: Try "matrix" or "coffee"!' },
+    switch (cmd) {
+      case "help":
+        setTerminalHistory((prev) => [
+          ...prev,
+          { type: "output", text: "" },
+          { type: "output", text: "📚 Available commands:" },
+          { type: "output", text: "  help           - Show this help message" },
+          { type: "output", text: "  ls             - List files" },
+          {
+            type: "output",
+            text: "  cd <file>      - Open file (e.g., cd about)",
+          },
+          { type: "output", text: "  clear          - Clear terminal" },
+          { type: "output", text: "  whoami         - Display user info" },
+          {
+            type: "output",
+            text: "  pwd            - Print working directory",
+          },
+          {
+            type: "output",
+            text: "  contact        - Show contact information",
+          },
+          { type: "output", text: "  projects       - List all projects" },
+          { type: "output", text: "  build          - Run Gradle build" },
+          { type: "output", text: "" },
+          { type: "output", text: '🎉 Easter eggs: Try "matrix" or "coffee"!' },
         ]);
         break;
 
-      case 'ls':
-        setTerminalHistory(prev => [...prev,
-          { type: 'output', text: '' },
-          { type: 'output', text: 'About.kt  Skills.kt  Projects.kt  Experience.kt  Contact.kt  README.md' }
+      case "ls":
+        setTerminalHistory((prev) => [
+          ...prev,
+          { type: "output", text: "" },
+          {
+            type: "output",
+            text: "About.kt  Skills.kt  Projects.kt  Experience.kt  Contact.kt  README.md",
+          },
         ]);
         break;
 
-      case 'cd':
+      case "cd":
         if (args[1]) {
           const fileName = args[1].toLowerCase();
           const fileMap = {
-            'about': 'About.kt',
-            'skills': 'Skills.kt',
-            'projects': 'Projects.kt',
-            'experience': 'Experience.kt',
-            'contact': 'Contact.kt',
-            'readme': 'README.md'
+            about: "About.kt",
+            skills: "Skills.kt",
+            projects: "Projects.kt",
+            experience: "Experience.kt",
+            contact: "Contact.kt",
+            readme: "README.md",
           };
           if (fileMap[fileName]) {
             openFile(fileMap[fileName]);
-            setTerminalHistory(prev => [...prev,
-              { type: 'output', text: '' },
-              { type: 'output', text: `✓ Opened ${fileMap[fileName]}` }
+            setTerminalHistory((prev) => [
+              ...prev,
+              { type: "output", text: "" },
+              { type: "output", text: `✓ Opened ${fileMap[fileName]}` },
             ]);
           } else {
-            setTerminalHistory(prev => [...prev,
-              { type: 'output', text: '' },
-              { type: 'error', text: `✗ File not found: ${args[1]}` }
+            setTerminalHistory((prev) => [
+              ...prev,
+              { type: "output", text: "" },
+              { type: "error", text: `✗ File not found: ${args[1]}` },
             ]);
           }
         } else {
-          setTerminalHistory(prev => [...prev,
-            { type: 'output', text: '' },
-            { type: 'error', text: '✗ Usage: cd <filename>' }
+          setTerminalHistory((prev) => [
+            ...prev,
+            { type: "output", text: "" },
+            { type: "error", text: "✗ Usage: cd <filename>" },
           ]);
         }
         break;
 
-      case 'clear':
+      case "clear":
         setTerminalHistory([]);
         setCommandHistory([]);
         setHistoryIndex(-1);
         break;
 
-      case 'whoami':
-        setTerminalHistory(prev => [...prev,
-          { type: 'output', text: '' },
-          { type: 'output', text: `👤 ${PERSONAL_INFO.name} (${PERSONAL_INFO.username})` },
-          { type: 'output', text: `🤖 ${PERSONAL_INFO.role}` },
-          { type: 'output', text: `📍 ${PERSONAL_INFO.location}` },
-          { type: 'output', text: `💼 github.com/${PERSONAL_INFO.github}` },
+      case "whoami":
+        setTerminalHistory((prev) => [
+          ...prev,
+          { type: "output", text: "" },
+          {
+            type: "output",
+            text: `👤 ${PERSONAL_INFO.name} (${PERSONAL_INFO.username})`,
+          },
+          { type: "output", text: `🤖 ${PERSONAL_INFO.role}` },
+          { type: "output", text: `📍 ${PERSONAL_INFO.location}` },
+          { type: "output", text: `💼 github.com/${PERSONAL_INFO.github}` },
         ]);
         break;
 
-      case 'pwd':
-        setTerminalHistory(prev => [...prev,
-          { type: 'output', text: '' },
-          { type: 'output', text: currentPath }
+      case "pwd":
+        setTerminalHistory((prev) => [
+          ...prev,
+          { type: "output", text: "" },
+          { type: "output", text: currentPath },
         ]);
         break;
 
-      case 'contact':
-        setTerminalHistory(prev => [...prev,
-          { type: 'output', text: '' },
-          { type: 'output', text: '📧 Contact Information:' },
-          { type: 'output', text: `   Email: ${PERSONAL_INFO.email}` },
-          { type: 'output', text: `   GitHub: github.com/${PERSONAL_INFO.github}` },
-          { type: 'output', text: `   LinkedIn: linkedin.com/in/${PERSONAL_INFO.linkedin}` },
-          { type: 'output', text: `   Location: ${PERSONAL_INFO.location}` },
+      case "contact":
+        setTerminalHistory((prev) => [
+          ...prev,
+          { type: "output", text: "" },
+          { type: "output", text: "📧 Contact Information:" },
+          { type: "output", text: `   Email: ${PERSONAL_INFO.email}` },
+          {
+            type: "output",
+            text: `   GitHub: github.com/${PERSONAL_INFO.github}`,
+          },
+          {
+            type: "output",
+            text: `   LinkedIn: linkedin.com/in/${PERSONAL_INFO.linkedin}`,
+          },
+          { type: "output", text: `   Location: ${PERSONAL_INFO.location}` },
         ]);
         break;
 
-      case 'projects':
-        setTerminalHistory(prev => [...prev,
-          { type: 'output', text: '' },
-          { type: 'output', text: '🚀 Featured Projects:' },
-          { type: 'output', text: '   1. KosKu - Status: In Development' },
-          { type: 'output', text: '   2. Manager Usaha V2 - Status: Beta' },
-          { type: 'output', text: '   3. Cogito - Status: Production' },
-          { type: 'output', text: '   4. Festivaloka - Status: Live' },
-          { type: 'output', text: '' },
-          { type: 'output', text: '   Type "cd projects" to view details' },
+      case "projects":
+        setTerminalHistory((prev) => [
+          ...prev,
+          { type: "output", text: "" },
+          { type: "output", text: "🚀 Featured Projects:" },
+          { type: "output", text: "   1. KosKu - Status: In Development" },
+          { type: "output", text: "   2. Manager Usaha V2 - Status: Beta" },
+          { type: "output", text: "   3. Cogito - Status: Production" },
+          { type: "output", text: "   4. Festivaloka - Status: Live" },
+          { type: "output", text: "" },
+          { type: "output", text: '   Type "cd projects" to view details' },
         ]);
         break;
 
-      case 'build':
+      case "build":
         handleBuild();
         break;
 
-      case 'matrix':
-        setTerminalHistory(prev => [...prev,
-          { type: 'output', text: '' },
-          { type: 'output', text: '01010111 01100001 01101011 01100101 00100000' },
-          { type: 'output', text: '01110101 01110000 00101100 00100000 01001110' },
-          { type: 'output', text: '01100101 01101111 00101110 00101110 00101110' },
-          { type: 'output', text: '' },
-          { type: 'output', text: '🟢 The Matrix has you... Follow the white rabbit 🐰' },
-          { type: 'output', text: '   (Translation: Wake up, Neo...)' },
+      case "matrix":
+        setTerminalHistory((prev) => [
+          ...prev,
+          { type: "output", text: "" },
+          {
+            type: "output",
+            text: "01010111 01100001 01101011 01100101 00100000",
+          },
+          {
+            type: "output",
+            text: "01110101 01110000 00101100 00100000 01001110",
+          },
+          {
+            type: "output",
+            text: "01100101 01101111 00101110 00101110 00101110",
+          },
+          { type: "output", text: "" },
+          {
+            type: "output",
+            text: "🟢 The Matrix has you... Follow the white rabbit 🐰",
+          },
+          { type: "output", text: "   (Translation: Wake up, Neo...)" },
         ]);
         break;
 
-      case 'coffee':
-        setTerminalHistory(prev => [...prev,
-          { type: 'output', text: '' },
-          { type: 'output', text: '      )  (' },
-          { type: 'output', text: '     (   ) )' },
-          { type: 'output', text: '      ) ( (' },
-          { type: 'output', text: '    _______)_' },
-          { type: 'output', text: ' .-\'---------|  ' },
-          { type: 'output', text: '( C|/\\/\\/\\/\\/|' },
-          { type: 'output', text: ' \'-./\\/\\/\\/\\/|' },
-          { type: 'output', text: '   \'_________\'' },
-          { type: 'output', text: '    \'-------\'' },
-          { type: 'output', text: '' },
-          { type: 'output', text: '☕ Coffee break! Here\'s some fresh code fuel.' },
-          { type: 'output', text: '   Keep coding, keep creating! 💻' },
+      case "coffee":
+        setTerminalHistory((prev) => [
+          ...prev,
+          { type: "output", text: "" },
+          { type: "output", text: "      )  (" },
+          { type: "output", text: "     (   ) )" },
+          { type: "output", text: "      ) ( (" },
+          { type: "output", text: "    _______)_" },
+          { type: "output", text: " .-'---------|  " },
+          { type: "output", text: "( C|/\\/\\/\\/\\/|" },
+          { type: "output", text: " '-./\\/\\/\\/\\/|" },
+          { type: "output", text: "   '_________'" },
+          { type: "output", text: "    '-------'" },
+          { type: "output", text: "" },
+          {
+            type: "output",
+            text: "☕ Coffee break! Here's some fresh code fuel.",
+          },
+          { type: "output", text: "   Keep coding, keep creating! 💻" },
         ]);
         break;
 
-      case '':
+      case "":
         break;
 
       default:
-        setTerminalHistory(prev => [...prev,
-          { type: 'output', text: '' },
-          { type: 'error', text: `✗ Command not found: ${command}` },
-          { type: 'error', text: '  Type "help" for available commands.' }
+        setTerminalHistory((prev) => [
+          ...prev,
+          { type: "output", text: "" },
+          { type: "error", text: `✗ Command not found: ${command}` },
+          { type: "error", text: '  Type "help" for available commands.' },
         ]);
     }
   };
 
   // ============= FILE TREE RENDERING =============
-  const renderFileTree = (structure, path = '') => {
+  const renderFileTree = (structure, path = "") => {
     return Object.entries(structure).map(([name, item]) => {
       const fullPath = path ? `${path}/${name}` : name;
-      
-      if (item.type === 'folder') {
+
+      if (item.type === "folder") {
         const isOpen = openFolders[name];
         return (
           <div key={fullPath}>
-            <div 
+            <div
               className="file-tree-item folder"
               onClick={() => toggleFolder(name)}
             >
@@ -890,12 +1016,15 @@ Built with React | Styled like Android Studio
       } else {
         const isActive = activeFile === name;
         return (
-          <div 
+          <div
             key={fullPath}
-            className={`file-tree-item file ${isActive ? 'active' : ''}`}
+            className={`file-tree-item file ${isActive ? "active" : ""}`}
             onClick={() => openFile(name)}
           >
-            <FileText size={16} className={`file-icon ${isActive ? 'active-file-icon' : ''}`} />
+            <FileText
+              size={16}
+              className={`file-icon ${isActive ? "active-file-icon" : ""}`}
+            />
             <span>{name}</span>
           </div>
         );
@@ -906,26 +1035,44 @@ Built with React | Styled like Android Studio
   // Mobile blocker
   if (isMobile) {
     return (
-      <div style={{
-        width: '100vw',
-        height: '100vh',
-        background: '#2B2B2B',
-        color: '#A9B7C6',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '20px',
-        textAlign: 'center',
-        fontFamily: 'Consolas, Monaco, Courier New, monospace'
-      }}>
-        <Terminal size={64} style={{ marginBottom: '20px', color: '#6A8759' }} />
-        <h1 style={{ fontSize: '24px', marginBottom: '16px', color: '#CC7832' }}>Desktop Experience Required</h1>
-        <p style={{ fontSize: '16px', lineHeight: '1.6', maxWidth: '400px', color: '#A9B7C6' }}>
-          This portfolio is designed to replicate the Android Studio experience and works best on desktop devices.
+      <div
+        style={{
+          width: "100vw",
+          height: "100vh",
+          background: "#2B2B2B",
+          color: "#A9B7C6",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "20px",
+          textAlign: "center",
+          fontFamily: "Consolas, Monaco, Courier New, monospace",
+        }}
+      >
+        <Terminal
+          size={64}
+          style={{ marginBottom: "20px", color: "#6A8759" }}
+        />
+        <h1
+          style={{ fontSize: "24px", marginBottom: "16px", color: "#CC7832" }}
+        >
+          Desktop Experience Required
+        </h1>
+        <p
+          style={{
+            fontSize: "16px",
+            lineHeight: "1.6",
+            maxWidth: "400px",
+            color: "#A9B7C6",
+          }}
+        >
+          This portfolio is designed to replicate the Android Studio experience
+          and works best on desktop devices.
         </p>
-        <p style={{ fontSize: '14px', marginTop: '16px', color: '#808080' }}>
-          Please visit on a desktop or laptop for the full interactive experience.
+        <p style={{ fontSize: "14px", marginTop: "16px", color: "#808080" }}>
+          Please visit on a desktop or laptop for the full interactive
+          experience.
         </p>
       </div>
     );
@@ -934,109 +1081,192 @@ Built with React | Styled like Android Studio
   // Loading screen
   if (loading) {
     return (
-      <div style={{
-        position: 'fixed',
-        inset: 0,
-        background: 'linear-gradient(135deg, #1a1a1a 0%, #2B2B2B 50%, #1a1a1a 100%)',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontFamily: 'Consolas, Monaco, Courier New, monospace',
-        zIndex: 9999,
-      }}>
-        <div style={{ textAlign: 'center', position: 'relative' }}>
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          background:
+            "linear-gradient(135deg, #1a1a1a 0%, #2B2B2B 50%, #1a1a1a 100%)",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          fontFamily: "Consolas, Monaco, Courier New, monospace",
+          zIndex: 9999,
+        }}
+      >
+        <div style={{ textAlign: "center", position: "relative" }}>
           {/* Android Robot Icon */}
-          <div style={{
-            width: '120px',
-            height: '120px',
-            margin: '0 auto 30px',
-            position: 'relative',
-            animation: 'float 3s ease-in-out infinite'
-          }}>
-            <svg width="120" height="120" viewBox="0 0 120 120" style={{ filter: 'drop-shadow(0 0 20px rgba(106, 135, 89, 0.5))' }}>
+          <div
+            style={{
+              width: "120px",
+              height: "120px",
+              margin: "0 auto 30px",
+              position: "relative",
+              animation: "float 3s ease-in-out infinite",
+            }}
+          >
+            <svg
+              width="120"
+              height="120"
+              viewBox="0 0 120 120"
+              style={{
+                filter: "drop-shadow(0 0 20px rgba(106, 135, 89, 0.5))",
+              }}
+            >
               {/* Android head */}
-              <rect x="30" y="40" width="60" height="50" rx="5" fill="#6A8759" opacity="0.9"/>
+              <rect
+                x="30"
+                y="40"
+                width="60"
+                height="50"
+                rx="5"
+                fill="#6A8759"
+                opacity="0.9"
+              />
               {/* Eyes */}
-              <circle cx="45" cy="55" r="4" fill="#2B2B2B"/>
-              <circle cx="75" cy="55" r="4" fill="#2B2B2B"/>
+              <circle cx="45" cy="55" r="4" fill="#2B2B2B" />
+              <circle cx="75" cy="55" r="4" fill="#2B2B2B" />
               {/* Antennas */}
-              <line x1="40" y1="35" x2="30" y2="20" stroke="#6A8759" strokeWidth="3" strokeLinecap="round"/>
-              <line x1="80" y1="35" x2="90" y2="20" stroke="#6A8759" strokeWidth="3" strokeLinecap="round"/>
+              <line
+                x1="40"
+                y1="35"
+                x2="30"
+                y2="20"
+                stroke="#6A8759"
+                strokeWidth="3"
+                strokeLinecap="round"
+              />
+              <line
+                x1="80"
+                y1="35"
+                x2="90"
+                y2="20"
+                stroke="#6A8759"
+                strokeWidth="3"
+                strokeLinecap="round"
+              />
               {/* Arms */}
-              <rect x="15" y="45" width="10" height="35" rx="5" fill="#6A8759" opacity="0.9"/>
-              <rect x="95" y="45" width="10" height="35" rx="5" fill="#6A8759" opacity="0.9"/>
+              <rect
+                x="15"
+                y="45"
+                width="10"
+                height="35"
+                rx="5"
+                fill="#6A8759"
+                opacity="0.9"
+              />
+              <rect
+                x="95"
+                y="45"
+                width="10"
+                height="35"
+                rx="5"
+                fill="#6A8759"
+                opacity="0.9"
+              />
               {/* Legs */}
-              <rect x="40" y="92" width="12" height="25" rx="6" fill="#6A8759" opacity="0.9"/>
-              <rect x="68" y="92" width="12" height="25" rx="6" fill="#6A8759" opacity="0.9"/>
+              <rect
+                x="40"
+                y="92"
+                width="12"
+                height="25"
+                rx="6"
+                fill="#6A8759"
+                opacity="0.9"
+              />
+              <rect
+                x="68"
+                y="92"
+                width="12"
+                height="25"
+                rx="6"
+                fill="#6A8759"
+                opacity="0.9"
+              />
             </svg>
           </div>
 
           {/* Loading Bar */}
-          <div style={{
-            width: '300px',
-            height: '4px',
-            background: '#3C3F41',
-            borderRadius: '2px',
-            overflow: 'hidden',
-            marginBottom: '20px',
-            boxShadow: '0 2px 10px rgba(0,0,0,0.3)'
-          }}>
-            <div style={{
-              height: '100%',
-              background: 'linear-gradient(90deg, #6A8759, #8BC34A, #6A8759)',
-              backgroundSize: '200% 100%',
-              animation: 'loadingBar 1.5s ease-in-out infinite',
-              boxShadow: '0 0 10px rgba(106, 135, 89, 0.5)'
-            }}></div>
+          <div
+            style={{
+              width: "300px",
+              height: "4px",
+              background: "#3C3F41",
+              borderRadius: "2px",
+              overflow: "hidden",
+              marginBottom: "20px",
+              boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
+            }}
+          >
+            <div
+              style={{
+                height: "100%",
+                background: "linear-gradient(90deg, #6A8759, #8BC34A, #6A8759)",
+                backgroundSize: "200% 100%",
+                animation: "loadingBar 1.5s ease-in-out infinite",
+                boxShadow: "0 0 10px rgba(106, 135, 89, 0.5)",
+              }}
+            ></div>
           </div>
 
           {/* Text */}
-          <div style={{ 
-            color: '#6A8759', 
-            fontSize: '20px', 
-            marginBottom: '8px',
-            fontWeight: 'bold',
-            letterSpacing: '1px',
-            animation: 'pulse 2s ease-in-out infinite'
-          }}>
+          <div
+            style={{
+              color: "#6A8759",
+              fontSize: "20px",
+              marginBottom: "8px",
+              fontWeight: "bold",
+              letterSpacing: "1px",
+              animation: "pulse 2s ease-in-out infinite",
+            }}
+          >
             Android Studio
           </div>
-          <div style={{ 
-            color: '#A9B7C6', 
-            fontSize: '14px',
-            marginBottom: '4px'
-          }}>
+          <div
+            style={{
+              color: "#A9B7C6",
+              fontSize: "14px",
+              marginBottom: "4px",
+            }}
+          >
             Loading {PERSONAL_INFO.username}'s Portfolio...
           </div>
-          <div style={{ 
-            color: '#808080', 
-            fontSize: '12px',
-            animation: 'fadeInOut 2s ease-in-out infinite'
-          }}>
+          <div
+            style={{
+              color: "#808080",
+              fontSize: "12px",
+              animation: "fadeInOut 2s ease-in-out infinite",
+            }}
+          >
             Initializing Kotlin environment
           </div>
 
           {/* Dots animation */}
-          <div style={{
-            marginTop: '20px',
-            display: 'flex',
-            gap: '8px',
-            justifyContent: 'center'
-          }}>
+          <div
+            style={{
+              marginTop: "20px",
+              display: "flex",
+              gap: "8px",
+              justifyContent: "center",
+            }}
+          >
             {[0, 1, 2].map((i) => (
-              <div key={i} style={{
-                width: '8px',
-                height: '8px',
-                borderRadius: '50%',
-                background: '#6A8759',
-                animation: `dotBounce 1.4s ease-in-out infinite`,
-                animationDelay: `${i * 0.2}s`
-              }}></div>
+              <div
+                key={i}
+                style={{
+                  width: "8px",
+                  height: "8px",
+                  borderRadius: "50%",
+                  background: "#6A8759",
+                  animation: `dotBounce 1.4s ease-in-out infinite`,
+                  animationDelay: `${i * 0.2}s`,
+                }}
+              ></div>
             ))}
           </div>
         </div>
-  
+
         <style>{`
           @keyframes spin {
             0% { transform: rotate(0deg); }
@@ -1206,12 +1436,12 @@ Built with React | Styled like Android Studio
         }
 
         .sidebar {
-          width: ${sidebarCollapsed ? '0' : `${sidebarWidth}px`};
+          width: ${sidebarCollapsed ? "0" : `${sidebarWidth}px`};
           background: #313335;
           border-right: 1px solid #232525;
           overflow-y: auto;
           overflow-x: hidden;
-          padding: ${sidebarCollapsed ? '0' : '8px 0'};
+          padding: ${sidebarCollapsed ? "0" : "8px 0"};
           transition: width 0.3s ease, padding 0.3s ease;
           position: relative;
         }
@@ -1219,7 +1449,7 @@ Built with React | Styled like Android Studio
         .sidebar-toggle {
           position: absolute;
           top: 8px;
-          right: ${sidebarCollapsed ? '-32px' : '8px'};
+          right: ${sidebarCollapsed ? "-32px" : "8px"};
           width: 24px;
           height: 24px;
           background: #3C3F41;
@@ -1537,7 +1767,7 @@ Built with React | Styled like Android Studio
         }
 
         .terminal {
-          height: ${terminalCollapsed ? '30px' : `${terminalHeight}px`};
+          height: ${terminalCollapsed ? "30px" : `${terminalHeight}px`};
           background: #1E1E1E;
           border-top: 1px solid #232525;
           display: flex;
@@ -1587,7 +1817,7 @@ Built with React | Styled like Android Studio
           overflow-y: auto;
           font-size: 14px;
           line-height: 1.6;
-          display: ${terminalCollapsed ? 'none' : 'block'};
+          display: ${terminalCollapsed ? "none" : "block"};
         }
 
         .terminal-line {
@@ -1708,7 +1938,7 @@ Built with React | Styled like Android Studio
 
       {/* Notifications */}
       <div className="notification-container">
-        {notifications.map(notif => (
+        {notifications.map((notif) => (
           <div key={notif.id} className={`notification ${notif.type}`}>
             {notif.message}
           </div>
@@ -1729,34 +1959,63 @@ Built with React | Styled like Android Studio
       </div>
 
       <div className="toolbar">
-        <span style={{color: '#6A8759', fontSize: '14px', fontWeight: 'bold'}}>
+        <span
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            color: "#6A8759",
+            fontSize: "16px",
+            fontWeight: "bold",
+          }}
+        >
+          <img
+            src="/logo.png"
+            alt="logo"
+            style={{ width: "32px", height: "32px" }}
+          />
           {PERSONAL_INFO.username} Portfolio
         </span>
-        <button 
-          className="build-btn" 
+
+        <button
+          className="build-btn"
           onClick={handleBuild}
           disabled={isBuilding}
         >
-          {isBuilding ? <Loader size={14} className="gradle-spinner" /> : <Play size={14} />}
-          {isBuilding ? 'Building...' : 'Build'}
+          {isBuilding ? (
+            <Loader size={14} className="gradle-spinner" />
+          ) : (
+            <Play size={14} />
+          )}
+          {isBuilding ? "Building..." : "Build"}
         </button>
         <div className="window-controls">
-          <div className="window-btn"><Minus size={16} /></div>
-          <div className="window-btn"><Square size={14} /></div>
-          <div className="window-btn"><X size={16} /></div>
+          <div className="window-btn">
+            <Minus size={16} />
+          </div>
+          <div className="window-btn">
+            <Square size={14} />
+          </div>
+          <div className="window-btn">
+            <X size={16} />
+          </div>
         </div>
       </div>
 
       <div className="main-content">
         <div className="sidebar">
-          <div 
+          <div
             className="sidebar-toggle"
             onClick={() => {
               setSidebarCollapsed(!sidebarCollapsed);
               if (sidebarCollapsed) setSidebarWidth(250);
             }}
           >
-            {sidebarCollapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+            {sidebarCollapsed ? (
+              <ChevronRight size={16} />
+            ) : (
+              <ChevronLeft size={16} />
+            )}
           </div>
           {!sidebarCollapsed && (
             <>
@@ -1766,19 +2025,21 @@ Built with React | Styled like Android Studio
           )}
         </div>
 
-        <div 
-          className={`resize-handle-vertical ${isDraggingSidebar ? 'dragging' : ''}`}
+        <div
+          className={`resize-handle-vertical ${
+            isDraggingSidebar ? "dragging" : ""
+          }`}
           onMouseDown={() => setIsDraggingSidebar(true)}
         />
 
         <div className="editor-area">
           <div className="breadcrumb">{getBreadcrumb()}</div>
-          
+
           <div className="tabs-container">
-            {openTabs.map(tab => (
-              <div 
+            {openTabs.map((tab) => (
+              <div
                 key={tab}
-                className={`tab ${activeFile === tab ? 'active' : ''}`}
+                className={`tab ${activeFile === tab ? "active" : ""}`}
                 onClick={() => setActiveFile(tab)}
               >
                 <FileText size={14} />
@@ -1796,22 +2057,29 @@ Built with React | Styled like Android Studio
             <div className="editor-content" ref={editorContentRef}>
               {activeFile && fileContents[activeFile] && (
                 <div>
-                  {getDisplayedContent().split('\n').map((line, index) => {
-                    const isLastLine = isTyping && index === currentTypingLine;
-                    return (
-                      <div key={index} className="code-line">
-                        <div className="line-number">{index + 1}</div>
-                        <div className="line-content">
-                          <span
-                            dangerouslySetInnerHTML={{
-                              __html: activeFile.endsWith('.kt') ? highlightKotlin(line) : line || '&nbsp;'
-                            }}
-                          />
-                          {isLastLine && showCursor && <span className="typing-cursor"></span>}
+                  {getDisplayedContent()
+                    .split("\n")
+                    .map((line, index) => {
+                      const isLastLine =
+                        isTyping && index === currentTypingLine;
+                      return (
+                        <div key={index} className="code-line">
+                          <div className="line-number">{index + 1}</div>
+                          <div className="line-content">
+                            <span
+                              dangerouslySetInnerHTML={{
+                                __html: activeFile.endsWith(".kt")
+                                  ? highlightKotlin(line)
+                                  : line || "&nbsp;",
+                              }}
+                            />
+                            {isLastLine && showCursor && (
+                              <span className="typing-cursor"></span>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
                 </div>
               )}
             </div>
@@ -1822,11 +2090,11 @@ Built with React | Styled like Android Studio
                 <div className="minimap-content">
                   {fileContents[activeFile]?.substring(0, 2000)}
                 </div>
-                <div 
+                <div
                   className="minimap-viewport"
                   style={{
-                    top: '10%',
-                    height: '20%'
+                    top: "10%",
+                    height: "20%",
                   }}
                 />
               </div>
@@ -1850,27 +2118,32 @@ Built with React | Styled like Android Studio
             <div className="status-item">UTF-8</div>
             <div className="status-item">Kotlin</div>
             <div className="status-item">
-              <span style={{color: '#6A8759'}}>⎇</span> main
+              <span style={{ color: "#6A8759" }}>⎇</span> main
             </div>
-            <div className="status-item" style={{marginLeft: 'auto'}}>
+            <div className="status-item" style={{ marginLeft: "auto" }}>
               {buildStatus}
             </div>
           </>
         )}
       </div>
 
-      <div 
-        className={`resize-handle-horizontal ${isDraggingTerminal ? 'dragging' : ''}`}
+      <div
+        className={`resize-handle-horizontal ${
+          isDraggingTerminal ? "dragging" : ""
+        }`}
         onMouseDown={() => setIsDraggingTerminal(true)}
       />
 
       <div className="terminal">
-        <div className="terminal-header" onClick={() => setTerminalCollapsed(!terminalCollapsed)}>
+        <div
+          className="terminal-header"
+          onClick={() => setTerminalCollapsed(!terminalCollapsed)}
+        >
           <Terminal size={14} />
           <span>Terminal</span>
           <div className="terminal-controls">
-            <div 
-              className="terminal-btn" 
+            <div
+              className="terminal-btn"
               onClick={(e) => {
                 e.stopPropagation();
                 setTerminalHeight(window.innerHeight - 150);
@@ -1879,7 +2152,7 @@ Built with React | Styled like Android Studio
             >
               <Maximize2 size={14} />
             </div>
-            <div 
+            <div
               className="terminal-btn"
               onClick={(e) => {
                 e.stopPropagation();
@@ -1887,7 +2160,11 @@ Built with React | Styled like Android Studio
               }}
               title="Collapse/Expand"
             >
-              {terminalCollapsed ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+              {terminalCollapsed ? (
+                <ChevronUp size={14} />
+              ) : (
+                <ChevronDown size={14} />
+              )}
             </div>
           </div>
         </div>
