@@ -27,7 +27,7 @@ const Portfolio = () => {
   const [terminalHistory, setTerminalHistory] = useState([]);
   const [commandHistory, setCommandHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
-  const [currentPath, setCurrentPath] = useState("~/Portfolio");
+  const [currentPath, setCurrentPath] = useState("~/AkbarD");
   const [sidebarWidth, setSidebarWidth] = useState(250);
   const [terminalHeight, setTerminalHeight] = useState(200);
   const [isDraggingSidebar, setIsDraggingSidebar] = useState(false);

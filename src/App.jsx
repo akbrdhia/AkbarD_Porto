@@ -1,5 +1,5 @@
 
-import Portfolio from './components/Portofolio';
+import Portfolio from './pages/Portofolio';
 import './App.css'
 
 function App() {
