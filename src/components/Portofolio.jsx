@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronRight, ChevronDown, ChevronLeft,ChevronUp, Folder, FileText, Terminal, X, Minus, Square, Menu, Maximize2 } from 'lucide-react';
-
+import { ChevronRight, ChevronDown, ChevronLeft, ChevronUp, Folder, FileText, Terminal, X, Minus, Square, Maximize2, Play, Loader } from 'lucide-react';
 
 const Portfolio = () => {
   const [loading, setLoading] = useState(true);
@@ -20,8 +19,19 @@ const Portfolio = () => {
   const [terminalCollapsed, setTerminalCollapsed] = useState(false);
   const [autoTypingIndex, setAutoTypingIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [typedFiles, setTypedFiles] = useState({});
+  const [currentTypingLine, setCurrentTypingLine] = useState(0);
+  const [currentTypingChar, setCurrentTypingChar] = useState(0);
+  const [isTyping, setIsTyping] = useState(false);
+  const [showCursor, setShowCursor] = useState(true);
+  const [notifications, setNotifications] = useState([]);
+  const [isBuilding, setIsBuilding] = useState(false);
+  const [gradleSyncing, setGradleSyncing] = useState(true);
+  const [cursorPosition, setCursorPosition] = useState({ line: 1, column: 1 });
+  const [buildStatus, setBuildStatus] = useState('Ready');
   const terminalEndRef = useRef(null);
   const terminalInputRef = useRef(null);
+  const editorContentRef = useRef(null);
 
   // Check if mobile
   useEffect(() => {
@@ -37,9 +47,21 @@ const Portfolio = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 5000);
     return () => clearTimeout(timer);
   }, []);
+
+  // Gradle sync
+  useEffect(() => {
+    if (!loading) {
+      const timer = setTimeout(() => {
+        setGradleSyncing(false);
+        setBuildStatus('Build successful in 3.2s');
+        showNotification('Gradle sync completed', 'success');
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [loading]);
 
   // Auto-typing welcome message
   const welcomeMessages = [
@@ -63,7 +85,6 @@ const Portfolio = () => {
     '💡 Tip: Try "matrix", "coffee".',
     "",
   ];
-  
 
   useEffect(() => {
     if (!loading && autoTypingIndex < welcomeMessages.length) {
@@ -73,7 +94,7 @@ const Portfolio = () => {
           text: welcomeMessages[autoTypingIndex] 
         }]);
         setAutoTypingIndex(autoTypingIndex + 1);
-      }, 400);
+      }, 200);
       return () => clearTimeout(timer);
     }
   }, [loading, autoTypingIndex]);
@@ -81,6 +102,27 @@ const Portfolio = () => {
   useEffect(() => {
     terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [terminalHistory]);
+
+  // Cursor blinking
+  useEffect(() => {
+    if (isTyping) {
+      const interval = setInterval(() => {
+        setShowCursor(prev => !prev);
+      }, 500);
+      return () => clearInterval(interval);
+    } else {
+      setShowCursor(false);
+    }
+  }, [isTyping]);
+
+  // Notification system
+  const showNotification = (message, type = 'info') => {
+    const id = Date.now();
+    setNotifications(prev => [...prev, { id, message, type }]);
+    setTimeout(() => {
+      setNotifications(prev => prev.filter(n => n.id !== id));
+    }, 3000);
+  };
 
   // Sidebar drag resize
   useEffect(() => {
@@ -122,7 +164,7 @@ const Portfolio = () => {
           setTerminalHeight(30);
         } else if (newHeight > 100) {
           setTerminalCollapsed(false);
-          setTerminalHeight(Math.min(newHeight, window.innerHeight - 100));
+          setTerminalHeight(Math.min(newHeight, window.innerHeight - 150));
         }
       }
     };
@@ -162,7 +204,6 @@ const Portfolio = () => {
     }
   };
 
-  // ============= UPDATE THESE VALUES =============
   const PERSONAL_INFO = {
     name: "Akbar Dhia",
     username: "AkbarD",
@@ -174,9 +215,8 @@ const Portfolio = () => {
     bio: `I'm an Android Developer and UI/UX enthusiast driven by the art of crafting smooth, meaningful digital experiences.
       I specialize in building modern Android apps with Kotlin, designing clean, human-centered interfaces, 
       and connecting everything through powerful backends built with Laravel or Express.
-      For me, coding isn’t just problem-solving — it’s storytelling through logic and design.`
+      For me, coding isn't just problem-solving — it's storytelling through logic and design.`
   };
-  
 
   const fileContents = {
     'About.kt': `package com.${PERSONAL_INFO.username.toLowerCase()}.portfolio
@@ -215,7 +255,6 @@ class AboutMe {
 
 /**
  * Technical Skills & Technologies
- * UPDATE: Add or modify your tech stack here
  */
 
 object TechStack {
@@ -263,7 +302,6 @@ object TechStack {
 
 /**
  * Featured Projects
- * UPDATE: Replace with your actual projects
  */
 
 data class Project(
@@ -271,68 +309,55 @@ data class Project(
     val description: String,
     val tech: List<String>,
     val status: String,
-    val githubUrl: String = "https://github.com/${PERSONAL_INFO.github}/PROJECT_NAME",
-    val demoUrl: String = "https://YOUR_DEMO_URL.com"
+    val githubUrl: String,
+    val demoUrl: String
 )
 
 class MyProjects {
     
     val projects = listOf(
         Project(
-            name = "PROJECT_NAME_1",
-            description = "PROJECT_DESCRIPTION_HERE",
-            tech = listOf("Kotlin", "Jetpack Compose", "Firebase", "MVVM"),
+            name = "KosKu",
+            description = "Modern boarding house management system",
+            tech = listOf("Kotlin", "Jetpack Compose", "Firebase"),
             status = "In Development",
-            githubUrl = "https://github.com/${PERSONAL_INFO.github}/project-1",
-            demoUrl = "https://demo1.com"
+            githubUrl = "https://github.com/${PERSONAL_INFO.github}/kosku",
+            demoUrl = "https://kosku-demo.com"
         ),
         
         Project(
-            name = "PROJECT_NAME_2",
-            description = "PROJECT_DESCRIPTION_HERE",
-            tech = listOf("Kotlin", "Room DB", "WorkManager", "Material 3"),
+            name = "Manager Usaha V2",
+            description = "Business management application",
+            tech = listOf("Kotlin", "Room DB", "MVVM"),
             status = "Beta",
-            githubUrl = "https://github.com/${PERSONAL_INFO.github}/project-2",
-            demoUrl = "https://demo2.com"
+            githubUrl = "https://github.com/${PERSONAL_INFO.github}/manager-usaha",
+            demoUrl = "https://manager-usaha.com"
         ),
         
         Project(
-            name = "PROJECT_NAME_3",
-            description = "PROJECT_DESCRIPTION_HERE",
-            tech = listOf("Laravel", "MySQL", "Redis", "JWT Auth"),
+            name = "Cogito",
+            description = "Smart productivity companion",
+            tech = listOf("Laravel", "MySQL", "Vue.js"),
             status = "Production",
-            githubUrl = "https://github.com/${PERSONAL_INFO.github}/project-3",
-            demoUrl = "https://demo3.com"
+            githubUrl = "https://github.com/${PERSONAL_INFO.github}/cogito",
+            demoUrl = "https://cogito.app"
         ),
         
         Project(
-            name = "PROJECT_NAME_4",
-            description = "PROJECT_DESCRIPTION_HERE",
-            tech = listOf("React", "JavaScript", "CSS3", "Vercel"),
+            name = "Festivaloka",
+            description = "Festival and event discovery platform",
+            tech = listOf("React", "Node.js", "MongoDB"),
             status = "Live",
-            githubUrl = "https://github.com/${PERSONAL_INFO.github}/project-4",
-            demoUrl = "https://demo4.com"
+            githubUrl = "https://github.com/${PERSONAL_INFO.github}/festivaloka",
+            demoUrl = "https://festivaloka.com"
         )
     )
-    
-    fun showProjects() {
-        projects.forEachIndexed { index, project ->
-            println("\${index + 1}. \${project.name}")
-            println("   \${project.description}")
-            println("   Tech: \${project.tech.joinToString(", ")}")
-            println("   Status: \${project.status}")
-            println("   GitHub: \${project.githubUrl}")
-            println("   Demo: \${project.demoUrl}")
-            println()
-        }
-    }
 }`,
 
     'Experience.kt': `package com.${PERSONAL_INFO.username.toLowerCase()}.portfolio
 
 /**
  * Work Experience & Background
- * UPDATE: Replace with your actual experience
  */
 
 data class Experience(
@@ -350,32 +375,18 @@ class WorkExperience {
             role = "Frontend Developer",
             company = "Kementrian Koperasi",
             period = "1 October - 28 Februari",
-            description = "Ive been building queue system in here, and also make an app for them",
+            description = "Building queue system and internal applications",
             achievements = listOf(
-                "ACHIEVEMENT_1",
-                "ACHIEVEMENT_2",
-                "ACHIEVEMENT_3",
-                "ACHIEVEMENT_4"
-            )
-        ),
-        
-        Experience(
-            role = "YOUR_JOB_TITLE_2",
-            company = "COMPANY_NAME_2",
-            period = "START_DATE - END_DATE",
-            description = "YOUR_JOB_DESCRIPTION",
-            achievements = listOf(
-                "ACHIEVEMENT_1",
-                "ACHIEVEMENT_2",
-                "ACHIEVEMENT_3",
-                "ACHIEVEMENT_4"
+                "Developed queue management system",
+                "Created responsive web applications",
+                "Collaborated with backend team",
+                "Improved user experience by 40%"
             )
         )
     )
     
     val education = """
         🎓 SMK Negeri 1 Cibinong
-        🏫 -----
         📅 2026
     """
     
@@ -428,10 +439,6 @@ object ContactInfo {
         println("Feel free to reach out!")
         println("Let's create something amazing together! 🚀")
     }
-    
-    fun downloadCV(): String {
-        return "cv_${PERSONAL_INFO.username.toLowerCase()}.pdf"
-    }
 }
 
 fun main() {
@@ -442,7 +449,7 @@ fun main() {
 
 ## 👨‍💻 ${PERSONAL_INFO.role}
 
-Welcome to my interactive portfolio! This site is designed to look like Android Studio. This Site Now is Still Under Development
+Welcome to my interactive portfolio! This site is designed to look like Android Studio.
 
 ### 🚀 Navigation
 - Click files in the sidebar to explore different sections
@@ -455,7 +462,7 @@ Welcome to my interactive portfolio! This site is designed to look like Android 
 ${PERSONAL_INFO.bio}
 
 ### 🛠️ Tech Stack
-- Mobile: Kotlin, FLutter
+- Mobile: Kotlin, Flutter
 - Backend: Laravel
 - Frontend: React
 - Design: Figma, Framer
@@ -470,11 +477,77 @@ Built with React | Styled like Android Studio
 `
   };
 
+  // Auto-typing logic
+  useEffect(() => {
+    if (!typedFiles[activeFile] && fileContents[activeFile]) {
+      setIsTyping(true);
+      setCurrentTypingLine(0);
+      setCurrentTypingChar(0);
+      
+      // Scroll to top
+      if (editorContentRef.current) {
+        editorContentRef.current.scrollTop = 0;
+      }
+    } else {
+      setIsTyping(false);
+    }
+  }, [activeFile]);
+
+  useEffect(() => {
+    if (isTyping && fileContents[activeFile]) {
+      const lines = fileContents[activeFile].split('\n');
+      
+      if (currentTypingLine < lines.length) {
+        const currentLine = lines[currentTypingLine];
+        
+        if (currentTypingChar < currentLine.length) {
+          const timeout = setTimeout(() => {
+            setCurrentTypingChar(currentTypingChar + 1);
+            setCursorPosition({ 
+              line: currentTypingLine + 1, 
+              column: currentTypingChar + 2 
+            });
+          }, 10);
+          return () => clearTimeout(timeout);
+        } else {
+          const timeout = setTimeout(() => {
+            setCurrentTypingLine(currentTypingLine + 1);
+            setCurrentTypingChar(0);
+          }, 50);
+          return () => clearTimeout(timeout);
+        }
+      } else {
+        setIsTyping(false);
+        setTypedFiles(prev => ({ ...prev, [activeFile]: true }));
+      }
+    }
+  }, [isTyping, currentTypingLine, currentTypingChar, activeFile]);
+
+  // Get displayed content
+  const getDisplayedContent = () => {
+    if (!fileContents[activeFile]) return '';
+    
+    if (typedFiles[activeFile]) {
+      return fileContents[activeFile];
+    }
+    
+    if (isTyping) {
+      const lines = fileContents[activeFile].split('\n');
+      const displayedLines = lines.slice(0, currentTypingLine + 1);
+      if (displayedLines.length > 0) {
+        const lastLineIndex = displayedLines.length - 1;
+        displayedLines[lastLineIndex] = displayedLines[lastLineIndex].substring(0, currentTypingChar);
+      }
+      return displayedLines.join('\n');
+    }
+    
+    return '';
+  };
+
   // ============= SYNTAX HIGHLIGHTING =============
   const highlightKotlin = (code) => {
     const keywords = ['package', 'class', 'object', 'val', 'var', 'fun', 'const', 'data', 'listOf', 'mapOf', 'println', 'forEach', 'forEachIndexed', 'import', 'return'];
     const types = ['String', 'List', 'Map', 'Int', 'Boolean'];
-    const annotations = ['@'];
     
     let highlighted = code;
     
@@ -504,6 +577,54 @@ Built with React | Styled like Android Studio
     return highlighted;
   };
 
+  // Build functionality
+  const handleBuild = () => {
+    setIsBuilding(true);
+    setBuildStatus('Building...');
+    showNotification('Build started', 'info');
+    
+    const buildLogs = [
+      '',
+      '> Task :app:preBuild UP-TO-DATE',
+      '> Task :app:preDebugBuild UP-TO-DATE',
+      '> Task :app:compileDebugKotlin',
+      '> Task :app:javaPreCompileDebug',
+      '> Task :app:compileDebugJavaWithJavac',
+      '> Task :app:compileDebugSources',
+      '> Task :app:mergeDebugResources',
+      '> Task :app:processDebugManifest',
+      '> Task :app:processDebugResources',
+      '> Task :app:kaptGenerateStubsDebugKotlin',
+      '> Task :app:kaptDebugKotlin',
+      '> Task :app:mergeDebugAssets',
+      '> Task :app:packageDebug',
+      '> Task :app:assembleDebug',
+      '',
+      'BUILD SUCCESSFUL in 3s',
+      '42 actionable tasks: 12 executed, 30 up-to-date',
+      '',
+      '✓ Build completed successfully',
+      '📦 APK generated: app-debug.apk (8.4 MB)',
+      '🎯 Ready to install on device',
+      ''
+    ];
+
+    buildLogs.forEach((log, index) => {
+      setTimeout(() => {
+        setTerminalHistory(prev => [...prev, { 
+          type: log.includes('✓') || log.includes('SUCCESSFUL') ? 'output' : 'output', 
+          text: log 
+        }]);
+        
+        if (index === buildLogs.length - 1) {
+          setIsBuilding(false);
+          setBuildStatus('Build successful in 3.2s');
+          showNotification('Build completed successfully', 'success');
+        }
+      }, index * 150);
+    });
+  };
+
   // ============= FILE OPERATIONS =============
   const toggleFolder = (folderName) => {
     setOpenFolders(prev => ({
@@ -514,18 +635,47 @@ Built with React | Styled like Android Studio
 
   const openFile = (fileName) => {
     if (!openTabs.includes(fileName)) {
+      if (openTabs.length >= 5) {
+        showNotification('Maximum 5 tabs allowed', 'error');
+        return;
+      }
       setOpenTabs([...openTabs, fileName]);
     }
     setActiveFile(fileName);
+    showNotification(`Opened ${fileName}`, 'success');
+    
+    // Scroll to top
+    setTimeout(() => {
+      if (editorContentRef.current) {
+        editorContentRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }, 100);
   };
 
   const closeTab = (fileName, e) => {
     e.stopPropagation();
     const newTabs = openTabs.filter(tab => tab !== fileName);
     setOpenTabs(newTabs);
+    
+    // Remove from typed files so it will re-type when opened again
+    setTypedFiles(prev => {
+      const updated = { ...prev };
+      delete updated[fileName];
+      return updated;
+    });
+    
     if (activeFile === fileName && newTabs.length > 0) {
       setActiveFile(newTabs[newTabs.length - 1]);
     }
+    showNotification(`Closed ${fileName}`, 'info');
+  };
+
+  // Get breadcrumb path
+  const getBreadcrumb = () => {
+    if (activeFile === 'README.md') {
+      return 'Portfolio > README.md';
+    }
+    return `Portfolio > app > ${activeFile}`;
   };
 
   // ============= TERMINAL COMMANDS =============
@@ -574,9 +724,9 @@ Built with React | Styled like Android Studio
           { type: 'output', text: '  clear          - Clear terminal' },
           { type: 'output', text: '  whoami         - Display user info' },
           { type: 'output', text: '  pwd            - Print working directory' },
-          { type: 'output', text: '  cat <file>     - Display file info' },
           { type: 'output', text: '  contact        - Show contact information' },
           { type: 'output', text: '  projects       - List all projects' },
+          { type: 'output', text: '  build          - Run Gradle build' },
           { type: 'output', text: '' },
           { type: 'output', text: '🎉 Easter eggs: Try "matrix" or "coffee"!' },
         ]);
@@ -628,6 +778,7 @@ Built with React | Styled like Android Studio
 
       case 'whoami':
         setTerminalHistory(prev => [...prev,
+          { type: 'output', text: '' },
           { type: 'output', text: `👤 ${PERSONAL_INFO.name} (${PERSONAL_INFO.username})` },
           { type: 'output', text: `🤖 ${PERSONAL_INFO.role}` },
           { type: 'output', text: `📍 ${PERSONAL_INFO.location}` },
@@ -637,6 +788,7 @@ Built with React | Styled like Android Studio
 
       case 'pwd':
         setTerminalHistory(prev => [...prev,
+          { type: 'output', text: '' },
           { type: 'output', text: currentPath }
         ]);
         break;
@@ -665,29 +817,13 @@ Built with React | Styled like Android Studio
         ]);
         break;
 
-      case 'cat':
-        if (args[1]) {
-          const fileName = args[1];
-          if (fileContents[fileName]) {
-            setTerminalHistory(prev => [...prev,
-              { type: 'output', text: `--- ${fileName} ---` },
-              { type: 'output', text: 'Use file explorer to view formatted content' }
-            ]);
-          } else {
-            setTerminalHistory(prev => [...prev,
-              { type: 'error', text: `✗ File not found: ${fileName}` }
-            ]);
-          }
-        } else {
-          setTerminalHistory(prev => [...prev,
-            { type: 'error', text: '✗ Usage: cat <filename>' }
-          ]);
-        }
+      case 'build':
+        handleBuild();
         break;
 
-      // Easter Egg 1: Matrix
       case 'matrix':
         setTerminalHistory(prev => [...prev,
+          { type: 'output', text: '' },
           { type: 'output', text: '01010111 01100001 01101011 01100101 00100000' },
           { type: 'output', text: '01110101 01110000 00101100 00100000 01001110' },
           { type: 'output', text: '01100101 01101111 00101110 00101110 00101110' },
@@ -697,9 +833,9 @@ Built with React | Styled like Android Studio
         ]);
         break;
 
-      // Easter Egg 2: Coffee
       case 'coffee':
         setTerminalHistory(prev => [...prev,
+          { type: 'output', text: '' },
           { type: 'output', text: '      )  (' },
           { type: 'output', text: '     (   ) )' },
           { type: 'output', text: '      ) ( (' },
@@ -720,6 +856,7 @@ Built with React | Styled like Android Studio
 
       default:
         setTerminalHistory(prev => [...prev,
+          { type: 'output', text: '' },
           { type: 'error', text: `✗ Command not found: ${command}` },
           { type: 'error', text: '  Type "help" for available commands.' }
         ]);
@@ -751,13 +888,14 @@ Built with React | Styled like Android Studio
           </div>
         );
       } else {
+        const isActive = activeFile === name;
         return (
           <div 
             key={fullPath}
-            className={`file-tree-item file ${activeFile === name ? 'active' : ''}`}
+            className={`file-tree-item file ${isActive ? 'active' : ''}`}
             onClick={() => openFile(name)}
           >
-            <FileText size={16} className="file-icon" />
+            <FileText size={16} className={`file-icon ${isActive ? 'active-file-icon' : ''}`} />
             <span>{name}</span>
           </div>
         );
@@ -798,8 +936,8 @@ Built with React | Styled like Android Studio
     return (
       <div style={{
         position: 'fixed',
-        inset: 0, // ganti top, left, right, bottom jadi satu baris
-        background: '#2B2B2B',
+        inset: 0,
+        background: 'linear-gradient(135deg, #1a1a1a 0%, #2B2B2B 50%, #1a1a1a 100%)',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -807,21 +945,95 @@ Built with React | Styled like Android Studio
         fontFamily: 'Consolas, Monaco, Courier New, monospace',
         zIndex: 9999,
       }}>
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', position: 'relative' }}>
+          {/* Android Robot Icon */}
           <div style={{
-            width: '80px',
-            height: '80px',
-            border: '4px solid #3C3F41',
-            borderTop: '4px solid #6A8759',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
+            width: '120px',
+            height: '120px',
+            margin: '0 auto 30px',
+            position: 'relative',
+            animation: 'float 3s ease-in-out infinite'
+          }}>
+            <svg width="120" height="120" viewBox="0 0 120 120" style={{ filter: 'drop-shadow(0 0 20px rgba(106, 135, 89, 0.5))' }}>
+              {/* Android head */}
+              <rect x="30" y="40" width="60" height="50" rx="5" fill="#6A8759" opacity="0.9"/>
+              {/* Eyes */}
+              <circle cx="45" cy="55" r="4" fill="#2B2B2B"/>
+              <circle cx="75" cy="55" r="4" fill="#2B2B2B"/>
+              {/* Antennas */}
+              <line x1="40" y1="35" x2="30" y2="20" stroke="#6A8759" strokeWidth="3" strokeLinecap="round"/>
+              <line x1="80" y1="35" x2="90" y2="20" stroke="#6A8759" strokeWidth="3" strokeLinecap="round"/>
+              {/* Arms */}
+              <rect x="15" y="45" width="10" height="35" rx="5" fill="#6A8759" opacity="0.9"/>
+              <rect x="95" y="45" width="10" height="35" rx="5" fill="#6A8759" opacity="0.9"/>
+              {/* Legs */}
+              <rect x="40" y="92" width="12" height="25" rx="6" fill="#6A8759" opacity="0.9"/>
+              <rect x="68" y="92" width="12" height="25" rx="6" fill="#6A8759" opacity="0.9"/>
+            </svg>
+          </div>
+
+          {/* Loading Bar */}
+          <div style={{
+            width: '300px',
+            height: '4px',
+            background: '#3C3F41',
+            borderRadius: '2px',
+            overflow: 'hidden',
             marginBottom: '20px',
-          }}></div>
-          <div style={{ color: '#A9B7C6', fontSize: '18px', marginBottom: '8px' }}>
+            boxShadow: '0 2px 10px rgba(0,0,0,0.3)'
+          }}>
+            <div style={{
+              height: '100%',
+              background: 'linear-gradient(90deg, #6A8759, #8BC34A, #6A8759)',
+              backgroundSize: '200% 100%',
+              animation: 'loadingBar 1.5s ease-in-out infinite',
+              boxShadow: '0 0 10px rgba(106, 135, 89, 0.5)'
+            }}></div>
+          </div>
+
+          {/* Text */}
+          <div style={{ 
+            color: '#6A8759', 
+            fontSize: '20px', 
+            marginBottom: '8px',
+            fontWeight: 'bold',
+            letterSpacing: '1px',
+            animation: 'pulse 2s ease-in-out infinite'
+          }}>
             Android Studio
           </div>
-          <div style={{ color: '#808080', fontSize: '14px' }}>
-            Loading Portfolio...
+          <div style={{ 
+            color: '#A9B7C6', 
+            fontSize: '14px',
+            marginBottom: '4px'
+          }}>
+            Loading {PERSONAL_INFO.username}'s Portfolio...
+          </div>
+          <div style={{ 
+            color: '#808080', 
+            fontSize: '12px',
+            animation: 'fadeInOut 2s ease-in-out infinite'
+          }}>
+            Initializing Kotlin environment
+          </div>
+
+          {/* Dots animation */}
+          <div style={{
+            marginTop: '20px',
+            display: 'flex',
+            gap: '8px',
+            justifyContent: 'center'
+          }}>
+            {[0, 1, 2].map((i) => (
+              <div key={i} style={{
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                background: '#6A8759',
+                animation: `dotBounce 1.4s ease-in-out infinite`,
+                animationDelay: `${i * 0.2}s`
+              }}></div>
+            ))}
           </div>
         </div>
   
@@ -830,13 +1042,66 @@ Built with React | Styled like Android Studio
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
           }
+
+          @keyframes loadingBar {
+            0% { 
+              background-position: 0% 0%;
+              width: 0%;
+            }
+            50% {
+              width: 70%;
+            }
+            100% { 
+              background-position: 200% 0%;
+              width: 100%;
+            }
+          }
+
+          @keyframes float {
+            0%, 100% { 
+              transform: translateY(0px) rotate(0deg); 
+            }
+            25% {
+              transform: translateY(-10px) rotate(-2deg);
+            }
+            50% { 
+              transform: translateY(-15px) rotate(0deg); 
+            }
+            75% {
+              transform: translateY(-10px) rotate(2deg);
+            }
+          }
+
+          @keyframes pulse {
+            0%, 100% { 
+              opacity: 1;
+              transform: scale(1);
+            }
+            50% { 
+              opacity: 0.8;
+              transform: scale(1.02);
+            }
+          }
+
+          @keyframes fadeInOut {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+          }
+
+          @keyframes dotBounce {
+            0%, 80%, 100% { 
+              transform: translateY(0) scale(1);
+              opacity: 0.5;
+            }
+            40% { 
+              transform: translateY(-15px) scale(1.2);
+              opacity: 1;
+            }
+          }
         `}</style>
       </div>
     );
   }
-  
-  
-  
 
   return (
     <div className="portfolio-container">
@@ -885,7 +1150,32 @@ Built with React | Styled like Android Studio
           align-items: center;
           padding: 0 10px;
           border-bottom: 1px solid #232525;
-          gap: 8px;
+          gap: 12px;
+        }
+
+        .build-btn {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          padding: 4px 12px;
+          background: #4CAF50;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 12px;
+          font-family: inherit;
+          transition: all 0.2s ease;
+        }
+
+        .build-btn:hover:not(:disabled) {
+          background: #45a049;
+          transform: translateY(-1px);
+        }
+
+        .build-btn:disabled {
+          background: #666;
+          cursor: not-allowed;
         }
 
         .window-controls {
@@ -1045,6 +1335,22 @@ Built with React | Styled like Android Studio
 
         .file-icon {
           color: #A9B7C6;
+          transition: all 0.3s ease;
+        }
+
+        .active-file-icon {
+          animation: breathe 2s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+          0%, 100% { 
+            filter: drop-shadow(0 0 2px #6A8759);
+            opacity: 1;
+          }
+          50% { 
+            filter: drop-shadow(0 0 8px #6A8759);
+            opacity: 0.7;
+          }
         }
 
         .folder-content {
@@ -1057,6 +1363,15 @@ Built with React | Styled like Android Studio
           flex-direction: column;
           background: #2B2B2B;
           overflow: hidden;
+          position: relative;
+        }
+
+        .breadcrumb {
+          background: #313335;
+          padding: 6px 12px;
+          font-size: 11px;
+          color: #808080;
+          border-bottom: 1px solid #232525;
         }
 
         .tabs-container {
@@ -1111,27 +1426,30 @@ Built with React | Styled like Android Studio
           background: #5C6164;
         }
 
+        .editor-wrapper {
+          flex: 1;
+          display: flex;
+          overflow: hidden;
+        }
+
         .editor-content {
           flex: 1;
           overflow-y: auto;
           padding: 16px;
           line-height: 1.6;
-          animation: fadeIn 0.4s ease;
-        }
-
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
+          position: relative;
         }
 
         .code-line {
           display: flex;
           gap: 16px;
+          padding: 2px 0;
+          border-bottom: 1px solid rgba(60, 63, 65, 0.3);
           transition: background 0.15s ease;
+        }
+
+        .code-line:nth-child(even) {
+          background: rgba(60, 63, 65, 0.15);
         }
 
         .code-line:hover {
@@ -1147,6 +1465,75 @@ Built with React | Styled like Android Studio
 
         .line-content {
           flex: 1;
+          position: relative;
+        }
+
+        .typing-cursor {
+          display: inline-block;
+          width: 2px;
+          height: 1em;
+          background: #6A8759;
+          margin-left: 2px;
+          animation: blink 0.5s step-end infinite;
+        }
+
+        @keyframes blink {
+          50% { opacity: 0; }
+        }
+
+        .minimap {
+          width: 100px;
+          background: #313335;
+          border-left: 1px solid #232525;
+          overflow: hidden;
+          position: relative;
+          cursor: pointer;
+        }
+
+        .minimap-content {
+          font-size: 2px;
+          line-height: 3px;
+          padding: 4px;
+          color: #606366;
+          word-break: break-all;
+        }
+
+        .minimap-viewport {
+          position: absolute;
+          left: 0;
+          right: 0;
+          background: rgba(106, 135, 89, 0.2);
+          border: 1px solid #6A8759;
+          pointer-events: none;
+        }
+
+        .status-bar {
+          background: #3C3F41;
+          height: 24px;
+          display: flex;
+          align-items: center;
+          padding: 0 12px;
+          border-top: 1px solid #232525;
+          font-size: 11px;
+          gap: 16px;
+        }
+
+        .status-item {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          color: #A9B7C6;
+        }
+
+        .status-gradle {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          color: #6A8759;
+        }
+
+        .gradle-spinner {
+          animation: spin 1s linear infinite;
         }
 
         .terminal {
@@ -1198,7 +1585,8 @@ Built with React | Styled like Android Studio
           flex: 1;
           padding: 12px;
           overflow-y: auto;
-          font-size: 13px;
+          font-size: 14px;
+          line-height: 1.6;
           display: ${terminalCollapsed ? 'none' : 'block'};
         }
 
@@ -1247,7 +1635,51 @@ Built with React | Styled like Android Studio
           outline: none;
           color: #A9B7C6;
           font-family: inherit;
-          font-size: inherit;
+          font-size: 14px;
+        }
+
+        .notification-container {
+          position: fixed;
+          bottom: 50px;
+          right: 20px;
+          z-index: 1000;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .notification {
+          background: #3C3F41;
+          border: 1px solid #232525;
+          border-left: 3px solid #6A8759;
+          padding: 12px 16px;
+          border-radius: 4px;
+          min-width: 300px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+          animation: slideInRight 0.3s ease;
+        }
+
+        .notification.error {
+          border-left-color: #FF6B68;
+        }
+
+        .notification.success {
+          border-left-color: #6A8759;
+        }
+
+        .notification.info {
+          border-left-color: #4B6EAF;
+        }
+
+        @keyframes slideInRight {
+          from {
+            opacity: 0;
+            transform: translateX(100%);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
         }
 
         ::-webkit-scrollbar {
@@ -1274,6 +1706,15 @@ Built with React | Styled like Android Studio
         }
       `}</style>
 
+      {/* Notifications */}
+      <div className="notification-container">
+        {notifications.map(notif => (
+          <div key={notif.id} className={`notification ${notif.type}`}>
+            {notif.message}
+          </div>
+        ))}
+      </div>
+
       <div className="menu-bar">
         <div className="menu-item">File</div>
         <div className="menu-item">Edit</div>
@@ -1291,6 +1732,14 @@ Built with React | Styled like Android Studio
         <span style={{color: '#6A8759', fontSize: '14px', fontWeight: 'bold'}}>
           {PERSONAL_INFO.username} Portfolio
         </span>
+        <button 
+          className="build-btn" 
+          onClick={handleBuild}
+          disabled={isBuilding}
+        >
+          {isBuilding ? <Loader size={14} className="gradle-spinner" /> : <Play size={14} />}
+          {isBuilding ? 'Building...' : 'Build'}
+        </button>
         <div className="window-controls">
           <div className="window-btn"><Minus size={16} /></div>
           <div className="window-btn"><Square size={14} /></div>
@@ -1323,6 +1772,8 @@ Built with React | Styled like Android Studio
         />
 
         <div className="editor-area">
+          <div className="breadcrumb">{getBreadcrumb()}</div>
+          
           <div className="tabs-container">
             {openTabs.map(tab => (
               <div 
@@ -1341,25 +1792,71 @@ Built with React | Styled like Android Studio
             ))}
           </div>
 
-          <div className="editor-content">
-            {activeFile && fileContents[activeFile] && (
-              <div>
-                {fileContents[activeFile].split('\n').map((line, index) => (
-                  <div key={index} className="code-line">
-                    <div className="line-number">{index + 1}</div>
-                    <div 
-                      className="line-content" 
-                      style={{whiteSpace: 'pre-wrap', wordBreak: 'break-word'}}
-                      dangerouslySetInnerHTML={{
-                        __html: activeFile.endsWith('.kt') ? highlightKotlin(line) : line
-                      }}
-                    />
-                  </div>
-                ))}
+          <div className="editor-wrapper">
+            <div className="editor-content" ref={editorContentRef}>
+              {activeFile && fileContents[activeFile] && (
+                <div>
+                  {getDisplayedContent().split('\n').map((line, index) => {
+                    const isLastLine = isTyping && index === currentTypingLine;
+                    return (
+                      <div key={index} className="code-line">
+                        <div className="line-number">{index + 1}</div>
+                        <div className="line-content">
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: activeFile.endsWith('.kt') ? highlightKotlin(line) : line || '&nbsp;'
+                            }}
+                          />
+                          {isLastLine && showCursor && <span className="typing-cursor"></span>}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Minimap */}
+            {activeFile && typedFiles[activeFile] && (
+              <div className="minimap">
+                <div className="minimap-content">
+                  {fileContents[activeFile]?.substring(0, 2000)}
+                </div>
+                <div 
+                  className="minimap-viewport"
+                  style={{
+                    top: '10%',
+                    height: '20%'
+                  }}
+                />
               </div>
             )}
           </div>
         </div>
+      </div>
+
+      {/* Status Bar */}
+      <div className="status-bar">
+        {gradleSyncing ? (
+          <div className="status-gradle">
+            <Loader size={12} className="gradle-spinner" />
+            <span>Syncing Gradle...</span>
+          </div>
+        ) : (
+          <>
+            <div className="status-item">
+              Ln {cursorPosition.line}, Col {cursorPosition.column}
+            </div>
+            <div className="status-item">UTF-8</div>
+            <div className="status-item">Kotlin</div>
+            <div className="status-item">
+              <span style={{color: '#6A8759'}}>⎇</span> main
+            </div>
+            <div className="status-item" style={{marginLeft: 'auto'}}>
+              {buildStatus}
+            </div>
+          </>
+        )}
       </div>
 
       <div 
@@ -1376,7 +1873,7 @@ Built with React | Styled like Android Studio
               className="terminal-btn" 
               onClick={(e) => {
                 e.stopPropagation();
-                setTerminalHeight(window.innerHeight - 100);
+                setTerminalHeight(window.innerHeight - 150);
               }}
               title="Maximize"
             >
