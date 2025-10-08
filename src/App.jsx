@@ -40,6 +40,7 @@ const PortfolioContent = () => {
     setGradleSyncing,
     setTypedFiles,
     editorContentRef,
+    setTerminalHistory, // Added this for build functionality
   } = usePortfolio();
 
   // Check if mobile
@@ -185,7 +186,6 @@ const PortfolioContent = () => {
       "",
     ];
 
-    const { setTerminalHistory } = usePortfolio();
     buildLogs.forEach((log, index) => {
       setTimeout(() => {
         setTerminalHistory((prev) => [
