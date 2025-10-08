@@ -32,6 +32,7 @@ const Terminal = ({ onFileOpen, onBuild }) => {
     setAutoTypingIndex,
     loading,
   } = usePortfolio();
+  
 
   // Auto-typing welcome message
   useEffect(() => {

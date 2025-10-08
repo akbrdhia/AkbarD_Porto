@@ -8,6 +8,7 @@ const Toolbar = ({ onBuild }) => {
 
   return (
     <div className="toolbar">
+        <img src="/logo.png" alt="logo" width={52} height={52}/>
       <span
         style={{
           display: "flex",

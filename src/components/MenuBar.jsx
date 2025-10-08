@@ -1,6 +1,7 @@
 import React from "react";
 
 const MenuBar = () => {
+    
   const menuItems = [
     "File",
     "Edit",

@@ -2,6 +2,19 @@ import React from "react";
 import { PERSONAL_INFO } from "../constants/portfolioData";
 
 const LoadingScreen = () => {
+console.log("------------------------------------------------------------");
+console.log("------------------------------------------------------------");
+console.log("------------------------------------------------------------");
+console.log("------------------------------------------------------------");
+console.log("============================================================");
+console.log(">>> Android Studio Terminal [Version 1.9.0]");
+console.log(">>> © 2025 AkbarD Interactive Environment");
+console.log("============================================================");
+console.log(">>> Hey there 👋 Another Developer spotted!");
+console.log(">>> I see you exploring the console 😎 Check out my GitHub → github.com/akbrdhia");
+console.log("============================================================");
+
+
   return (
     <div
       style={{

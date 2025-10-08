@@ -320,7 +320,7 @@ export const PERSONAL_INFO = {
   
   export const WELCOME_MESSAGES = [
     "------------------------------------------------------------",
-    "Android Studio Terminal [Version 1.0.0]",
+    "Android Studio Terminal [Version 1.9.0]",
     "© 2025 AkbarD Interactive Environment",
     "------------------------------------------------------------",
     "\n",
@@ -334,7 +334,7 @@ export const PERSONAL_INFO = {
     "✓ Environment ready.",
     "✓ Connected to virtual device: Pixel_8_Pro_API_35",
     "",
-    "Welcome, Users.",
+    "ready: Akbar Dhia (Developer)",
     'Type "help" to view available commands.',
     '💡 Tip: Try "matrix", "coffee".',
     "",
