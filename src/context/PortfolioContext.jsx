@@ -17,8 +17,8 @@ export const PortfolioProvider = ({ children }) => {
 
   // Folders & Files
   const [openFolders, setOpenFolders] = useState({ Portfolio: true, app: true });
-  const [activeFile, setActiveFile] = useState("About.kt");
-  const [openTabs, setOpenTabs] = useState(["About.kt"]);
+  const [activeFile, setActiveFile] = useState("README.md");
+  const [openTabs, setOpenTabs] = useState(["README.md"]);
   const [typedFiles, setTypedFiles] = useState({});
 
   // Terminal
