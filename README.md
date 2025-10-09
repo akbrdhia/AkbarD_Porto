@@ -2,11 +2,10 @@
 
 [![React](https://img.shields.io/badge/React-19.x-61DAFB?style=flat&logo=react&logoColor=white)](https://reactjs.org/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 > An interactive developer portfolio website designed to replicate the Android Studio IDE experience. Built with React and styled with the iconic Darcula theme.
 
-![Portfolio Preview](https://via.placeholder.com/800x400/2B2B2B/6A8759?text=Add+Your+Screenshot+Here)
+![Portfolio Preview](https://github.com/user-attachments/assets/4bc5cf73-cba7-494d-ab78-9a73f76b8989)
 
 ## ✨ Features
 
