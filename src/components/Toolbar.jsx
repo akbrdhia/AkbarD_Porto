@@ -1,49 +1,89 @@
 import React from "react";
-import { Minus, Square, X, Play, Loader } from "lucide-react";
+import { Minus, Square, X, Play, Loader, Bug, Hammer, Settings, Search, RotateCcw } from "lucide-react";
 import { usePortfolio } from "../context/PortfolioContext";
 import { PERSONAL_INFO } from "../constants/portfolioData";
 
 const Toolbar = ({ onBuild }) => {
-  const { isBuilding } = usePortfolio();
+  const { isBuilding, gradleSyncing } = usePortfolio();
 
   return (
     <div className="toolbar">
-        <img src="/logo.png" alt="logo" width={52} height={52}/>
-      <span
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "6px",
-          color: "#6A8759",
-          fontSize: "16px",
-          fontWeight: "bold",
-        }}
-      >
-        {PERSONAL_INFO.username} Portfolio
-      </span>
-
-      <button
-        className="build-btn"
-        onClick={onBuild}
-        disabled={isBuilding}
-      >
-        {isBuilding ? (
-          <Loader size={14} className="gradle-spinner" />
-        ) : (
-          <Play size={14} />
-        )}
-        {isBuilding ? "Building..." : "Build"}
-      </button>
-
-      <div className="window-controls">
-        <div className="window-btn">
-          <Minus size={16} />
+      {/* Left section - Logo & Title */}
+      <div className="toolbar-left">
+        <div className="toolbar-logo">
+          <img src="/logo.png" alt="logo" width={24} height={24} />
         </div>
-        <div className="window-btn">
-          <Square size={14} />
-        </div>
-        <div className="window-btn">
-          <X size={16} />
+        <span className="toolbar-title">
+          {PERSONAL_INFO.username} Portfolio
+        </span>
+        <span className="toolbar-separator">|</span>
+        <span className="toolbar-project">app</span>
+      </div>
+
+      {/* Center section - Action buttons */}
+      <div className="toolbar-center">
+        <button
+          className="toolbar-action-btn"
+          onClick={onBuild}
+          disabled={isBuilding}
+          title="Build Project (Ctrl+F9)"
+        >
+          <Hammer size={16} />
+        </button>
+        
+        <button
+          className={`toolbar-run-btn ${isBuilding ? 'building' : ''}`}
+          onClick={onBuild}
+          disabled={isBuilding}
+          title="Run 'app' (Shift+F10)"
+        >
+          {isBuilding ? (
+            <Loader size={16} className="gradle-spinner" />
+          ) : (
+            <Play size={16} fill="currentColor" />
+          )}
+        </button>
+
+        <button
+          className="toolbar-action-btn"
+          title="Debug 'app' (Shift+F9)"
+          disabled={isBuilding}
+        >
+          <Bug size={16} />
+        </button>
+
+        <div className="toolbar-divider" />
+
+        <button
+          className="toolbar-action-btn"
+          title="Sync Project with Gradle Files"
+          disabled={gradleSyncing}
+        >
+          <RotateCcw size={16} className={gradleSyncing ? 'gradle-spinner' : ''} />
+        </button>
+      </div>
+
+      {/* Right section - Search & Window controls */}
+      <div className="toolbar-right">
+        <button className="toolbar-action-btn" title="Search Everywhere (Double Shift)">
+          <Search size={16} />
+        </button>
+        <button className="toolbar-action-btn" title="Settings">
+          <Settings size={16} />
+        </button>
+
+        <div className="toolbar-divider" />
+
+        <div className="window-controls">
+          <div className="window-btn" title="Minimize">
+            <Minus size={14} />
+          </div>
+          <div className="window-btn" title="Maximize">
+            <Square size={12} />
+          </div>
+          <div className="window-btn close" title="Close">
+            <X size={14} />
+          </div>
         </div>
       </div>
     </div>

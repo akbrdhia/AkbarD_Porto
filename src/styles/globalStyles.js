@@ -47,58 +47,160 @@ export const getGlobalStyles = (
   
     .toolbar {
       background: #3C3F41;
-      height: 36px;
+      height: 40px;
       display: flex;
       align-items: center;
-      padding: 0 10px;
+      justify-content: space-between;
+      padding: 0 8px;
       border-bottom: 1px solid #232525;
-      gap: 12px;
+      gap: 8px;
     }
-  
-    .build-btn {
+
+    .toolbar-left {
       display: flex;
       align-items: center;
-      gap: 6px;
-      padding: 4px 12px;
-      background: #4CAF50;
-      color: white;
+      gap: 8px;
+      min-width: 200px;
+    }
+
+    .toolbar-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background: #2B2B2B;
+      border-radius: 4px;
+      padding: 2px;
+    }
+
+    .toolbar-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .toolbar-title {
+      color: #A9B7C6;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .toolbar-separator {
+      color: #606366;
+      font-size: 14px;
+    }
+
+    .toolbar-project {
+      color: #6A8759;
+      font-size: 12px;
+      background: #2B2B2B;
+      padding: 2px 8px;
+      border-radius: 3px;
+      border: 1px solid #3C3F41;
+    }
+
+    .toolbar-center {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .toolbar-action-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background: transparent;
+      color: #A9B7C6;
       border: none;
       border-radius: 4px;
       cursor: pointer;
-      font-size: 12px;
-      font-family: inherit;
-      transition: all 0.2s ease;
+      transition: all 0.15s ease;
     }
-  
-    .build-btn:hover:not(:disabled) {
-      background: #45a049;
-      transform: translateY(-1px);
+
+    .toolbar-action-btn:hover:not(:disabled) {
+      background: #4B4F52;
+      color: #FFFFFF;
     }
-  
-    .build-btn:disabled {
-      background: #666;
+
+    .toolbar-action-btn:disabled {
+      color: #606366;
       cursor: not-allowed;
     }
-  
+
+    .toolbar-run-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 28px;
+      background: #365836;
+      color: #6A8759;
+      border: 1px solid #4A6B4A;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .toolbar-run-btn:hover:not(:disabled) {
+      background: #4A7A4A;
+      color: #8BC34A;
+      border-color: #6A8759;
+    }
+
+    .toolbar-run-btn:disabled {
+      background: #3C3F41;
+      color: #606366;
+      border-color: #4B4F52;
+      cursor: not-allowed;
+    }
+
+    .toolbar-run-btn.building {
+      background: #4A5A3A;
+    }
+
+    .toolbar-divider {
+      width: 1px;
+      height: 20px;
+      background: #4B4F52;
+      margin: 0 4px;
+    }
+
+    .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      min-width: 200px;
+      justify-content: flex-end;
+    }
+
     .window-controls {
       display: flex;
-      gap: 8px;
-      margin-left: auto;
+      gap: 2px;
+      margin-left: 8px;
     }
-  
+
     .window-btn {
-      width: 24px;
-      height: 24px;
+      width: 28px;
+      height: 28px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       border-radius: 4px;
-      transition: background 0.2s ease;
+      color: #A9B7C6;
+      transition: all 0.15s ease;
     }
-  
+
     .window-btn:hover {
       background: #4B4F52;
+    }
+
+    .window-btn.close:hover {
+      background: #C75450;
+      color: #FFFFFF;
     }
   
     .main-content {
