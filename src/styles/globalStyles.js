@@ -346,6 +346,17 @@ export const getGlobalStyles = (
         transform: translateX(0);
       }
     }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   
     .file-tree-item:hover {
       background: #4B4F52;

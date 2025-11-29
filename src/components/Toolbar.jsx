@@ -1,15 +1,16 @@
 import React from "react";
-import { Minus, Square, X, Play, Loader, Bug, Hammer, Settings, Search, RotateCcw, Monitor, Code2 } from "lucide-react";
+import { Minus, Square, X, Play, Loader, Bug, Hammer, Settings, Search, RotateCcw, Monitor } from "lucide-react";
 import { usePortfolio } from "../context/PortfolioContext";
 import { PERSONAL_INFO } from "../constants/portfolioData";
 
 const Toolbar = ({ onBuild }) => {
-  const { isBuilding, gradleSyncing, viewMode, setViewMode } = usePortfolio();
+  const { isBuilding, gradleSyncing } = usePortfolio();
 
   const handleModeSwitch = () => {
-    const newMode = viewMode === "ide" ? "web" : "ide";
-    localStorage.setItem("portfolio_mode", newMode);
-    setViewMode(newMode);
+    // Clear session and reload to show mode selector
+    sessionStorage.removeItem("portfolio_visited");
+    localStorage.removeItem("portfolio_mode");
+    window.location.reload();
   };
 
   return (
@@ -74,19 +75,10 @@ const Toolbar = ({ onBuild }) => {
         <button
           className="toolbar-mode-switch"
           onClick={handleModeSwitch}
-          title={`Switch to ${viewMode === "ide" ? "Web" : "IDE"} Mode`}
+          title="Switch Mode"
         >
-          {viewMode === "ide" ? (
-            <>
-              <Monitor size={14} />
-              <span>Web Mode</span>
-            </>
-          ) : (
-            <>
-              <Code2 size={14} />
-              <span>IDE Mode</span>
-            </>
-          )}
+          <Monitor size={14} />
+          <span>Switch Mode</span>
         </button>
       </div>
 

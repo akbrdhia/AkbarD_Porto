@@ -1,10 +1,8 @@
 import React from "react";
-import { Terminal } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import { PERSONAL_INFO } from "../../constants/portfolioData";
-import { usePortfolio } from "../../context/PortfolioContext";
 
 const WebNavbar = ({ currentTime }) => {
-  const { setViewMode } = usePortfolio();
 
   return (
     <div style={{
@@ -33,16 +31,18 @@ const WebNavbar = ({ currentTime }) => {
         }}>
           AD_
         </div>
-        <div style={{ color: "#333", display: "flex", gap: "20px" }}>
-          <span>{PERSONAL_INFO.location?.split(",")[0] || "BOGOR"}</span>
+        <div style={{ color: "#ddd", display: "flex", gap: "20px" }}>
+          <span style={{ color: "#eee" }}>{PERSONAL_INFO.location?.split(",")[0] || "BOGOR"}</span>
           <span style={{ color: "#7CB663" }}>●</span>
-          <span>{currentTime.toLocaleTimeString('en-US', { hour12: false })}</span>
+          <span style={{ color: "#eee" }}>{currentTime.toLocaleTimeString('en-US', { hour12: false })}</span>
         </div>
       </div>
       <button
         onClick={() => {
-          localStorage.setItem("portfolio_mode", "ide");
-          setViewMode("ide");
+          // Clear session and reload to show mode selector
+          sessionStorage.removeItem("portfolio_visited");
+          localStorage.removeItem("portfolio_mode");
+          window.location.reload();
         }}
         style={{
           padding: "8px 20px",
@@ -68,8 +68,8 @@ const WebNavbar = ({ currentTime }) => {
           e.currentTarget.style.background = "#7CB663";
         }}
       >
-        <Terminal size={12} />
-        IDE MODE
+        <RefreshCw size={12} />
+        SWITCH MODE
       </button>
     </div>
   );

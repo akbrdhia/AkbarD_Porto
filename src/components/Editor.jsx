@@ -112,13 +112,13 @@ const Editor = () => {
               line: currentTypingLine + 1,
               column: currentTypingChar + 2,
             });
-          }, 5);
+          }, 2); // Faster typing speed
           return () => clearTimeout(timeout);
         } else {
           const timeout = setTimeout(() => {
             setCurrentTypingLine(currentTypingLine + 1);
             setCurrentTypingChar(0);
-          }, 20);
+          }, 8); // Faster line transition
           return () => clearTimeout(timeout);
         }
       } else {
@@ -200,15 +200,15 @@ const Editor = () => {
         <div className="editor-content" ref={editorContentRef}>
           {activeFile && FILE_CONTENTS[activeFile] && (
             <>
-              {/* Render Markdown for .md files */}
-              {activeFile.endsWith(".md") ? (
-                <div className="markdown-content">
+              {/* If markdown file is fully typed, render it */}
+              {activeFile.endsWith(".md") && typedFiles[activeFile] ? (
+                <div className="markdown-content" style={{ animation: "fadeIn 0.5s ease-out" }}>
                   <ReactMarkdown components={markdownComponents}>
                     {FILE_CONTENTS[activeFile]}
                   </ReactMarkdown>
                 </div>
               ) : (
-                /* Render code for other files */
+                /* Show typing animation for all files (including .md before complete) */
                 <div>
                   {getDisplayedContent()
                     .split("\n")

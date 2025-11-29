@@ -59,24 +59,6 @@ const PortfolioContent = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, [setIsMobile]);
 
-  // Beforeunload warning - show confirmation when leaving
-  useEffect(() => {
-    const handleBeforeUnload = (e) => {
-      const confirmationMessage = "Are you sure you want to leave?";
-      e.returnValue = confirmationMessage;
-      return confirmationMessage;
-    };
-
-    // Only add warning after loading is done
-    if (!loading && viewMode) {
-      window.addEventListener("beforeunload", handleBeforeUnload);
-    }
-
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, [loading, viewMode]);
-
   // Gradle sync
   useEffect(() => {
     if (!loading && viewMode === "ide") {

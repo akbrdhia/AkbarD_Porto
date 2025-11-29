@@ -199,7 +199,7 @@ const HeroSection = ({ scrollY, glitchActive }) => {
           }}
         >
           <Github size={18} strokeWidth={2} />
-          VIEW CODE
+          VIEW GITHUB
         </a>
       </div>
 
