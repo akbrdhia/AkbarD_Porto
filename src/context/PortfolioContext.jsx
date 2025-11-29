@@ -11,21 +11,41 @@ export const usePortfolio = () => {
 };
 
 export const PortfolioProvider = ({ children }) => {
-  // Session & Mode Management
-  const [hasVisited, setHasVisited] = useState(() => {
-    return sessionStorage.getItem("portfolio_visited") === "true";
-  });
-  const [viewMode, setViewMode] = useState(() => {
-    return localStorage.getItem("portfolio_mode") || null; // null = needs to choose
-  });
-  const [showModeSelector, setShowModeSelector] = useState(false);
-
-  // Loading & Mobile
-  const [loading, setLoading] = useState(() => {
-    // Skip loading if already visited in this session
-    return sessionStorage.getItem("portfolio_visited") !== "true";
-  });
+  // === SESSION & MODE MANAGEMENT ===
+  const [loading, setLoading] = useState(true);
+  const [viewMode, setViewMode] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [initialized, setInitialized] = useState(false);
+
+  // Debug: log when viewMode changes
+  useEffect(() => {
+    console.log(">>> viewMode changed to:", viewMode);
+  }, [viewMode]);
+
+  // Debug: log when loading changes
+  useEffect(() => {
+    console.log(">>> loading changed to:", loading);
+  }, [loading]);
+
+  // On mount, check storage and decide what to show
+  useEffect(() => {
+    const visited = sessionStorage.getItem("portfolio_visited") === "true";
+    const savedMode = localStorage.getItem("portfolio_mode");
+    
+    console.log("=== Portfolio Init ===");
+    console.log("visited:", visited, "savedMode:", savedMode);
+    
+    if (visited && savedMode) {
+      // Returning visitor - skip loading
+      console.log("→ Returning visitor, going to:", savedMode);
+      setViewMode(savedMode);
+      setLoading(false);
+    } else {
+      // First visit - show loading
+      console.log("→ First visit, showing loading");
+    }
+    setInitialized(true);
+  }, []);
 
   // Folders & Files
   const [openFolders, setOpenFolders] = useState({ Portfolio: true, app: true });
@@ -69,12 +89,9 @@ export const PortfolioProvider = ({ children }) => {
 
   const value = {
     // Session & Mode
-    hasVisited,
-    setHasVisited,
     viewMode,
     setViewMode,
-    showModeSelector,
-    setShowModeSelector,
+    initialized,
     // State
     loading,
     setLoading,

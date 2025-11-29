@@ -17,7 +17,7 @@ import WebPortfolio from "../components/WebPortfolio";
 const PortfolioContent = () => {
   const {
     loading,
-    setLoading,
+    initialized,
     isMobile,
     setIsMobile,
     viewMode,
@@ -46,6 +46,9 @@ const PortfolioContent = () => {
     editorContentRef,
   } = usePortfolio();
 
+  // Debug: track every render
+  console.log(">>> PortfolioContent RENDER - loading:", loading, "viewMode:", viewMode, "initialized:", initialized);
+
   // Check if mobile
   useEffect(() => {
     const checkMobile = () => {
@@ -54,36 +57,25 @@ const PortfolioContent = () => {
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  }, [setIsMobile]);
 
-  // Beforeunload warning - prevent accidental leave
+  // Beforeunload warning - show confirmation when leaving
   useEffect(() => {
     const handleBeforeUnload = (e) => {
-      // Clear session when leaving
-      const confirmationMessage = "Are you sure you want to leave? Your session will be reset.";
+      const confirmationMessage = "Are you sure you want to leave?";
       e.returnValue = confirmationMessage;
       return confirmationMessage;
     };
 
     // Only add warning after loading is done
-    if (!loading) {
+    if (!loading && viewMode) {
       window.addEventListener("beforeunload", handleBeforeUnload);
     }
 
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [loading]);
-
-  // Handle actual page unload - clear session
-  useEffect(() => {
-    const handleUnload = () => {
-      sessionStorage.removeItem("portfolio_visited");
-    };
-
-    window.addEventListener("unload", handleUnload);
-    return () => window.removeEventListener("unload", handleUnload);
-  }, []);
+  }, [loading, viewMode]);
 
   // Gradle sync
   useEffect(() => {
@@ -251,15 +243,36 @@ const PortfolioContent = () => {
     return <MobileBlocker />;
   }
 
+  // Wait for initialization
+  if (!initialized) {
+    // Show a simple blank screen while checking storage
+    return (
+      <div style={{ 
+        position: 'fixed', 
+        inset: 0, 
+        background: '#0a0a0a' 
+      }} />
+    );
+  }
+
+  // Debug mode routing
+  console.log("=== Portofolio Routing ===");
+  console.log("loading:", loading, "viewMode:", viewMode);
+
   // Loading screen (also handles mode selection)
-  if (loading) {
+  // Show if loading OR if no mode selected yet
+  if (loading || !viewMode) {
+    console.log("→ Showing LoadingScreen");
     return <LoadingScreen />;
   }
 
   // Web Portfolio Mode
   if (viewMode === "web") {
+    console.log("→ Showing WebPortfolio");
     return <WebPortfolio />;
   }
+  
+  console.log("→ Showing IDE Mode");
 
   // IDE Mode (default)
   return (

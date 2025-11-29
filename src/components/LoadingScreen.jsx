@@ -4,10 +4,10 @@ import { usePortfolio } from "../context/PortfolioContext";
 import { Monitor, Code2, ArrowRight } from "lucide-react";
 
 const LoadingScreen = () => {
-  const { setLoading, setViewMode, setHasVisited, viewMode } = usePortfolio();
+  const { setLoading, setViewMode } = usePortfolio();
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [loadingComplete, setLoadingComplete] = useState(false);
-  const [selectedMode, setSelectedMode] = useState(viewMode || null);
+  const [selectedMode, setSelectedMode] = useState(null);
   const [hoveredMode, setHoveredMode] = useState(null);
 
   console.log("------------------------------------------------------------");
@@ -37,12 +37,18 @@ const LoadingScreen = () => {
   const handleEnter = () => {
     if (!selectedMode) return;
     
+    console.log("=== Entering Portfolio ===");
+    console.log("Selected mode:", selectedMode);
+    
     // Save to storage
     sessionStorage.setItem("portfolio_visited", "true");
     localStorage.setItem("portfolio_mode", selectedMode);
+    
+    // Update state
     setViewMode(selectedMode);
-    setHasVisited(true);
     setLoading(false);
+    
+    console.log("→ Mode set, loading disabled");
   };
 
   return (
