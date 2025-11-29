@@ -309,12 +309,12 @@ export const PERSONAL_INFO = {
   - Design: Figma, Framer
   
   ### 📫 Get In Touch
-  - Email: ${PERSONAL_INFO.email}
-  - GitHub: @${PERSONAL_INFO.github}
-  - LinkedIn: ${PERSONAL_INFO.linkedin}
+  - 📧 Email: [${PERSONAL_INFO.email}](mailto:${PERSONAL_INFO.email})
+  - 💻 GitHub: [@akbrdhia](https://github.com/akbrdhia)
+  - 💼 LinkedIn: [${PERSONAL_INFO.linkedin}](https://linkedin.com/in/${PERSONAL_INFO.linkedin})
   
   ---
-  Built with React | Styled like Android Studio
+  Built with ❤️ using React | Styled like Android Studio
   `,
   };
   

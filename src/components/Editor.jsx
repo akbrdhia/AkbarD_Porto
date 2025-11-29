@@ -1,8 +1,68 @@
 import React, { useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 import { FileText, X } from "lucide-react";
 import { usePortfolio } from "../context/PortfolioContext";
 import { FILE_CONTENTS } from "../constants/portfolioData";
 import { highlightKotlin } from "../utils/highlightSyntax";
+
+// Markdown components with custom styling
+const markdownComponents = {
+  h1: ({ children }) => (
+    <h1 style={{ color: "#CC7832", fontSize: "28px", marginBottom: "16px", borderBottom: "1px solid #3C3F41", paddingBottom: "8px" }}>
+      {children}
+    </h1>
+  ),
+  h2: ({ children }) => (
+    <h2 style={{ color: "#6A8759", fontSize: "22px", marginTop: "24px", marginBottom: "12px" }}>
+      {children}
+    </h2>
+  ),
+  h3: ({ children }) => (
+    <h3 style={{ color: "#FFC66D", fontSize: "18px", marginTop: "20px", marginBottom: "10px" }}>
+      {children}
+    </h3>
+  ),
+  p: ({ children }) => (
+    <p style={{ color: "#A9B7C6", lineHeight: "1.8", marginBottom: "12px" }}>
+      {children}
+    </p>
+  ),
+  li: ({ children }) => (
+    <li style={{ color: "#A9B7C6", marginBottom: "6px", marginLeft: "20px" }}>
+      {children}
+    </li>
+  ),
+  ul: ({ children }) => (
+    <ul style={{ marginBottom: "16px", listStyleType: "disc" }}>
+      {children}
+    </ul>
+  ),
+  hr: () => (
+    <hr style={{ border: "none", borderTop: "1px solid #3C3F41", margin: "24px 0" }} />
+  ),
+  code: ({ children }) => (
+    <code style={{ background: "#1E1E1E", padding: "2px 6px", borderRadius: "4px", color: "#6A8759", fontSize: "14px" }}>
+      {children}
+    </code>
+  ),
+  a: ({ href, children }) => (
+    <a 
+      href={href} 
+      target="_blank" 
+      rel="noopener noreferrer"
+      style={{ 
+        color: "#6A8759", 
+        textDecoration: "underline", 
+        transition: "color 0.2s ease",
+        cursor: "pointer"
+      }}
+      onMouseEnter={(e) => e.target.style.color = "#8BC34A"}
+      onMouseLeave={(e) => e.target.style.color = "#6A8759"}
+    >
+      {children}
+    </a>
+  ),
+};
 
 const Editor = () => {
   const {
@@ -139,38 +199,62 @@ const Editor = () => {
       <div className="editor-wrapper">
         <div className="editor-content" ref={editorContentRef}>
           {activeFile && FILE_CONTENTS[activeFile] && (
-            <div>
-              {getDisplayedContent()
-                .split("\n")
-                .map((line, index) => {
-                  const isLastLine = isTyping && index === currentTypingLine;
-                  return (
-                    <div key={index} className="code-line">
-                      <div className="line-number">{index + 1}</div>
-                      <div className="line-content">
-                        <span
-                          dangerouslySetInnerHTML={{
-                            __html: activeFile.endsWith(".kt")
-                              ? highlightKotlin(line)
-                              : line || "&nbsp;",
-                          }}
-                        />
-                        {isLastLine && showCursor && (
-                          <span className="typing-cursor"></span>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-            </div>
+            <>
+              {/* Render Markdown for .md files */}
+              {activeFile.endsWith(".md") ? (
+                <div className="markdown-content">
+                  <ReactMarkdown components={markdownComponents}>
+                    {FILE_CONTENTS[activeFile]}
+                  </ReactMarkdown>
+                </div>
+              ) : (
+                /* Render code for other files */
+                <div>
+                  {getDisplayedContent()
+                    .split("\n")
+                    .map((line, index) => {
+                      const isLastLine = isTyping && index === currentTypingLine;
+                      return (
+                        <div key={index} className="code-line">
+                          <div className="line-number">{index + 1}</div>
+                          <div className="line-content">
+                            <span
+                              dangerouslySetInnerHTML={{
+                                __html: activeFile.endsWith(".kt")
+                                  ? highlightKotlin(line)
+                                  : line || "&nbsp;",
+                              }}
+                            />
+                            {isLastLine && showCursor && (
+                              <span className="typing-cursor"></span>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              )}
+            </>
           )}
         </div>
 
-        {/* Minimap */}
-        {activeFile && typedFiles[activeFile] && (
+        {/* Minimap - only show for code files, not markdown */}
+        {activeFile && 
+         typedFiles[activeFile] && 
+         !activeFile.endsWith(".md") && (
           <div className="minimap">
             <div className="minimap-content">
-              {FILE_CONTENTS[activeFile]?.substring(0, 2000)}
+              {FILE_CONTENTS[activeFile]
+                ?.split("\n")
+                .map((line, i) => (
+                  <div key={i} style={{ 
+                    height: "3px", 
+                    background: line.trim() ? "#4B5052" : "transparent",
+                    marginBottom: "1px",
+                    width: `${Math.min(line.length * 0.8, 100)}%`,
+                    borderRadius: "1px"
+                  }} />
+                ))}
             </div>
             <div
               className="minimap-viewport"

@@ -368,6 +368,7 @@ export const getGlobalStyles = (
     .line-content {
       flex: 1;
       position: relative;
+      white-space: pre;
     }
   
     .typing-cursor {
