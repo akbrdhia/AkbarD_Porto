@@ -27,7 +27,7 @@ const SkillsSection = () => {
       }}
     >
       <div style={{ padding: "0 8vw", marginBottom: "80px" }}>
-        <div style={{
+        <div className="reveal-left delay-1" style={{
           fontSize: "11px",
           color: "#8BC34A",
           letterSpacing: "4px",
@@ -36,7 +36,7 @@ const SkillsSection = () => {
         }}>
           // EXPERTISE
         </div>
-        <h2 style={{
+        <h2 className="reveal-left delay-2" style={{
           fontSize: "clamp(32px, 7vw, 90px)",
           fontWeight: "900",
           color: "#f0f0f0",
@@ -53,7 +53,7 @@ const SkillsSection = () => {
         scrollbarWidth: "thin",
       }}>
         {categories.map((category, idx) => (
-          <div key={idx} style={{
+          <div key={idx} className={`reveal-scale delay-${idx + 2}`} style={{
             minWidth: "300px",
             padding: "60px 35px 50px",
             background: "#111",

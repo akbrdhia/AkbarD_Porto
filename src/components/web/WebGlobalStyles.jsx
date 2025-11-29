@@ -9,6 +9,73 @@ const WebGlobalStyles = () => {
         cursor: none !important;
       }
 
+      /* ========== SCROLL REVEAL ANIMATIONS ========== */
+      .reveal {
+        opacity: 0;
+        transform: translateY(60px);
+        transition: all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+      }
+
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .reveal-left {
+        opacity: 0;
+        transform: translateX(-80px);
+        transition: all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+      }
+
+      .reveal-left.active {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .reveal-right {
+        opacity: 0;
+        transform: translateX(80px);
+        transition: all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+      }
+
+      .reveal-right.active {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .reveal-scale {
+        opacity: 0;
+        transform: scale(0.8);
+        transition: all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+      }
+
+      .reveal-scale.active {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .reveal-rotate {
+        opacity: 0;
+        transform: rotate(-5deg) translateY(40px);
+        transition: all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+      }
+
+      .reveal-rotate.active {
+        opacity: 1;
+        transform: rotate(0) translateY(0);
+      }
+
+      /* Stagger delays */
+      .delay-1 { transition-delay: 0.1s; }
+      .delay-2 { transition-delay: 0.2s; }
+      .delay-3 { transition-delay: 0.3s; }
+      .delay-4 { transition-delay: 0.4s; }
+      .delay-5 { transition-delay: 0.5s; }
+      .delay-6 { transition-delay: 0.6s; }
+      .delay-7 { transition-delay: 0.7s; }
+      .delay-8 { transition-delay: 0.8s; }
+
+      /* ========== KEYFRAMES ========== */
       @keyframes pulse {
         0%, 100% { opacity: 1; transform: scale(1); }
         50% { opacity: 0.4; transform: scale(0.8); }
@@ -65,6 +132,26 @@ const WebGlobalStyles = () => {
           opacity: 1;
           transform: translateX(0);
         }
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-20px); }
+      }
+
+      @keyframes glowPulse {
+        0%, 100% { box-shadow: 0 0 20px rgba(124, 182, 99, 0.3); }
+        50% { box-shadow: 0 0 40px rgba(124, 182, 99, 0.6); }
+      }
+
+      @keyframes textShimmer {
+        0% { background-position: -200% center; }
+        100% { background-position: 200% center; }
+      }
+
+      @keyframes borderDance {
+        0%, 100% { border-color: #222; }
+        50% { border-color: #7CB663; }
       }
 
       ::selection {

@@ -27,7 +27,7 @@ const ExperienceSection = () => {
         background: "#0d0d0d",
       }}
     >
-      <div style={{
+      <div className="reveal-left delay-1" style={{
         fontSize: "11px",
         color: "#8BC34A",
         letterSpacing: "4px",
@@ -43,7 +43,7 @@ const ExperienceSection = () => {
         gap: "40px",
       }}>
         {experiences.map((exp, idx) => (
-          <div key={idx} style={{
+          <div key={idx} className={`reveal-scale delay-${idx + 2}`} style={{
             padding: "60px 50px",
             background: "#000",
             border: "1px solid #111",

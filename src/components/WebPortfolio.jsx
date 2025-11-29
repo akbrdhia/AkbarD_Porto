@@ -125,6 +125,35 @@ const WebPortfolio = () => {
     return () => clearInterval(glitchInterval);
   }, []);
 
+  // Scroll reveal animation observer
+  useEffect(() => {
+    if (!showContent) return;
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("active");
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      }
+    );
+
+    // Observe all reveal elements
+    const revealElements = document.querySelectorAll(
+      ".reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-rotate"
+    );
+    revealElements.forEach((el) => observer.observe(el));
+
+    return () => {
+      revealElements.forEach((el) => observer.unobserve(el));
+    };
+  }, [showContent]);
+
   // Loading screen
   if (!isLoaded) {
     return <WebLoadingScreen loadProgress={loadProgress} />;

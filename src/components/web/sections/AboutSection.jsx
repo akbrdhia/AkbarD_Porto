@@ -30,7 +30,7 @@ const AboutSection = () => {
         overflow: "hidden",
       }}>
         {/* Big number */}
-        <div style={{
+        <div className="reveal-scale" style={{
           position: "absolute",
           top: "10%",
           left: "5%",
@@ -43,7 +43,7 @@ const AboutSection = () => {
           01
         </div>
         
-        <div style={{
+        <div className="reveal-left delay-1" style={{
           fontSize: "11px",
           color: "#8BC34A",
           letterSpacing: "4px",
@@ -54,7 +54,7 @@ const AboutSection = () => {
         }}>
           // ABOUT ME
         </div>
-        <h2 style={{
+        <h2 className="reveal-left delay-2" style={{
           fontSize: "clamp(28px, 5vw, 60px)",
           fontWeight: "900",
           lineHeight: "1.05",
@@ -77,7 +77,7 @@ const AboutSection = () => {
         flexDirection: "column",
         justifyContent: "center",
       }}>
-        <p style={{
+        <p className="reveal delay-2" style={{
           fontSize: "clamp(16px, 1.5vw, 20px)",
           lineHeight: "1.9",
           color: "#777",
@@ -92,7 +92,7 @@ const AboutSection = () => {
           gap: "40px",
         }}>
           {stats.map((stat, idx) => (
-            <div key={idx}>
+            <div key={idx} className={`reveal delay-${idx + 3}`}>
               <div style={{ 
                 fontSize: "clamp(36px, 5vw, 56px)", 
                 fontWeight: "900", 

@@ -38,7 +38,7 @@ const ContactSection = () => {
         HI!
       </div>
 
-      <div style={{
+      <div className="reveal-left delay-1" style={{
         fontSize: "11px",
         color: "#8BC34A",
         letterSpacing: "4px",
@@ -50,7 +50,7 @@ const ContactSection = () => {
         // LET'S CONNECT
       </div>
 
-      <h2 style={{
+      <h2 className="reveal delay-2" style={{
         fontSize: "clamp(36px, 10vw, 120px)",
         fontWeight: "900",
         lineHeight: "1.05",
@@ -74,6 +74,7 @@ const ContactSection = () => {
         {contacts.map((item, idx) => (
           <a
             key={idx}
+            className={`reveal-scale delay-${idx + 3}`}
             href={item.href}
             target={item.href.startsWith("mailto") ? undefined : "_blank"}
             rel="noopener noreferrer"
@@ -123,7 +124,7 @@ const ContactSection = () => {
       </div>
 
       {/* Footer */}
-      <div style={{
+      <div className="reveal delay-6" style={{
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",

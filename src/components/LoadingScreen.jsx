@@ -33,6 +33,21 @@ const LoadingScreen = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Dynamic accent driven by loading progress
+  const progressRatio = Math.min(1, loadingProgress / 100);
+  const accentRgb = "124,182,99";
+  const gridAlpha = 0.03 + progressRatio * 0.06; // 0.03..0.09
+  const stripeAlpha = 0.015 + progressRatio * 0.035; // 0.015..0.05
+  const borderAlpha = 0.05 + progressRatio * 0.5; // 0.05..0.55
+  const shadowAlpha = 0.15 + progressRatio * 0.5; // 0.15..0.65
+  const lampAlpha1 = 0.12 + progressRatio * 0.4;
+  const lampAlpha2 = 0.08 + progressRatio * 0.35;
+  const lampAlpha3 = 0.04 + progressRatio * 0.25;
+  const scanAlpha = 0.015 + progressRatio * 0.02;
+  const accentSolid = `rgba(${accentRgb}, ${0.58 + progressRatio * 0.36})`;
+  const accentBorder = `rgba(${accentRgb}, ${borderAlpha})`;
+  const accentGlow = `rgba(${accentRgb}, ${shadowAlpha})`;
+
   // Handle mode selection and enter
   const handleEnter = () => {
     if (!selectedMode) return;
@@ -66,37 +81,130 @@ const LoadingScreen = () => {
         overflow: "hidden",
       }}
     >
-      {/* Background Grid */}
+      {/* Brutalist layered background: grid, stripes, blocks, noise, vignette */}
       <div style={{
         position: "absolute",
         inset: 0,
-        backgroundImage: `
-          linear-gradient(rgba(106, 135, 89, 0.03) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(106, 135, 89, 0.03) 1px, transparent 1px)
-        `,
-        backgroundSize: "50px 50px",
-        animation: "gridMove 20s linear infinite",
-      }} />
+        pointerEvents: "none",
+        zIndex: 0,
+      }}>
+        {/* base grid (slightly more visible) */}
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `linear-gradient(rgba(${accentRgb}, ${gridAlpha}) 1px, transparent 1px), linear-gradient(90deg, rgba(${accentRgb}, ${gridAlpha}) 1px, transparent 1px)`,
+          backgroundSize: "48px 48px",
+          mixBlendMode: "overlay",
+          opacity: 0.9,
+          animation: "gridMove 24s linear infinite",
+        }} />
 
-      {/* Glowing orbs */}
-      <div style={{
-        position: "absolute",
-        width: "400px",
-        height: "400px",
-        background: "radial-gradient(circle, rgba(106, 135, 89, 0.15) 0%, transparent 70%)",
-        top: "-100px",
-        right: "-100px",
-        animation: "pulse 4s ease-in-out infinite",
-      }} />
-      <div style={{
-        position: "absolute",
-        width: "300px",
-        height: "300px",
-        background: "radial-gradient(circle, rgba(106, 135, 89, 0.1) 0%, transparent 70%)",
-        bottom: "-50px",
-        left: "-50px",
-        animation: "pulse 4s ease-in-out infinite 2s",
-      }} />
+        {/* diagonal stripes for brutalist texture */}
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `repeating-linear-gradient(135deg, rgba(${accentRgb}, ${stripeAlpha}) 0 2px, transparent 2px 18px)`,
+          transform: "translateZ(0)",
+          animation: "stripeShift 12s linear infinite",
+        }} />
+
+        {/* floating brutal blocks */}
+        <div style={{
+          position: "absolute",
+          width: "42vw",
+          height: "30vh",
+          left: "-12vw",
+          top: "10vh",
+          background: "linear-gradient(180deg, rgba(18,18,18,0.95), rgba(14,14,14,0.7))",
+          border: `2px solid ${accentBorder}`,
+          transform: "rotate(-6deg)",
+          filter: "blur(0.2px)",
+          animation: "blockFloat 18s ease-in-out infinite",
+          opacity: 0.9,
+        }} />
+
+        <div style={{
+          position: "absolute",
+          width: "34vw",
+          height: "26vh",
+          right: "-10vw",
+          bottom: "5vh",
+          background: "linear-gradient(180deg, rgba(12,12,12,0.95), rgba(8,8,8,0.7))",
+          border: `2px solid ${accentBorder}`,
+          transform: "rotate(4deg)",
+          animation: "blockFloat 22s ease-in-out infinite",
+          opacity: 0.85,
+        }} />
+
+        {/* subtle scan / highlight */}
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          background: `linear-gradient(90deg, rgba(255,255,255,0.02), rgba(${accentRgb}, ${scanAlpha}) 30%, rgba(255,255,255,0.02))`,
+          mixBlendMode: "screen",
+          animation: "scan 8s linear infinite",
+        }} />
+
+        {/* noise overlay via SVG data URI (very subtle) */}
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.8' numOctaves='1' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='table' tableValues='0 0.06'/></feComponentTransfer></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")`,
+          opacity: 0.06,
+          mixBlendMode: "overlay",
+        }} />
+
+        {/* vignette to focus center */}
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          boxShadow: "inset 0 120px 220px rgba(0,0,0,0.6), inset 0 -80px 180px rgba(0,0,0,0.5)",
+          pointerEvents: "none",
+        }} />
+
+        {/* dim ambient lamps (remang-remang) */}
+        <div style={{
+          position: "absolute",
+          left: "8%",
+          top: "12%",
+          width: "340px",
+          height: "340px",
+          borderRadius: "50%",
+          background: `radial-gradient(circle at 30% 30%, rgba(${accentRgb}, ${lampAlpha1}), rgba(${accentRgb}, ${Math.max(0.02, lampAlpha1 * 0.45)}) 40%, transparent 70%)`,
+          filter: "blur(40px)",
+          opacity: 0.9,
+          mixBlendMode: "screen",
+          animation: "lampPulse 6s ease-in-out infinite, lampDrift1 18s linear infinite",
+        }} />
+
+        <div style={{
+          position: "absolute",
+          right: "12%",
+          top: "22%",
+          width: "260px",
+          height: "260px",
+          borderRadius: "50%",
+          background: `radial-gradient(circle at 50% 40%, rgba(255,160,60,${lampAlpha2}), rgba(255,140,40,${Math.max(0.01, lampAlpha2 * 0.4)}) 45%, transparent 75%)`,
+          filter: "blur(36px)",
+          opacity: 0.85,
+          mixBlendMode: "screen",
+          animation: "lampPulse 7.2s ease-in-out infinite, lampDrift2 20s linear infinite",
+        }} />
+
+        <div style={{
+          position: "absolute",
+          left: "40%",
+          bottom: "8%",
+          width: "420px",
+          height: "300px",
+          borderRadius: "50%",
+          background: `radial-gradient(circle at 40% 60%, rgba(100,160,255,${lampAlpha3}), rgba(100,160,255,${Math.max(0.01, lampAlpha3 * 0.4)}) 45%, transparent 80%)`,
+          filter: "blur(48px)",
+          opacity: 0.7,
+          mixBlendMode: "overlay",
+          animation: "lampPulse 9s ease-in-out infinite, lampDrift3 22s linear infinite",
+        }} />
+      </div>
 
       <div style={{ textAlign: "center", position: "relative", zIndex: 1, maxWidth: "600px", padding: "0 20px" }}>
         
@@ -203,26 +311,26 @@ const LoadingScreen = () => {
                         ? "#1a1a1a" 
                         : "#111",
                     border: selectedMode === "ide" 
-                      ? "2px solid #6A8759" 
+                      ? `2px solid ${accentBorder}` 
                       : "2px solid #2a2a2a",
                     borderRadius: "0",
                     cursor: "pointer",
                     transition: "all 0.3s ease",
                     transform: hoveredMode === "ide" ? "translateY(-4px)" : "translateY(0)",
                     boxShadow: selectedMode === "ide" 
-                      ? "0 0 30px rgba(106, 135, 89, 0.3)" 
+                      ? `0 0 30px ${accentGlow}` 
                       : "none",
                   }}
                 >
                   <Code2 
                     size={40} 
-                    color={selectedMode === "ide" ? "#6A8759" : "#606366"}
+                    color={selectedMode === "ide" ? accentSolid : "#606366"}
                     style={{ marginBottom: "16px" }}
                   />
                   <div style={{
                     fontSize: "18px",
                     fontWeight: "700",
-                    color: selectedMode === "ide" ? "#6A8759" : "#fff",
+                    color: selectedMode === "ide" ? accentSolid : "#fff",
                     marginBottom: "8px",
                   }}>
                     IDE Mode
@@ -250,26 +358,26 @@ const LoadingScreen = () => {
                         ? "#1a1a1a" 
                         : "#111",
                     border: selectedMode === "web" 
-                      ? "2px solid #6A8759" 
+                      ? `2px solid ${accentBorder}` 
                       : "2px solid #2a2a2a",
                     borderRadius: "0",
                     cursor: "pointer",
                     transition: "all 0.3s ease",
                     transform: hoveredMode === "web" ? "translateY(-4px)" : "translateY(0)",
                     boxShadow: selectedMode === "web" 
-                      ? "0 0 30px rgba(106, 135, 89, 0.3)" 
+                      ? `0 0 30px ${accentGlow}` 
                       : "none",
                   }}
                 >
                   <Monitor 
                     size={40} 
-                    color={selectedMode === "web" ? "#6A8759" : "#606366"}
+                    color={selectedMode === "web" ? accentSolid : "#606366"}
                     style={{ marginBottom: "16px" }}
                   />
                   <div style={{
                     fontSize: "18px",
                     fontWeight: "700",
-                    color: selectedMode === "web" ? "#6A8759" : "#fff",
+                    color: selectedMode === "web" ? accentSolid : "#fff",
                     marginBottom: "8px",
                   }}>
                     Web Mode
@@ -293,7 +401,7 @@ const LoadingScreen = () => {
                   alignItems: "center",
                   gap: "12px",
                   padding: "16px 40px",
-                  background: selectedMode ? "#6A8759" : "#2a2a2a",
+                  background: selectedMode ? accentSolid : "#2a2a2a",
                   color: selectedMode ? "#000" : "#4a4a4a",
                   border: "none",
                   fontSize: "14px",
@@ -312,7 +420,7 @@ const LoadingScreen = () => {
                 }}
                 onMouseLeave={(e) => {
                   if (selectedMode) {
-                    e.target.style.background = "#6A8759";
+                    e.target.style.background = accentSolid;
                     e.target.style.transform = "translateX(0)";
                   }
                 }}
@@ -324,7 +432,10 @@ const LoadingScreen = () => {
               <div style={{
                 marginTop: "24px",
                 fontSize: "11px",
-                color: "#3a3a3a",
+                color: selectedMode ? "#eee" : "#3a3a3a",
+                opacity: selectedMode ? 0.95 : 0.9,
+                transition: "color 180ms ease, transform 180ms ease, opacity 180ms",
+                transform: selectedMode ? "translateY(-2px)" : "none",
               }}>
                 You can switch modes anytime from the toolbar
               </div>
@@ -342,6 +453,48 @@ const LoadingScreen = () => {
         @keyframes pulse {
           0%, 100% { opacity: 0.5; transform: scale(1); }
           50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        @keyframes stripeShift {
+          0% { background-position: 0 0; }
+          100% { background-position: 200px 200px; }
+        }
+
+        @keyframes blockFloat {
+          0% { transform: translateY(0) rotate(-6deg); }
+          50% { transform: translateY(-8px) rotate(-5deg); }
+          100% { transform: translateY(0) rotate(-6deg); }
+        }
+
+        @keyframes scan {
+          0% { transform: translateX(-30%); opacity: 0.08; }
+          50% { transform: translateX(30%); opacity: 0.12; }
+          100% { transform: translateX(-30%); opacity: 0.08; }
+        }
+
+        /* ambient lamp pulse and drift */
+        @keyframes lampPulse {
+          0% { transform: scale(0.98); opacity: 0.75; }
+          50% { transform: scale(1.02); opacity: 1; }
+          100% { transform: scale(0.98); opacity: 0.75; }
+        }
+
+        @keyframes lampDrift1 {
+          0% { transform: translateY(0) translateX(0); }
+          50% { transform: translateY(-6px) translateX(8px); }
+          100% { transform: translateY(0) translateX(0); }
+        }
+
+        @keyframes lampDrift2 {
+          0% { transform: translateY(0) translateX(0); }
+          50% { transform: translateY(6px) translateX(-6px); }
+          100% { transform: translateY(0) translateX(0); }
+        }
+
+        @keyframes lampDrift3 {
+          0% { transform: translateY(0) translateX(0); }
+          50% { transform: translateY(-10px) translateX(4px); }
+          100% { transform: translateY(0) translateX(0); }
         }
 
         @keyframes fadeIn {

@@ -50,7 +50,7 @@ const HeroSection = ({ scrollY, glitchActive }) => {
       ))}
 
       {/* Status badge */}
-      <div style={{
+      <div className="reveal-left delay-1" style={{
         display: "flex",
         alignItems: "center",
         gap: "12px",
@@ -77,7 +77,7 @@ const HeroSection = ({ scrollY, glitchActive }) => {
       </div>
 
       {/* Main name - BRUTAL with glitch */}
-      <h1 style={{
+      <h1 className="reveal delay-2" style={{
         fontSize: "clamp(50px, 14vw, 180px)",
         fontWeight: "900",
         lineHeight: "0.9",
@@ -106,7 +106,7 @@ const HeroSection = ({ scrollY, glitchActive }) => {
       </h1>
 
       {/* Role with terminal style */}
-      <div style={{
+      <div className="reveal-left delay-3" style={{
         fontSize: "clamp(14px, 2vw, 22px)",
         color: "#888",
         marginBottom: "50px",
@@ -129,7 +129,7 @@ const HeroSection = ({ scrollY, glitchActive }) => {
       </div>
 
       {/* CTA Buttons */}
-      <div style={{ 
+      <div className="reveal delay-4" style={{ 
         display: "flex", 
         gap: "20px", 
         flexWrap: "wrap",
