@@ -1,10 +1,16 @@
 import React from "react";
-import { Minus, Square, X, Play, Loader, Bug, Hammer, Settings, Search, RotateCcw } from "lucide-react";
+import { Minus, Square, X, Play, Loader, Bug, Hammer, Settings, Search, RotateCcw, Monitor, Code2 } from "lucide-react";
 import { usePortfolio } from "../context/PortfolioContext";
 import { PERSONAL_INFO } from "../constants/portfolioData";
 
 const Toolbar = ({ onBuild }) => {
-  const { isBuilding, gradleSyncing } = usePortfolio();
+  const { isBuilding, gradleSyncing, viewMode, setViewMode } = usePortfolio();
+
+  const handleModeSwitch = () => {
+    const newMode = viewMode === "ide" ? "web" : "ide";
+    localStorage.setItem("portfolio_mode", newMode);
+    setViewMode(newMode);
+  };
 
   return (
     <div className="toolbar">
@@ -60,6 +66,27 @@ const Toolbar = ({ onBuild }) => {
           disabled={gradleSyncing}
         >
           <RotateCcw size={16} className={gradleSyncing ? 'gradle-spinner' : ''} />
+        </button>
+
+        <div className="toolbar-divider" />
+
+        {/* Mode Switch Button */}
+        <button
+          className="toolbar-mode-switch"
+          onClick={handleModeSwitch}
+          title={`Switch to ${viewMode === "ide" ? "Web" : "IDE"} Mode`}
+        >
+          {viewMode === "ide" ? (
+            <>
+              <Monitor size={14} />
+              <span>Web Mode</span>
+            </>
+          ) : (
+            <>
+              <Code2 size={14} />
+              <span>IDE Mode</span>
+            </>
+          )}
         </button>
       </div>
 

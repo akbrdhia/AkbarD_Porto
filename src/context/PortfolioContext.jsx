@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useRef } from "react";
+import React, { createContext, useContext, useState, useRef, useEffect } from "react";
 
 const PortfolioContext = createContext();
 
@@ -11,8 +11,20 @@ export const usePortfolio = () => {
 };
 
 export const PortfolioProvider = ({ children }) => {
+  // Session & Mode Management
+  const [hasVisited, setHasVisited] = useState(() => {
+    return sessionStorage.getItem("portfolio_visited") === "true";
+  });
+  const [viewMode, setViewMode] = useState(() => {
+    return localStorage.getItem("portfolio_mode") || null; // null = needs to choose
+  });
+  const [showModeSelector, setShowModeSelector] = useState(false);
+
   // Loading & Mobile
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => {
+    // Skip loading if already visited in this session
+    return sessionStorage.getItem("portfolio_visited") !== "true";
+  });
   const [isMobile, setIsMobile] = useState(false);
 
   // Folders & Files
@@ -56,6 +68,13 @@ export const PortfolioProvider = ({ children }) => {
   const editorContentRef = useRef(null);
 
   const value = {
+    // Session & Mode
+    hasVisited,
+    setHasVisited,
+    viewMode,
+    setViewMode,
+    showModeSelector,
+    setShowModeSelector,
     // State
     loading,
     setLoading,

@@ -12,6 +12,7 @@ import Editor from "../components/Editor";
 import Terminal from "../components/Terminal";
 import StatusBar from "../components/StatusBar";
 import Notifications from "../components/Notifications";
+import WebPortfolio from "../components/WebPortfolio";
 
 const PortfolioContent = () => {
   const {
@@ -19,6 +20,7 @@ const PortfolioContent = () => {
     setLoading,
     isMobile,
     setIsMobile,
+    viewMode,
     openTabs,
     setOpenTabs,
     activeFile,
@@ -54,17 +56,38 @@ const PortfolioContent = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Loading animation
+  // Beforeunload warning - prevent accidental leave
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 5000);
-    return () => clearTimeout(timer);
+    const handleBeforeUnload = (e) => {
+      // Clear session when leaving
+      const confirmationMessage = "Are you sure you want to leave? Your session will be reset.";
+      e.returnValue = confirmationMessage;
+      return confirmationMessage;
+    };
+
+    // Only add warning after loading is done
+    if (!loading) {
+      window.addEventListener("beforeunload", handleBeforeUnload);
+    }
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [loading]);
+
+  // Handle actual page unload - clear session
+  useEffect(() => {
+    const handleUnload = () => {
+      sessionStorage.removeItem("portfolio_visited");
+    };
+
+    window.addEventListener("unload", handleUnload);
+    return () => window.removeEventListener("unload", handleUnload);
   }, []);
 
   // Gradle sync
   useEffect(() => {
-    if (!loading) {
+    if (!loading && viewMode === "ide") {
       const timer = setTimeout(() => {
         setGradleSyncing(false);
         setBuildStatus("Build successful in 3.2s");
@@ -72,7 +95,7 @@ const PortfolioContent = () => {
       }, 4000);
       return () => clearTimeout(timer);
     }
-  }, [loading]);
+  }, [loading, viewMode]);
 
   // Cursor blinking
   useEffect(() => {
@@ -228,11 +251,17 @@ const PortfolioContent = () => {
     return <MobileBlocker />;
   }
 
-  // Loading screen
+  // Loading screen (also handles mode selection)
   if (loading) {
     return <LoadingScreen />;
   }
 
+  // Web Portfolio Mode
+  if (viewMode === "web") {
+    return <WebPortfolio />;
+  }
+
+  // IDE Mode (default)
   return (
     <div className="portfolio-container">
       <style>

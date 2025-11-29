@@ -168,6 +168,28 @@ export const getGlobalStyles = (
       margin: 0 4px;
     }
 
+    .toolbar-mode-switch {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: #2B2B2B;
+      color: #A9B7C6;
+      border: 1px solid #4B4F52;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 500;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+
+    .toolbar-mode-switch:hover {
+      background: #3C3F41;
+      border-color: #6A8759;
+      color: #6A8759;
+    }
+
     .toolbar-right {
       display: flex;
       align-items: center;
