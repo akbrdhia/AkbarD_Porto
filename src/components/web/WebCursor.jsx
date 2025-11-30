@@ -1,13 +1,22 @@
 import React, { useEffect, useState } from "react";
 
-const WebCursor = ({ mousePosition = { x: 0, y: 0 }, isHovering }) => {
+const WebCursor = ({ mousePosition = { x: 0, y: 0 }, interactiveLabel }) => {
   const { x, y } = mousePosition;
-  const accentColor = isHovering ? "#FF004D" : "#7CB663";
-  const frameSize = isHovering ? 70 : 54;
+  const hasInteractiveTarget = Boolean(interactiveLabel);
+  const accentColor = hasInteractiveTarget ? "#FF004D" : "#7CB663";
+  const frameSize = hasInteractiveTarget ? 70 : 54;
   const typingText = "Akbar D // Developer";
   const [typedLabel, setTypedLabel] = useState("");
   const [typingComplete, setTypingComplete] = useState(false);
   const [selectionRect, setSelectionRect] = useState(null);
+  const [selectionDisplayRect, setSelectionDisplayRect] = useState(null);
+  const cursorPositionRef = React.useRef(mousePosition);
+  const selectionActiveRef = React.useRef(false);
+  const animationFrameRef = React.useRef(null);
+
+  useEffect(() => {
+    cursorPositionRef.current = mousePosition;
+  }, [mousePosition]);
 
   useEffect(() => {
     let index = 0;
@@ -32,23 +41,50 @@ const WebCursor = ({ mousePosition = { x: 0, y: 0 }, isHovering }) => {
     const updateSelectionRect = () => {
       const selection = window.getSelection();
       if (!selection || selection.isCollapsed || selection.rangeCount === 0) {
+        selectionActiveRef.current = false;
         setSelectionRect(null);
+        setSelectionDisplayRect(null);
         return;
       }
 
       const range = selection.getRangeAt(0);
       const rect = range.getBoundingClientRect();
       if (!rect || rect.width === 0 || rect.height === 0) {
+        selectionActiveRef.current = false;
         setSelectionRect(null);
+        setSelectionDisplayRect(null);
         return;
       }
 
-      setSelectionRect({
+      const targetRect = {
         x: rect.left,
         y: rect.top,
         width: rect.width,
         height: rect.height,
-      });
+      };
+
+      setSelectionRect(targetRect);
+
+      if (!selectionActiveRef.current) {
+        selectionActiveRef.current = true;
+        const { x: cursorX, y: cursorY } = cursorPositionRef.current;
+        const startRect = {
+          x: cursorX - frameSize / 2,
+          y: cursorY - frameSize / 2,
+          width: frameSize,
+          height: frameSize,
+        };
+
+        setSelectionDisplayRect(startRect);
+        if (animationFrameRef.current) {
+          cancelAnimationFrame(animationFrameRef.current);
+        }
+        animationFrameRef.current = requestAnimationFrame(() => {
+          setSelectionDisplayRect(targetRect);
+        });
+      } else {
+        setSelectionDisplayRect(targetRect);
+      }
     };
 
     document.addEventListener("selectionchange", updateSelectionRect);
@@ -59,50 +95,65 @@ const WebCursor = ({ mousePosition = { x: 0, y: 0 }, isHovering }) => {
       document.removeEventListener("selectionchange", updateSelectionRect);
       window.removeEventListener("scroll", updateSelectionRect, true);
       window.removeEventListener("resize", updateSelectionRect);
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
     };
-  }, []);
+  }, [frameSize]);
+
+  const isWrappingSelection = Boolean(selectionDisplayRect);
+  const interactiveLabelText = hasInteractiveTarget
+    ? (() => {
+        const normalized = interactiveLabel.replace(/\s+/g, " ").trim().toUpperCase();
+        return normalized.length > 28 ? `${normalized.slice(0, 27)}…` : normalized;
+      })()
+    : "";
 
   return (
     <>
-      {/* Subtle halo */}
-      <div
-        style={{
-          position: "fixed",
-          left: x - 120,
-          top: y - 120,
-          width: "240px",
-          height: "240px",
-          borderRadius: "12%",
-          background: `radial-gradient(circle, ${accentColor}15 0%, transparent 65%)`,
-          border: "1px solid rgba(255,255,255,0.02)",
-          pointerEvents: "none",
-          zIndex: 1,
-          opacity: 0.35,
-          filter: "blur(6px)",
-          boxShadow: "0 0 60px rgba(0,0,0,0.4)",
-          animation: "cursorNoiseDrift 9s ease-in-out infinite",
-        }}
-      />
+      {!isWrappingSelection && (
+        <>
+          {/* Subtle halo */}
+          <div
+            style={{
+              position: "fixed",
+              left: x - 120,
+              top: y - 120,
+              width: "240px",
+              height: "240px",
+              borderRadius: "12%",
+              background: `radial-gradient(circle, ${accentColor}15 0%, transparent 65%)`,
+              border: "1px solid rgba(255,255,255,0.02)",
+              pointerEvents: "none",
+              zIndex: 1,
+              opacity: 0.35,
+              filter: "blur(6px)",
+              boxShadow: "0 0 60px rgba(0,0,0,0.4)",
+              animation: "cursorNoiseDrift 9s ease-in-out infinite",
+            }}
+          />
 
-      {/* Outer frame */}
-      <div
-        style={{
-          position: "fixed",
-          left: x - frameSize / 2,
-          top: y - frameSize / 2,
-          width: `${frameSize}px`,
-          height: `${frameSize}px`,
-          border: `2px solid ${accentColor}`,
-          borderRadius: "8px",
-          background: "rgba(10, 10, 10, 0.65)",
-          boxShadow: "6px 6px 0 rgba(0,0,0,0.6)",
-          pointerEvents: "none",
-          zIndex: 9998,
-          willChange: "transform",
-          transform: `translate3d(0, 0, 0) rotate(${isHovering ? 6 : 0}deg)`,
-          transition: "all 150ms ease-out",
-        }}
-      />
+          {/* Outer frame */}
+          <div
+            style={{
+              position: "fixed",
+              left: x - frameSize / 2,
+              top: y - frameSize / 2,
+              width: `${frameSize}px`,
+              height: `${frameSize}px`,
+              border: `2px solid ${accentColor}`,
+              borderRadius: "8px",
+              background: "rgba(10, 10, 10, 0.65)",
+              boxShadow: "6px 6px 0 rgba(0,0,0,0.6)",
+              pointerEvents: "none",
+              zIndex: 9998,
+              willChange: "transform",
+              transform: `translate3d(0, 0, 0) rotate(${hasInteractiveTarget ? 6 : 0}deg)`,
+              transition: "all 150ms ease-out",
+            }}
+          />
+        </>
+      )}
 
       {/* Crosshair accents */}
       <div
@@ -150,14 +201,14 @@ const WebCursor = ({ mousePosition = { x: 0, y: 0 }, isHovering }) => {
       />
 
       {/* Selection wrap */}
-      {selectionRect && (
+      {selectionDisplayRect && (
         <div
           style={{
             position: "fixed",
-            left: selectionRect.x - 8,
-            top: selectionRect.y - 6,
-            width: selectionRect.width + 16,
-            height: selectionRect.height + 12,
+            left: selectionDisplayRect.x - 8,
+            top: selectionDisplayRect.y - 6,
+            width: selectionDisplayRect.width + 16,
+            height: selectionDisplayRect.height + 12,
             border: `1.5px solid ${accentColor}`,
             borderRadius: "6px",
             background: "rgba(5, 5, 5, 0.4)",
@@ -165,7 +216,7 @@ const WebCursor = ({ mousePosition = { x: 0, y: 0 }, isHovering }) => {
             mixBlendMode: "normal",
             pointerEvents: "none",
             zIndex: 9994,
-            transition: "all 120ms ease-out",
+            transition: "all 140ms cubic-bezier(0.23, 1, 0.32, 1)",
           }}
         />
       )}
@@ -191,7 +242,7 @@ const WebCursor = ({ mousePosition = { x: 0, y: 0 }, isHovering }) => {
           zIndex: 9997,
           boxShadow: "6px 6px 0 rgba(0,0,0,0.35)",
           transition: "all 150ms ease-out",
-          transform: `translate3d(0, 0, 0) translateY(${isHovering ? "-4px" : "0"})`,
+          transform: `translate3d(0, 0, 0) translateY(${hasInteractiveTarget ? "-4px" : "0"})`,
           animation: "cursorLabelShimmer 4s linear infinite",
         }}
       >
@@ -204,8 +255,8 @@ const WebCursor = ({ mousePosition = { x: 0, y: 0 }, isHovering }) => {
             letterSpacing: "0.3em",
           }}
         >
-          {isHovering ? (
-            <span>VIEW PROJECT</span>
+          {hasInteractiveTarget ? (
+            <span>{interactiveLabelText}</span>
           ) : (
             <>
               <span>{typedLabel || "\u00A0"}</span>
@@ -231,7 +282,7 @@ const WebCursor = ({ mousePosition = { x: 0, y: 0 }, isHovering }) => {
             alignItems: "center",
           }}
         >
-          <span>{isHovering ? "CLICK" : "\u00A0"}</span>
+          <span>{hasInteractiveTarget ? "CLICK" : "\u00A0"}</span>
           <span style={{ letterSpacing: "0.1em", color: "#8D8D8D" }}>{coordinateReadout}</span>
         </div>
       </div>

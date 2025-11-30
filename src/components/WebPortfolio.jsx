@@ -19,6 +19,7 @@ import ContactSection from "./web/sections/ContactSection";
 const WebPortfolio = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [hoveredProject, setHoveredProject] = useState(null);
+  const [cursorLinkLabel, setCursorLinkLabel] = useState(null);
   const [scrollY, setScrollY] = useState(0);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [glitchActive, setGlitchActive] = useState(false);
@@ -60,6 +61,38 @@ const WebPortfolio = () => {
     };
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  useEffect(() => {
+    const interactiveSelector =
+      'a[href], button, [role="button"], input[type="button"], input[type="submit"], [data-cursor-interactive="true"]';
+
+    const deriveLabel = (el) => {
+      if (!el) return null;
+      const rawLabel =
+        el.getAttribute("data-cursor-label") ||
+        el.getAttribute("aria-label") ||
+        el.innerText ||
+        el.textContent ||
+        el.getAttribute("href");
+      if (!rawLabel) return null;
+      return rawLabel.replace(/\s+/g, " ").trim();
+    };
+
+    const handlePointerMove = (event) => {
+      const interactiveEl = event.target.closest(interactiveSelector);
+      if (!interactiveEl) {
+        setCursorLinkLabel((prev) => (prev === null ? prev : null));
+        return;
+      }
+
+      const label = deriveLabel(interactiveEl) || "LINK";
+
+      setCursorLinkLabel((prev) => (prev === label ? prev : label));
+    };
+
+    document.addEventListener("pointermove", handlePointerMove);
+    return () => document.removeEventListener("pointermove", handlePointerMove);
   }, []);
 
   // Scroll tracking with section detection
@@ -162,7 +195,7 @@ const WebPortfolio = () => {
   return (
     <>
       {/* Fixed elements - OUTSIDE animated container */}
-      <WebCursor mousePosition={mousePosition} isHovering={hoveredProject !== null} />
+      <WebCursor mousePosition={mousePosition} interactiveLabel={cursorLinkLabel} />
       <WebSideNav activeSection={activeSection} />
       <WebNavbar currentTime={currentTime} />
       
