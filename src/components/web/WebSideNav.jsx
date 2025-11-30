@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const WebSideNav = ({ activeSection }) => {
   const sections = [
@@ -17,13 +17,93 @@ const WebSideNav = ({ activeSection }) => {
     }
   };
 
+  const panelRef = useRef(null);
+  const dragOffsetRef = useRef({ x: 0, y: 0 });
+  const draggingRef = useRef(false);
+  const [isDraggingPanel, setIsDraggingPanel] = useState(false);
+  const [panelPosition, setPanelPosition] = useState({ x: null, y: null });
+
+  const clampPosition = (value, min, max) => Math.min(Math.max(value, min), max);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setPanelPosition((prev) => {
+        const panel = panelRef.current;
+        const width = panel?.offsetWidth ?? 180;
+        const height = panel?.offsetHeight ?? 320;
+        const maxX = window.innerWidth - width - 20;
+        const maxY = window.innerHeight - height - 20;
+
+        if (prev.x === null || prev.y === null) {
+          return {
+            x: maxX,
+            y: clampPosition(window.innerHeight / 2 - height / 2, 20, maxY),
+          };
+        }
+
+        return {
+          x: clampPosition(prev.x, 20, maxX),
+          y: clampPosition(prev.y, 20, maxY),
+        };
+      });
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    const handlePointerMove = (event) => {
+      if (!draggingRef.current) return;
+      const panel = panelRef.current;
+      const width = panel?.offsetWidth ?? 180;
+      const height = panel?.offsetHeight ?? 320;
+      const maxX = window.innerWidth - width - 20;
+      const maxY = window.innerHeight - height - 20;
+
+      setPanelPosition({
+        x: clampPosition(event.clientX - dragOffsetRef.current.x, 20, maxX),
+        y: clampPosition(event.clientY - dragOffsetRef.current.y, 20, maxY),
+      });
+    };
+
+    const handlePointerUp = () => {
+      draggingRef.current = false;
+      setIsDraggingPanel(false);
+    };
+
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", handlePointerUp);
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", handlePointerUp);
+    };
+  }, []);
+
+  const startDrag = (event) => {
+    event.preventDefault();
+    const panel = panelRef.current;
+    if (!panel) return;
+    const { x, y } = panel.getBoundingClientRect();
+    dragOffsetRef.current = {
+      x: event.clientX - x,
+      y: event.clientY - y,
+    };
+    draggingRef.current = true;
+    setIsDraggingPanel(true);
+  };
+
+  const isPositioned = panelPosition.x !== null && panelPosition.y !== null;
+
   return (
     <div
+      ref={panelRef}
       style={{
         position: "fixed",
-        right: "40px",
-        top: "50%",
-        transform: "translateY(-50%)",
+        left: isPositioned ? `${panelPosition.x}px` : "auto",
+        top: isPositioned ? `${panelPosition.y}px` : "50%",
+        transform: isPositioned ? "none" : "translateY(-50%)",
         display: "flex",
         flexDirection: "column",
         gap: "14px",
@@ -42,25 +122,80 @@ const WebSideNav = ({ activeSection }) => {
     >
       <div
         style={{
-          fontSize: "11px",
-          letterSpacing: "0.35em",
-          color: "#baf36a",
-          marginBottom: "6px",
           display: "flex",
           alignItems: "center",
-          gap: "8px",
+          justifyContent: "space-between",
+          marginBottom: "6px",
+          gap: "10px",
         }}
       >
-        <span
+        <div
           style={{
-            width: "6px",
-            height: "6px",
-            borderRadius: "50%",
-            background: "#baf36a",
-            boxShadow: "0 0 12px rgba(186,243,106,0.8)",
+            fontSize: "11px",
+            letterSpacing: "0.35em",
+            color: "#baf36a",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            userSelect: "none",
           }}
-        ></span>
-        NAV PANEL
+        >
+          <span
+            style={{
+              width: "6px",
+              height: "6px",
+              borderRadius: "50%",
+              background: "#baf36a",
+              boxShadow: "0 0 12px rgba(186,243,106,0.8)",
+            }}
+          ></span>
+          NAV PANEL
+        </div>
+        <div
+          onPointerDown={startDrag}
+          data-cursor-interactive="true"
+          data-cursor-label="DRAG PANEL"
+          style={{
+            width: "34px",
+            height: "30px",
+            borderRadius: "8px",
+            border: "1px solid rgba(186,243,106,0.35)",
+            background:
+              "linear-gradient(145deg, rgba(186,243,106,0.18), rgba(0,0,0,0.75))",
+            cursor: isDraggingPanel ? "grabbing" : "grab",
+            userSelect: "none",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "6px 5px",
+            boxShadow: "inset 0 0 14px rgba(186,243,106,0.22)",
+            gap: "6px",
+          }}
+        >
+          {[0, 1].map((col) => (
+            <div
+              key={col}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "5px",
+              }}
+            >
+              {[0, 1, 2].map((row) => (
+                <span
+                  key={`${col}-${row}`}
+                  style={{
+                    width: "4px",
+                    height: "4px",
+                    borderRadius: "50%",
+                    background: "rgba(186,243,106,0.9)",
+                    boxShadow: "0 0 6px rgba(186,243,106,0.6)",
+                  }}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
       {sections.map((section, idx) => {
         const isActive = activeSection === idx;

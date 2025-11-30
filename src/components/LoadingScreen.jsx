@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { PERSONAL_INFO } from "../constants/portfolioData";
 import { usePortfolio } from "../context/PortfolioContext";
 import { Monitor, Code2, ArrowRight } from "lucide-react";
@@ -9,6 +9,8 @@ const LoadingScreen = () => {
   const [loadingComplete, setLoadingComplete] = useState(false);
   const [selectedMode, setSelectedMode] = useState(null);
   const [hoveredMode, setHoveredMode] = useState(null);
+  const [visibleMessages, setVisibleMessages] = useState([]);
+  const shownMessagesRef = useRef(new Set());
 
   console.log("------------------------------------------------------------");
   console.log(">>> Android Studio Terminal [Version 1.9.0]");
@@ -17,6 +19,15 @@ const LoadingScreen = () => {
   console.log(">>> Hey there 👋 Another Developer spotted!");
   console.log(">>> I see you exploring the console 😎 Check out my GitHub → github.com/akbrdhia");
   console.log("============================================================");
+
+  const loadingMessages = [
+    { threshold: 5, text: "Initializing environment variables..." },
+    { threshold: 20, text: "Linking Android toolchains + Kotlin runtime." },
+    { threshold: 40, text: "Syncing backend endpoints with mock data." },
+    { threshold: 60, text: "Bootstrapping web surface + typography grid." },
+    { threshold: 80, text: "Verifying animations + custom cursor layers." },
+    { threshold: 95, text: "Final QA sweep before launch." },
+  ];
 
   // Loading progress animation
   useEffect(() => {
@@ -32,6 +43,18 @@ const LoadingScreen = () => {
     }, 50);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    loadingMessages.forEach((msg) => {
+      if (
+        loadingProgress >= msg.threshold &&
+        !shownMessagesRef.current.has(msg.text)
+      ) {
+        shownMessagesRef.current.add(msg.text);
+        setVisibleMessages((prev) => [...prev, msg.text]);
+      }
+    });
+  }, [loadingProgress]);
 
   // Dynamic accent driven by loading progress
   const progressRatio = Math.min(1, loadingProgress / 100);
@@ -66,6 +89,18 @@ const LoadingScreen = () => {
     console.log("→ Mode set, loading disabled");
   };
 
+  const statusLabel =
+    loadingProgress < 30
+      ? "Bootstrapping"
+      : loadingProgress < 60
+      ? "Linking assets"
+      : loadingProgress < 90
+      ? "Preflight checks"
+      : "Ready";
+
+  const latestMessages = visibleMessages.slice(-4);
+  const progressDegrees = Math.min(100, loadingProgress) * 3.6;
+
   return (
     <div
       style={{
@@ -99,7 +134,7 @@ const LoadingScreen = () => {
           animation: "gridMove 24s linear infinite",
         }} />
 
-        {/* diagonal stripes for brutalist texture */}
+        {/* diagonal stripes for raw texture */}
         <div style={{
           position: "absolute",
           inset: 0,
@@ -108,7 +143,7 @@ const LoadingScreen = () => {
           animation: "stripeShift 12s linear infinite",
         }} />
 
-        {/* floating brutal blocks */}
+        {/* floating concrete blocks */}
         <div style={{
           position: "absolute",
           width: "42vw",
@@ -231,36 +266,112 @@ const LoadingScreen = () => {
               {PERSONAL_INFO.role}
             </div>
 
-            {/* Loading Bar */}
-            <div style={{
-              width: "300px",
-              height: "2px",
-              background: "#2a2a2a",
-              margin: "0 auto 20px",
-              position: "relative",
-              overflow: "hidden",
-            }}>
-              <div style={{
-                position: "absolute",
-                left: 0,
-                top: 0,
-                height: "100%",
-                width: `${loadingProgress}%`,
-                background: "#6A8759",
-                transition: "width 0.1s ease-out",
-                boxShadow: "0 0 20px rgba(106, 135, 89, 0.8)",
-              }} />
+            {/* Loading Dial */}
+            <div
+              style={{
+                width: "240px",
+                height: "240px",
+                margin: "0 auto 30px",
+                position: "relative",
+              }}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  borderRadius: "50%",
+                  background: `conic-gradient(${accentSolid} ${progressDegrees}deg, rgba(255,255,255,0.08) 0deg)`,
+                  filter: "drop-shadow(0 0 30px rgba(124,182,99,0.4))",
+                  animation: "ringSpin 20s linear infinite",
+                }}
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  inset: "18px",
+                  borderRadius: "50%",
+                  background: "#050505",
+                  border: "1px solid rgba(255,255,255,0.05)",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "8px",
+                  boxShadow: "0 20px 60px rgba(0,0,0,0.6)",
+                }}
+              >
+                <div style={{ fontSize: "42px", fontWeight: 800, color: "#f4ffe7" }}>
+                  {loadingProgress}%
+                </div>
+                <div
+                  style={{
+                    letterSpacing: "0.4em",
+                    fontSize: "11px",
+                    color: "#7CB663",
+                  }}
+                >
+                  {statusLabel}
+                </div>
+              </div>
+              <div
+                style={{
+                  position: "absolute",
+                  inset: "6px",
+                  borderRadius: "50%",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  animation: "ringPulse 2.8s ease-in-out infinite",
+                }}
+              />
             </div>
 
-            <div style={{
-              color: "#4a4a4a",
-              fontSize: "12px",
-              fontFamily: "monospace",
-            }}>
-              {loadingProgress < 30 && "Initializing environment..."}
-              {loadingProgress >= 30 && loadingProgress < 60 && "Loading assets..."}
-              {loadingProgress >= 60 && loadingProgress < 90 && "Preparing experience..."}
-              {loadingProgress >= 90 && "Almost ready..."}
+            {/* Log feed */}
+            <div
+              style={{
+                margin: "0 auto",
+                width: "340px",
+                background: "rgba(0,0,0,0.6)",
+                border: "1px solid rgba(255,255,255,0.05)",
+                boxShadow: "0 20px 40px rgba(0,0,0,0.5)",
+                padding: "16px 18px",
+                textAlign: "left",
+                borderRadius: "12px",
+              }}
+            >
+              <div
+                style={{
+                  letterSpacing: "0.35em",
+                  fontSize: "10px",
+                  color: "#7CB663",
+                  marginBottom: "10px",
+                }}
+              >
+                STATUS LOG
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "6px",
+                  fontSize: "12px",
+                  color: "#a0a0a0",
+                  minHeight: "72px",
+                }}
+              >
+                {latestMessages.map((msg, idx) => (
+                  <div
+                    key={`${msg}-${idx}`}
+                    style={{
+                      opacity: idx === latestMessages.length - 1 ? 1 : 0.6,
+                      animation: "fadeInUp 0.4s ease",
+                    }}
+                  >
+                    {msg}
+                  </div>
+                ))}
+                {latestMessages.length === 0 && (
+                  <div style={{ opacity: 0.6 }}>Boot sequence initiated...</div>
+                )}
+              </div>
             </div>
           </>
         ) : (
@@ -495,6 +606,17 @@ const LoadingScreen = () => {
           0% { transform: translateY(0) translateX(0); }
           50% { transform: translateY(-10px) translateX(4px); }
           100% { transform: translateY(0) translateX(0); }
+        }
+
+        @keyframes ringSpin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+
+        @keyframes ringPulse {
+          0% { opacity: 0.4; transform: scale(0.98); }
+          50% { opacity: 0.8; transform: scale(1); }
+          100% { opacity: 0.4; transform: scale(0.98); }
         }
 
         @keyframes fadeIn {

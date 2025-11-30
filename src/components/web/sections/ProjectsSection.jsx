@@ -1,471 +1,285 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 
-const ProjectsSection = ({ hoveredProject, setHoveredProject }) => {
+const ProjectsSection = () => {
   const projects = [
-    { name: "KosKu", description: "Modern boarding house management with real-time booking & payments", tech: ["Kotlin", "Laravel", "Room DB"], status: "DEV", year: "2024", color: "#8BC34A", preview: "/assets/projects/kosku.jpg", link: "" },
-    { name: "Manager Usaha V2", description: "AI-powered business analytics & inventory management", tech: ["Kotlin", "Laravel", "ML Kit"], status: "BETA", year: "2024", color: "#9CCC65", preview: "/Manager_usahav2.png", link: "" },
-    { name: "Cogito", description: "Smart Debate companion with AI argumentation engine", tech: ["Express", "PostgreSQL", "Kotlin", "Qwen"], status: "BETA", year: "2024", color: "#AED581", preview: "/assets/projects/cogito.jpg", link: "https://github.com/LazyPota/Cogito/tree/main" },
-    { name: "Sako (Sahabat Koperasi)", description: "A Plattform to help Koperasi Simpan Pinjam", tech: ["React", "Laravel"], status: "BETA", year: "2023", color: "#C5E1A5", preview: "/Sako-login.png", link: "" },
+    {
+      name: "KosKu",
+      description: "Boarding house platform with live booking, payments, and caretaker dashboards.",
+      tech: ["Kotlin", "Laravel", "Room DB"],
+      status: "DEV",
+      year: "2024",
+      color: "#8BC34A",
+      preview: "/assets/projects/kosku.jpg",
+      link: "",
+    },
+    {
+      name: "Manager Usaha V2",
+      description: "Business metrics & inventory automation with on-device AI classification.",
+      tech: ["Kotlin", "Laravel", "ML Kit"],
+      status: "BETA",
+      year: "2024",
+      color: "#9CCC65",
+      preview: "/Manager_usahav2.png",
+      link: "",
+    },
+    {
+      name: "Cogito",
+      description: "AI debate companion that generates counter-arguments in real time.",
+      tech: ["Express", "PostgreSQL", "Kotlin", "Qwen"],
+      status: "BETA",
+      year: "2024",
+      color: "#AED581",
+      preview: "/assets/projects/cogito.jpg",
+      link: "https://github.com/LazyPota/Cogito/tree/main",
+    },
+    {
+      name: "Sako",
+      description: "Simpan-pinjam assistant for cooperatives—payments, analytics, plus reporting.",
+      tech: ["React", "Laravel"],
+      status: "BETA",
+      year: "2023",
+      color: "#C5E1A5",
+      preview: "/Sako-login.png",
+      link: "",
+    },
   ];
 
-  const currentPreview = hoveredProject != null && projects[hoveredProject] ? projects[hoveredProject].preview : null;
-  const currentPreviewColor = hoveredProject != null && projects[hoveredProject] ? projects[hoveredProject].color : "#7CB663";
-
-  // preview loading state (supports external URLs, fallback on error)
-  const [previewState, setPreviewState] = useState({ loading: false, success: false, url: null });
-  const [previewCandidates, setPreviewCandidates] = useState([]);
-  const [activeCandidateIndex, setActiveCandidateIndex] = useState(0);
-  const [localBlobPath, setLocalBlobPath] = useState(null);
-  const [triedCandidates, setTriedCandidates] = useState([]);
-  const candidatesRef = useRef([]);
-  const isMountedRef = useRef(true);
-  const [hoveredTitle, setHoveredTitle] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(projects[0].preview);
+  const [previewLoaded, setPreviewLoaded] = useState(true);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    isMountedRef.current = true;
-    return () => {
-      isMountedRef.current = false;
-    };
-  }, []);
-
-  useEffect(() => {
-    candidatesRef.current = previewCandidates;
-  }, [previewCandidates]);
-
-  useEffect(() => {
-    if (!currentPreview) {
-      setPreviewState({ loading: false, success: false, url: null });
-      setLocalBlobPath(null);
-      setTriedCandidates([]);
-      setPreviewCandidates([]);
-      setActiveCandidateIndex(0);
-      return;
-    }
-
-    let candidate = currentPreview;
-    try {
-      const u = new URL(candidate, window.location.href);
-      if (u.hostname.includes("github.com") && u.pathname.includes("/blob/")) {
-        const parts = u.pathname.split("/").filter(Boolean);
-        if (parts.length >= 5 && parts[2] === "blob") {
-          const user = parts[0];
-          const repo = parts[1];
-          const branch = parts[3];
-          const path = parts.slice(4).join("/");
-          candidate = `https://raw.githubusercontent.com/${user}/${repo}/${branch}/${path}`;
-        }
-      }
-    } catch (e) {
-      // ignore malformed URLs
-    }
-
-    if (typeof candidate === "string" && candidate.startsWith("blob:")) {
-      const proj = projects[hoveredProject];
-      const baseName = proj && proj.name ? proj.name : `project-${hoveredProject}`;
-      const slug = baseName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-      const localPath = `/assets/projects/${slug}.jpg`;
-      candidate = localPath;
-      setLocalBlobPath(localPath);
-    } else {
-      setLocalBlobPath(null);
-    }
-
-    const candidates = candidate ? [candidate] : [];
-    if (candidate && candidate.startsWith("/assets/projects/")) {
-      const base = candidate.replace(/\.jpe?g$|\.png$|\.webp$/i, "");
-      candidates.push(`${base}.png`, `${base}.jpg`, `${base}.webp`);
-    }
-
-    const seen = new Set();
-    const unique = candidates.filter((c) => {
-      if (!c || seen.has(c)) return false;
-      seen.add(c);
-      return true;
-    });
-
-    console.debug("[ProjectsSection] trying preview candidates", unique);
-    setTriedCandidates(unique);
-    setPreviewCandidates(unique);
-    setActiveCandidateIndex(0);
-
-    if (!unique.length) {
-      setPreviewState({ loading: false, success: false, url: null });
-    }
-  }, [currentPreview, hoveredProject]);
-
-  useEffect(() => {
-    if (!previewCandidates.length) return;
-    if (activeCandidateIndex >= previewCandidates.length) {
-      setPreviewState({ loading: false, success: false, url: null });
-      return;
-    }
-    const nextUrl = previewCandidates[activeCandidateIndex];
-    setPreviewState({ loading: true, success: false, url: nextUrl });
-  }, [previewCandidates, activeCandidateIndex]);
-
-  const handlePreviewLoad = (event) => {
-    if (!isMountedRef.current) return;
-    if (event?.currentTarget?.src) {
-      console.debug("[ProjectsSection] preview loaded ->", event.currentTarget.src);
-    }
-    setPreviewState((prev) => ({ ...prev, loading: false, success: true }));
-  };
-
-  const handlePreviewError = (event) => {
-    if (!isMountedRef.current) return;
-    if (event?.currentTarget?.src) {
-      console.debug("[ProjectsSection] preview candidate failed ->", event.currentTarget.src);
-    }
-    setActiveCandidateIndex((idx) => {
-      const list = candidatesRef.current;
-      const nextIdx = idx + 1;
-      if (nextIdx < list.length) {
-        return nextIdx;
-      }
-      console.debug("[ProjectsSection] all preview candidates failed", list);
-      setPreviewState({ loading: false, success: false, url: null });
-      return idx;
-    });
-  };
+    setPreviewLoaded(false);
+  }, [previewUrl]);
 
   return (
     <section
       id="projects-section"
       style={{
-        padding: "120px 0",
-        borderTop: "1px solid #1a1a1a",
+        padding: "140px 0",
+        borderTop: "1px solid #111",
         background: "#050505",
         position: "relative",
-        overflow: "hidden",
       }}
     >
-      {previewState.url && (
-        <img
-          key={previewState.url}
-          src={previewState.url}
-          alt=""
-          onLoad={handlePreviewLoad}
-          onError={handlePreviewError}
-          style={{ position: "absolute", width: 1, height: 1, opacity: 0, pointerEvents: "none" }}
-          aria-hidden="true"
-        />
-      )}
-
-      {/* Status badges / fallback prompts */}
-      {hoveredProject != null &&
-        projects[hoveredProject] &&
-        projects[hoveredProject].preview &&
-        projects[hoveredProject].preview.startsWith("blob:") &&
-        !previewState.success &&
-        localBlobPath && (
-          <div
-            style={{
-              position: "absolute",
-              right: "4vw",
-              top: "110px",
-              zIndex: 2,
-              padding: "14px 16px",
-              background: "rgba(5,5,5,0.85)",
-              border: "1px solid rgba(255,255,255,0.08)",
-              borderRadius: "8px",
-              width: "240px",
-              color: "#fff",
-              fontFamily: "'Space Mono', monospace",
-              fontSize: "12px",
-              lineHeight: 1.4,
-            }}
-          >
-            <div style={{ fontWeight: 700, marginBottom: 6 }}>Preview unavailable locally</div>
-            <div>Save the image to:</div>
-            <div style={{ marginTop: 6, padding: "6px 8px", borderRadius: 6, background: "rgba(255,255,255,0.05)" }}>{localBlobPath}</div>
-            <div style={{ marginTop: 8, color: "rgba(255,255,255,0.6)", fontSize: 11 }}>Refresh or re-hover after saving.</div>
-          </div>
-        )}
-
-      {hoveredProject != null &&
-        projects[hoveredProject] &&
-        !previewState.success &&
-        triedCandidates &&
-        triedCandidates.length > 0 &&
-        !projects[hoveredProject].preview.startsWith("blob:") && (
-          <div
-            style={{
-              position: "absolute",
-              right: "4vw",
-              top: "110px",
-              zIndex: 2,
-              display: "flex",
-              gap: 8,
-            }}
-          >
-            {triedCandidates.slice(0, 3).map((c, i) => (
-              <a
-                key={i}
-                href={c}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  padding: "6px 10px",
-                  background: "rgba(0,0,0,0.6)",
-                  color: "#fff",
-                  borderRadius: 6,
-                  textDecoration: "none",
-                  fontSize: 12,
-                  fontFamily: "'Space Mono', monospace",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                }}
-              >
-                Open
-              </a>
-            ))}
-          </div>
-        )}
-
-      <div style={{ position: "relative", zIndex: 1 }}>
-        <div className="reveal-left delay-1" style={{ padding: "0 8vw", marginBottom: "80px" }}>
-          <div
-            className="reveal-left delay-2"
-            style={{
-              fontSize: "11px",
-              color: "#8BC34A",
-              letterSpacing: "4px",
-              marginBottom: "20px",
-              fontFamily: "'Space Mono', monospace",
-            }}
-          >
-            // SELECTED WORK
-          </div>
-          <h2
-            className="reveal-left delay-3"
-            style={{
-              fontSize: "clamp(32px, 7vw, 90px)",
-              fontWeight: "900",
-              color: "#f0f0f0",
-            }}
-          >
-            PROJECTS<span style={{ color: "#8BC34A" }}>_</span>
-          </h2>
+      <div style={{ padding: "0 8vw 60px" }}>
+        <div
+          className="reveal-left delay-1"
+          style={{
+            fontSize: "11px",
+            letterSpacing: "0.4em",
+            color: "#7CB663",
+            marginBottom: "16px",
+            fontFamily: "'Space Mono', monospace",
+          }}
+        >
+          03 · PROJECT WORK
         </div>
-        <div style={{ width: "100%" }}>
-        {projects.map((project, idx) => {
-          const isHovered = hoveredProject === idx;
-          const projectImage = project.preview && project.preview.trim() !== "" ? project.preview : null;
-          const fallbackRegionColor = `${project.color}22`;
-          const [titleHovered, setTitleHovered] = useState(false);
-          return (
+        <div
+          className="reveal-left delay-2"
+          style={{
+            fontSize: "clamp(36px, 6vw, 96px)",
+            fontWeight: 900,
+            color: "#f6ffe7",
+            letterSpacing: "-0.04em",
+          }}
+        >
+          Good software feels calm even under load.
+        </div>
+      </div>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1.1fr",
+          gap: "40px",
+          padding: "0 8vw",
+          position: "relative",
+        }}
+      >
+        <div
+          style={{
+            position: "relative",
+            border: "1px solid rgba(255,255,255,0.08)",
+            background: "rgba(0,0,0,0.85)",
+            borderRadius: "18px",
+            minHeight: "520px",
+            overflow: "hidden",
+            boxShadow: "0 35px 60px rgba(0,0,0,0.4)",
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background: "radial-gradient(circle at 30% 20%, rgba(124,182,99,0.25), transparent 55%)",
+              pointerEvents: "none",
+            }}
+          />
+          {previewUrl && (
+            <>
+              <img
+                key={`${previewUrl}-bg`}
+                src={previewUrl}
+                alt=""
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  filter: "blur(18px) saturate(120%)",
+                  opacity: 0.5,
+                }}
+                aria-hidden="true"
+              />
+              <img
+                key={`${previewUrl}-fg`}
+                src={previewUrl}
+                alt="Project preview"
+                onLoad={() => setPreviewLoaded(true)}
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  maxWidth: "82%",
+                  maxHeight: "82%",
+                  objectFit: "contain",
+                  filter: previewLoaded ? "none" : "blur(12px)",
+                  opacity: previewLoaded ? 1 : 0.3,
+                  transition: "filter 0.6s ease, opacity 0.6s ease",
+                borderRadius: "12px",
+                boxShadow: "0 30px 60px rgba(0,0,0,0.45)",
+              }}
+            />
+          </>
+        )}
+        <div
+          style={{
+            position: "absolute",
+            inset: "12% 18%",
+            background: "radial-gradient(circle, rgba(0,0,0,0.8), transparent 65%)",
+            pointerEvents: "none",
+          }}
+        />
+         <div
+           style={{
+             position: "absolute",
+             inset: 0,
+              background: "linear-gradient(120deg, rgba(255,255,255,0.2), transparent 70%)",
+              mixBlendMode: "screen",
+              animation: "projectScan 10s linear infinite",
+              opacity: 0.4,
+              pointerEvents: "none",
+            }}
+          />
+          {!previewLoaded && (
             <div
-              key={idx}
-              className={`reveal-right delay-${Math.min(idx + 2, 8)}`}
-              onMouseEnter={() => setHoveredProject(idx)}
-              onMouseLeave={() => setHoveredProject(null)}
               style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-                gap: 0,
-                alignItems: "stretch",
-                minHeight: "420px",
-                padding: "60px 0",
-                marginBottom: "40px",
-                borderBottom: isHovered ? `1px solid ${project.color}66` : "1px solid #111",
+                position: "absolute",
+                inset: 0,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#7CB663",
+                letterSpacing: "0.4em",
+                fontSize: "12px",
+              }}
+            >
+              LOADING PREVIEW...
+            </div>
+          )}
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: "26px" }}>
+          {projects.map((project, idx) => (
+            <div
+              key={project.name}
+              className={`reveal-right delay-${Math.min(idx + 2, 8)}`}
+              onMouseEnter={() => {
+                setPreviewUrl(project.preview);
+                setActiveIndex(idx);
+              }}
+              style={{
+                borderBottom: "1px solid rgba(255,255,255,0.05)",
+                paddingBottom: "26px",
                 cursor: "pointer",
-                transition: "all 0.45s cubic-bezier(0.23, 1, 0.32, 1)",
-                transform: isHovered ? "skewX(-1deg)" : "skewX(0)",
-                position: "relative",
-                zIndex: 1,
-                overflow: "hidden",
-                background: "transparent",
+                transform: activeIndex === idx ? "translateX(8px)" : "none",
+                transition: "transform 0.3s ease",
               }}
             >
               <div
                 style={{
-                  position: "absolute",
-                  inset: 0,
-                  background: `radial-gradient(circle at ${isHovered ? "30% 40%" : "60% 50%"}, ${project.color}33, transparent 60%)`,
-                  opacity: isHovered ? 0.65 : 0,
-                  transition: "opacity 0.4s ease",
-                  pointerEvents: "none",
-                  mixBlendMode: "screen",
-                }}
-              />
-              <div
-                style={{
-                  position: "relative",
-                  zIndex: 1,
-                  padding: "0 3vw 0 calc(8vw)",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "20px",
-                    marginBottom: "20px",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: "12px",
-                      color: "#444",
-                      fontFamily: "'Space Mono', monospace",
-                    }}
-                  >
-                    [{project.year}]
-                  </span>
-                  <span
-                    style={{
-                      padding: "6px 16px",
-                      background: project.status === "LIVE" ? project.color : "#111",
-                      color: project.status === "LIVE" ? "#000" : "#bbb",
-                      fontSize: "10px",
-                      fontWeight: "800",
-                      letterSpacing: "2px",
-                    }}
-                  >
-                    {project.status}
-                  </span>
-                </div>
-
-                <h3
-                  style={{
-                    fontSize: "clamp(36px, 7vw, 80px)",
-                    fontWeight: "900",
-                    marginBottom: "20px",
-                    letterSpacing: "-0.02em",
-                    transition: "color 0.3s",
-                    color: project.link && project.link.trim() !== "" && hoveredTitle === idx ? project.color : "#fff",
-                  }}
-                >
-                  {project.link && project.link.trim() !== "" ? (
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "8px",
-                        color: project.link && project.link.trim() !== "" && hoveredTitle === idx ? project.color : "#fff",
-                        textDecoration: "none",
-                      }}
-                      onMouseEnter={() => setHoveredTitle(idx)}
-                      onMouseLeave={() => setHoveredTitle(null)}
-                    >
-                      <span
-                        style={{
-                          position: "relative",
-                          display: "inline-block",
-                          paddingBottom: "6px",
-                          color: project.link && project.link.trim() !== "" && hoveredTitle === idx ? project.color : "#fff",
-                        }}
-                      >
-                        {project.name}
-                        <span
-                          style={{
-                            position: "absolute",
-                            left: 0,
-                            bottom: 0,
-                            height: "2px",
-                            width: hoveredTitle === idx ? "100%" : "0%",
-                            background: project.link && project.link.trim() !== "" && hoveredTitle === idx ? project.color : "#fff",
-                            transition: "width 0.35s ease",
-                          }}
-                        />
-                      </span>
-                      <ArrowUpRight
-                        size={32}
-                        color={project.link && project.link.trim() !== "" && hoveredTitle === idx ? project.color : "#fff"}
-                        style={{
-                          transition: "transform 0.3s ease, color 0.3s ease",
-                          transform: hoveredTitle === idx ? "translate(3px, -2px)" : "none",
-                        }}
-                      />
-                    </a>
-                  ) : (
-                    project.name
-                  )}
-                </h3>
-
-                <p
-                  style={{
-                    color: "#c7c7c7",
-                    marginBottom: "20px",
-                    fontSize: "16px",
-                    maxWidth: "600px",
-                    lineHeight: "1.6",
-                  }}
-                >
-                  {project.description}
-                </p>
-
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "20px",
-                    flexWrap: "wrap",
-                    fontFamily: "'Space Mono', monospace",
-                  }}
-                >
-                  {project.tech.map((t, i) => (
-                    <span
-                      key={i}
-                      style={{
-                        fontSize: "12px",
-                        color: isHovered ? project.color : "#888",
-                        transition: "color 0.2s",
-                      }}
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div
-                style={{
-                  position: "relative",
-                  minHeight: "100%",
-                  height: "100%",
-                  alignSelf: "stretch",
-                  borderRadius: "18px",
-                  overflow: "hidden",
-                  background: projectImage ? "#000" : fallbackRegionColor,
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "center",
-                  borderLeft: `1px solid ${isHovered ? `${project.color}55` : "rgba(255,255,255,0.05)"}`,
-                  transition: "border-color 300ms ease",
+                  gap: "14px",
+                  marginBottom: "12px",
+                  color: "#7CB663",
+                  letterSpacing: "0.3em",
+                  fontSize: "11px",
                 }}
               >
-                {projectImage ? (
-                  <img
-                    src={projectImage}
-                    alt={project.name}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "contain",
-                      borderRadius: "18px",
-                      filter: isHovered ? "blur(0)" : "blur(14px)",
-                      opacity: isHovered ? 0.9 : 0.35,
-                      transition: "opacity 350ms ease, filter 600ms ease",
-                      backgroundColor: "#030303",
-                    }}
-                  />
-                ) : (
-                  <span style={{ color: "rgba(255,255,255,0.4)", fontFamily: "'Space Mono', monospace", fontSize: 12 }}>
-                    No preview available
-                  </span>
+                {project.year} · {project.status}
+              </div>
+              <h3
+                style={{
+                  fontSize: "clamp(32px, 3vw, 52px)",
+                  fontWeight: 800,
+                  letterSpacing: "-0.02em",
+                  color: activeIndex === idx ? "#7CB663" : "#fff",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  transition: "color 0.3s ease",
+                }}
+              >
+                {project.name}
+                {project.link && (
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-cursor-interactive="true"
+                    data-cursor-label="VIEW PROJECT"
+                    style={{ color: "#fff", display: "inline-flex", alignItems: "center" }}
+                  >
+                    <ArrowUpRight size={28} />
+                  </a>
                 )}
+              </h3>
+              <p style={{ color: "#c7c7c7", fontSize: "15px", lineHeight: 1.6, margin: "8px 0 14px" }}>
+                {project.description}
+              </p>
+              <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                {project.tech.map((tech) => (
+                  <span
+                    key={tech}
+                    style={{
+                      padding: "6px 10px",
+                      borderRadius: "999px",
+                      border: "1px solid rgba(255,255,255,0.08)",
+                      fontSize: "11px",
+                      color: "#dcdcdc",
+                      letterSpacing: "0.1em",
+                    }}
+                  >
+                    {tech}
+                  </span>
+                ))}
               </div>
             </div>
-          );
-        })}
+          ))}
         </div>
       </div>
+      <style>{`
+        @keyframes projectScan {
+          0% { transform: translateX(-40%) skewX(-8deg); }
+          50% { transform: translateX(30%) skewX(-8deg); }
+          100% { transform: translateX(-40%) skewX(-8deg); }
+        }
+      `}</style>
     </section>
   );
 };

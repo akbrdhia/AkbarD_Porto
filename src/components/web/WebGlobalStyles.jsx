@@ -155,6 +155,18 @@ const WebGlobalStyles = () => {
         100% { transform: translate3d(0,0,0) scale(0.92) rotate(-1deg); opacity: 0.4; }
       }
 
+      @keyframes heroGlowDrift {
+        0% { transform: translate3d(0, 0, 0) scale(0.95); opacity: 0.4; }
+        50% { transform: translate3d(20px, -20px, 0) scale(1.05); opacity: 0.6; }
+        100% { transform: translate3d(-15px, 15px, 0) scale(0.9); opacity: 0.35; }
+      }
+
+      @keyframes heroScan {
+        0% { transform: translateX(-40%) skewX(-8deg); }
+        50% { transform: translateX(20%) skewX(-8deg); }
+        100% { transform: translateX(-40%) skewX(-8deg); }
+      }
+
       @keyframes cursorCrosshairBlink {
         0%, 100% { opacity: 0.2; }
         50% { opacity: 1; }

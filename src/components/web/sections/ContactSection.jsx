@@ -1,157 +1,137 @@
 import React from "react";
-import { Mail, Github, Linkedin, ExternalLink, Terminal } from "lucide-react";
+import { Mail, Github, Linkedin, Instagram, ArrowUpRight } from "lucide-react";
 import { PERSONAL_INFO } from "../../../constants/portfolioData";
 
 const ContactSection = () => {
-  const contacts = [
-    { icon: Mail, label: "EMAIL", value: PERSONAL_INFO.email, href: `mailto:${PERSONAL_INFO.email}` },
-    { icon: Github, label: "GITHUB", value: "@akbrdhia", href: "https://github.com/akbrdhia" },
-    { icon: Linkedin, label: "LINKEDIN", value: PERSONAL_INFO.linkedin || "akbardh", href: `https://linkedin.com/in/${PERSONAL_INFO.linkedin || "akbardh"}` },
+  const links = [
+    { icon: Mail, label: "Email", value: PERSONAL_INFO.email, href: `mailto:${PERSONAL_INFO.email}` },
+    { icon: Github, label: "GitHub", value: "@akbrdhia", href: "https://github.com/akbrdhia" },
+    {
+      icon: Linkedin,
+      label: "LinkedIn",
+      value: PERSONAL_INFO.linkedin || "akbardh",
+      href: `https://linkedin.com/in/${PERSONAL_INFO.linkedin || "akbardh"}`,
+    },
+    {
+      icon: Instagram,
+      label: "Instagram",
+      value: "@bukan__akbarr",
+      href: "https://instagram.com/bukan__akbarr",
+    },
   ];
 
   return (
-    <section 
+    <section
       id="contact-section"
       style={{
-        minHeight: "100vh",
-        padding: "120px 8vw",
-        borderTop: "1px solid #1a1a1a",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
+        padding: "140px 0",
+        borderTop: "1px solid #151515",
+        background: "#040404",
         position: "relative",
         overflow: "hidden",
-        background: "#0a0a0a",
       }}
     >
-      {/* Giant background */}
-      <div style={{
-        position: "absolute",
-        bottom: "-20%",
-        right: "-10%",
-        fontSize: "clamp(200px, 40vw, 500px)",
-        fontWeight: "900",
-        color: "#111",
-        lineHeight: "0.8",
-        pointerEvents: "none",
-      }}>
-        HI!
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)",
+          backgroundSize: "140px 140px",
+          opacity: 0.2,
+        }}
+      />
+
+      <div style={{ position: "relative", zIndex: 2, padding: "0 8vw 80px" }}>
+        <div
+          className="reveal-left delay-1"
+          style={{
+            fontSize: "11px",
+            letterSpacing: "0.4em",
+            color: "#7CB663",
+            marginBottom: "20px",
+            fontFamily: "'Space Mono', monospace",
+          }}
+        >
+          05 · LET'S CONNECT
+        </div>
+        <div
+          className="reveal-left delay-2"
+          style={{
+            fontSize: "clamp(34px, 6vw, 100px)",
+            fontWeight: 900,
+            color: "#f6ffe7",
+            letterSpacing: "-0.05em",
+          }}
+        >
+          Tell me what you want to build, and let's get it off the ground.
+        </div>
       </div>
 
-      <div className="reveal-left delay-1" style={{
-        fontSize: "11px",
-        color: "#8BC34A",
-        letterSpacing: "4px",
-        marginBottom: "50px",
-        fontFamily: "'Space Mono', monospace",
-        position: "relative",
-        zIndex: 2,
-      }}>
-        // LET'S CONNECT
-      </div>
-
-      <h2 className="reveal delay-2" style={{
-        fontSize: "clamp(36px, 10vw, 120px)",
-        fontWeight: "900",
-        lineHeight: "1.05",
-        marginBottom: "80px",
-        position: "relative",
-        zIndex: 2,
-      }}>
-        GOT A PROJECT?
-        <br />
-        <span style={{ color: "#7CB663" }}>LET'S TALK</span>
-      </h2>
-
-      <div style={{
-        display: "flex",
-        gap: "30px",
-        flexWrap: "wrap",
-        marginBottom: "120px",
-        position: "relative",
-        zIndex: 2,
-      }}>
-        {contacts.map((item, idx) => (
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+          gap: "22px",
+          padding: "0 8vw",
+          position: "relative",
+          zIndex: 2,
+        }}
+      >
+        {links.map((link, idx) => (
           <a
-            key={idx}
-            className={`reveal-scale delay-${idx + 3}`}
-            href={item.href}
-            target={item.href.startsWith("mailto") ? undefined : "_blank"}
+            key={link.label}
+            href={link.href}
+            target={link.href.startsWith("mailto") ? undefined : "_blank"}
             rel="noopener noreferrer"
+            data-cursor-interactive="true"
+            data-cursor-label={link.label}
+            className={`reveal delay-${idx + 2}`}
             style={{
+              border: "1px solid rgba(255,255,255,0.05)",
+              padding: "24px",
               display: "flex",
+              justifyContent: "space-between",
               alignItems: "center",
-              gap: "20px",
-              padding: "25px 35px",
-              background: "#050505",
-              border: "1px solid #111",
+              background: "rgba(0,0,0,0.75)",
+              color: "#fff",
               textDecoration: "none",
-              transition: "all 0.3s cubic-bezier(0.23, 1, 0.32, 1)",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "#7CB663";
-              e.currentTarget.style.transform = "translateY(-8px) skewX(-2deg)";
-              e.currentTarget.style.boxShadow = "0 15px 30px rgba(124, 182, 99, 0.15)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "#111";
-              e.currentTarget.style.transform = "translateY(0) skewX(0)";
-              e.currentTarget.style.boxShadow = "none";
+              fontWeight: 600,
+              letterSpacing: "0.1em",
             }}
           >
-            <item.icon size={28} color="#7CB663" />
-            <div>
-              <div style={{
-                fontSize: "10px",
-                color: "#444",
-                letterSpacing: "3px",
-                marginBottom: "6px",
-                fontFamily: "'Space Mono', monospace",
-              }}>
-                {item.label}
-              </div>
-              <div style={{
-                fontSize: "15px",
-                color: "#fff",
-                fontWeight: "600",
-              }}>
-                {item.value}
-              </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+              <span style={{ fontSize: "12px", color: "#7CB663" }}>{link.label.toUpperCase()}</span>
+              <span style={{ fontSize: "18px" }}>{link.value}</span>
             </div>
-            <ExternalLink size={18} color="#333" style={{ marginLeft: "10px" }} />
+            <link.icon size={24} color="#7CB663" />
           </a>
         ))}
       </div>
 
-      {/* Footer */}
-      <div className="reveal delay-6" style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        paddingTop: "50px",
-        borderTop: "1px solid #111",
-        flexWrap: "wrap",
-        gap: "25px",
-        fontFamily: "'Space Mono', monospace",
-        fontSize: "11px",
-        position: "relative",
-        zIndex: 2,
-      }}>
-        <div style={{ color: "#333" }}>
-          © {new Date().getFullYear()} {PERSONAL_INFO.username?.toUpperCase() || "AKBARD"}
-        </div>
-        <div style={{ 
-          display: "flex", 
-          alignItems: "center", 
-          gap: "10px",
-          color: "#333",
-        }}>
-          <span>CRAFTED WITH</span>
-          <Terminal size={14} color="#7CB663" />
-          <span style={{ color: "#7CB663" }}>REACT + VITE</span>
-        </div>
-        <div style={{ color: "#7CB663", letterSpacing: "3px" }}>
-          BRUTALIST MODE
+      <div
+        style={{
+          marginTop: "80px",
+          position: "relative",
+          zIndex: 2,
+          padding: "0 8vw",
+          borderTop: "1px solid rgba(255,255,255,0.05)",
+          paddingTop: "30px",
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: "18px",
+          fontFamily: "'Space Mono', monospace",
+          fontSize: "11px",
+          color: "#8f8f8f",
+        }}
+      >
+        <div>© {new Date().getFullYear()} {PERSONAL_INFO.username || "AkbarD"}</div>
+        <div>React</div>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "#7CB663" }}>
+          <ArrowUpRight size={14} />
+          DM for availability
         </div>
       </div>
     </section>
@@ -159,3 +139,4 @@ const ContactSection = () => {
 };
 
 export default ContactSection;
+
