@@ -149,6 +149,27 @@ const WebGlobalStyles = () => {
         100% { background-position: 200% center; }
       }
 
+      @keyframes cursorNoiseDrift {
+        0% { transform: translate3d(0,0,0) scale(0.9) rotate(-2deg); opacity: 0.35; }
+        50% { transform: translate3d(0,0,0) scale(1.05) rotate(3deg); opacity: 0.55; }
+        100% { transform: translate3d(0,0,0) scale(0.92) rotate(-1deg); opacity: 0.4; }
+      }
+
+      @keyframes cursorCrosshairBlink {
+        0%, 100% { opacity: 0.2; }
+        50% { opacity: 1; }
+      }
+
+      @keyframes cursorPixelPulse {
+        0%, 100% { transform: translate3d(0,0,0) scale(0.8); opacity: 0.6; }
+        50% { transform: translate3d(0,-4px,0) scale(1.25); opacity: 1; }
+      }
+
+      @keyframes cursorLabelShimmer {
+        0% { background-position: -150% center; }
+        100% { background-position: 150% center; }
+      }
+
       @keyframes borderDance {
         0%, 100% { border-color: #222; }
         50% { border-color: #7CB663; }
