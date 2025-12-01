@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 import { FileText, X } from "lucide-react";
 import { usePortfolio } from "../context/PortfolioContext";
 import { FILE_CONTENTS } from "../constants/portfolioData";
@@ -61,6 +62,56 @@ const markdownComponents = {
     >
       {children}
     </a>
+  ),
+  img: ({ src, alt }) => (
+    <img 
+      src={src} 
+      alt={alt || ""}
+      style={{ 
+        display: "inline-block",
+        margin: "4px 4px 4px 0",
+        verticalAlign: "middle",
+        maxHeight: "28px"
+      }}
+    />
+  ),
+  details: ({ children, open }) => (
+    <details 
+      open={open}
+      style={{ 
+        marginBottom: "16px",
+        background: "#1a1a1a",
+        borderRadius: "8px",
+        padding: "12px",
+        border: "1px solid #3C3F41"
+      }}
+    >
+      {children}
+    </details>
+  ),
+  summary: ({ children }) => (
+    <summary 
+      style={{ 
+        cursor: "pointer",
+        color: "#6A8759",
+        fontWeight: "bold",
+        fontSize: "16px",
+        marginBottom: "8px"
+      }}
+    >
+      {children}
+    </summary>
+  ),
+  div: ({ children, style, align }) => (
+    <div style={{ 
+      ...style,
+      textAlign: align || "left",
+      display: "flex",
+      flexWrap: "wrap",
+      gap: "4px"
+    }}>
+      {children}
+    </div>
   ),
 };
 
@@ -203,7 +254,10 @@ const Editor = () => {
               {/* If markdown file is fully typed, render it */}
               {activeFile.endsWith(".md") && typedFiles[activeFile] ? (
                 <div className="markdown-content" style={{ animation: "fadeIn 0.5s ease-out" }}>
-                  <ReactMarkdown components={markdownComponents}>
+                  <ReactMarkdown 
+                    components={markdownComponents}
+                    rehypePlugins={[rehypeRaw]}
+                  >
                     {FILE_CONTENTS[activeFile]}
                   </ReactMarkdown>
                 </div>

@@ -19,34 +19,53 @@ export const highlightKotlin = (code) => {
       "forEachIndexed",
       "import",
       "return",
+      "override",
+      "companion",
+      "private",
+      "enum",
+      "when",
+      "else",
+      "to",
+      "in",
+      "is",
     ];
-    const types = ["String", "List", "Map", "Int", "Boolean"];
+    const types = ["String", "List", "Map", "Int", "Boolean", "Unit"];
   
     let highlighted = code;
+    
+    // Use placeholder system to prevent overlapping replacements
+    const placeholders = [];
+    const addPlaceholder = (content) => {
+      const id = `__PH${placeholders.length}__`;
+      placeholders.push(content);
+      return id;
+    };
   
-    // Comments
+    // Step 1: Extract and protect multi-line comments /* */
     highlighted = highlighted.replace(
-      /\/\*\*[\s\S]*?\*\//g,
-      (match) =>
-        `<span style="color: #808080; font-style: italic;">${match}</span>`
+      /\/\*[\s\S]*?\*\//g,
+      (match) => addPlaceholder(`<span style="color: #629755; font-style: italic;">${match}</span>`)
     );
+    
+    // Step 2: Extract and protect single-line comments //
     highlighted = highlighted.replace(
       /\/\/.*/g,
-      (match) =>
-        `<span style="color: #808080; font-style: italic;">${match}</span>`
+      (match) => addPlaceholder(`<span style="color: #629755; font-style: italic;">${match}</span>`)
     );
-  
-    // Strings
-    highlighted = highlighted.replace(
-      /"([^"]*)"/g,
-      '<span style="color: #6A8759;">"$1"</span>'
-    );
+    
+    // Step 3: Extract and protect triple-quoted strings
     highlighted = highlighted.replace(
       /"""[\s\S]*?"""/g,
-      (match) => `<span style="color: #6A8759;">${match}</span>`
+      (match) => addPlaceholder(`<span style="color: #6A8759;">${match}</span>`)
     );
   
-    // Keywords
+    // Step 4: Extract and protect regular strings
+    highlighted = highlighted.replace(
+      /"([^"\\]|\\.)*"/g,
+      (match) => addPlaceholder(`<span style="color: #6A8759;">${match}</span>`)
+    );
+  
+    // Step 5: Keywords
     keywords.forEach((keyword) => {
       const regex = new RegExp(`\\b${keyword}\\b`, "g");
       highlighted = highlighted.replace(
@@ -55,7 +74,7 @@ export const highlightKotlin = (code) => {
       );
     });
   
-    // Types
+    // Step 6: Types
     types.forEach((type) => {
       const regex = new RegExp(`\\b${type}\\b`, "g");
       highlighted = highlighted.replace(
@@ -64,11 +83,22 @@ export const highlightKotlin = (code) => {
       );
     });
   
-    // Functions
+    // Step 7: Functions
     highlighted = highlighted.replace(
       /\b([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/g,
       '<span style="color: #FFC66D;">$1</span>('
     );
+    
+    // Step 8: Numbers
+    highlighted = highlighted.replace(
+      /\b(\d+)\b/g,
+      '<span style="color: #6897BB;">$1</span>'
+    );
+    
+    // Step 9: Restore placeholders
+    placeholders.forEach((content, i) => {
+      highlighted = highlighted.replace(`__PH${i}__`, content);
+    });
   
     return highlighted;
   };
