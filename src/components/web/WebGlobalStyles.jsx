@@ -9,6 +9,36 @@ const WebGlobalStyles = () => {
         cursor: none !important;
       }
 
+      body {
+        position: relative;
+        background: #020202;
+        color: #fff;
+      }
+
+      body::before,
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        mix-blend-mode: screen;
+      }
+
+      body::before {
+        background: radial-gradient(circle at 20% 20%, rgba(124,182,99,0.2), transparent 50%),
+                    radial-gradient(circle at 80% 30%, rgba(255,0,77,0.12), transparent 55%);
+        filter: blur(120px);
+        animation: globalGlowDrift 20s ease-in-out infinite;
+        opacity: 0.6;
+      }
+
+      body::after {
+        background: radial-gradient(circle at 40% 70%, rgba(255,255,255,0.08), transparent 60%);
+        filter: blur(160px);
+        animation: globalGlowPulse 14s ease-in-out infinite;
+        opacity: 0.3;
+      }
+
       /* ========== SCROLL REVEAL ANIMATIONS ========== */
       .reveal {
         opacity: 0;
@@ -165,6 +195,18 @@ const WebGlobalStyles = () => {
         0% { transform: translateX(-40%) skewX(-8deg); }
         50% { transform: translateX(20%) skewX(-8deg); }
         100% { transform: translateX(-40%) skewX(-8deg); }
+      }
+
+      @keyframes globalGlowDrift {
+        0% { transform: translate3d(0,0,0) scale(0.9); }
+        50% { transform: translate3d(40px,-30px,0) scale(1.05); }
+        100% { transform: translate3d(-20px,25px,0) scale(0.9); }
+      }
+
+      @keyframes globalGlowPulse {
+        0% { opacity: 0.25; transform: scale(0.95); }
+        50% { opacity: 0.45; transform: scale(1.05); }
+        100% { opacity: 0.25; transform: scale(0.95); }
       }
 
       @keyframes cursorCrosshairBlink {
