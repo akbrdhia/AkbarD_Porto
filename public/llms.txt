@@ -1,0 +1,26 @@
+# Akbar Dhia - Portfolio
+
+Akbar Dhia is a Mobile and Full-Stack Web Developer specializing in Android (Kotlin) and modern Web (React, Laravel) technologies.
+
+## Core Expertise
+- **Android Development**: Kotlin, Jetpack Compose, MVVM, Coroutines, Retrofit.
+- **Web Development**: React.js, Vite, Laravel, Tailwind CSS.
+- **UI/UX Design**: Human-centered interfaces, Brutalist and Minimalist styles.
+
+## Experience Modes
+This portfolio offers two distinct viewing experiences:
+1. **Web Mode**: A modern, responsive web layout showcasing projects and skills.
+2. **IDE Mode**: An interactive Android Studio simulation where you can explore code and project structures.
+
+## Links
+- Website: https://akbardhia.me
+- GitHub: https://github.com/akbrdhia
+- LinkedIn: https://linkedin.com/in/akbardhia
+- Email: akbardhia19@gmail.com (Update with actual email)
+
+## Projects
+- **ODS Mandiri**: A robust backend system for cooperative management.
+- **Interactive Portfolio**: This current React-based environment.
+- **Cogito**: Various Android applications using Kotlin and modern libraries.
+- **Manager Usaha v1 and V2**: Various Android applications using Kotlin and modern libraries.
+- **Mobile Apps**: Various Android applications using Kotlin and modern libraries.

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { ArrowUpRight, Github, Play } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { ArrowUpRight, Github, Play, Monitor } from "lucide-react";
 import { PERSONAL_INFO } from "../../../constants/portfolioData";
 
 const HeroSection = ({ scrollY, glitchActive }) => {
+  const navigate = useNavigate();
   const heroStats = [
     {
       label: "PLATFORMS",
@@ -295,10 +297,10 @@ const HeroSection = ({ scrollY, glitchActive }) => {
               className="reveal delay-4"
               style={{ display: "flex", gap: "18px", flexWrap: "wrap" }}
             >
-              <a
-                href={`mailto:${PERSONAL_INFO.email}`}
+              <button
+                onClick={() => navigate('/select')}
                 data-cursor-interactive="true"
-                data-cursor-label="SEND BRIEF"
+                data-cursor-label="IDE STUDIO"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -306,7 +308,8 @@ const HeroSection = ({ scrollY, glitchActive }) => {
                   padding: "22px 42px",
                   background: "#baf36a",
                   color: "#050505",
-                  textDecoration: "none",
+                  border: "none",
+                  cursor: "pointer",
                   fontSize: "13px",
                   fontWeight: 800,
                   letterSpacing: "0.4em",
@@ -316,10 +319,10 @@ const HeroSection = ({ scrollY, glitchActive }) => {
                   transition: "transform 0.2s ease",
                 }}
               >
-                <Play size={16} fill="#050505" />
-                DEPLOY REQUEST
+                <Monitor size={16} fill="#050505" />
+                TRY IDE MODE
                 <ArrowUpRight size={18} strokeWidth={3} />
-              </a>
+              </button>
 
               <a
                 href="https://github.com/akbrdhia"

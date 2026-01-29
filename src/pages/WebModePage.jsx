@@ -210,8 +210,8 @@ const WebModePage = () => {
   return (
     <>
       <SEO 
-        title="Portfolio Site" 
-        description="Experience my professional work through a modern brutalist web interface. Developer, Designer, and Creator."
+        title="Professional Web Portfolio" 
+        description="Explore Akbar Dhia's professional work and projects through a modern, responsive web interface. Specializing in Full-Stack Development, UI/UX Design, and innovative web solutions."
         url="/web"
       />
       {/* Fixed elements - OUTSIDE animated container */}

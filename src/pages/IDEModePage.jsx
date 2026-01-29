@@ -243,8 +243,8 @@ const IDEModePage = () => {
   return (
     <div className="portfolio-container">
       <SEO 
-        title="IDE Studio" 
-        description="Experience my work through an Interactive Android Studio IDE environment. Explore the code, build the project."
+        title="Interactive IDE Portfolio Studio" 
+        description="Step into an interactive Android Studio environment to explore Akbar Dhia's mobile development projects. Experience code, architecture, and project simulations first-hand."
         url="/ide"
       />
       <style>

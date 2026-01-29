@@ -272,8 +272,8 @@ const ModeSelectionPage = () => {
       }}
     >
       <SEO 
-        title="Home" 
-        description="Choose your experience: Web Developer Perspective or Android Studio IDE Perspective."
+        title="Portfolio Experience Selection" 
+        description="Welcome to Akbar Dhia's portfolio. Choose your preferred viewing experience: a modern Web Developer perspective or an interactive Android Studio IDE environment."
       />
       {/* Background Elements */}
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0 }}>
@@ -394,7 +394,7 @@ const ModeSelectionPage = () => {
       {/* Content */}
       <div style={{ textAlign: "center", position: "relative", zIndex: 1, maxWidth: "600px", padding: "0 20px" }}>
         {/* Logo */}
-        <div
+        <h1
           ref={logoRef}
           className={animationComplete ? "logo-animated" : ""}
           style={{
@@ -408,7 +408,7 @@ const ModeSelectionPage = () => {
           }}
         >
           {PERSONAL_INFO.username}
-        </div>
+        </h1>
 
         {/* Subtitle */}
         <div
@@ -434,9 +434,9 @@ const ModeSelectionPage = () => {
             letterSpacing: "3px",
             textTransform: "uppercase",
           }}>
-            Choose Your Experience
+          Choose Your Experience
           </div>
-          <div style={{
+          <h2 style={{
             fontSize: "32px",
             fontWeight: "900",
             color: "#fff",
@@ -444,6 +444,10 @@ const ModeSelectionPage = () => {
             letterSpacing: "-1px",
           }}>
             How do you want to explore?
+          </h2>
+          {/* SEO hidden description */}
+          <div className="sr-only">
+            Akbar Dhia is a Software Engineer based in Bogor, specializing in building high-performance Android applications with Kotlin and scalable full-stack web solutions using React and Laravel. Explore the portfolio through an Interactive Studio IDE or a modern Web Experience.
           </div>
         </div>
 

@@ -19,6 +19,7 @@ const SEO = ({ title, description, keywords, image, url }) => {
       <meta key="meta-title" name="title" content={seoTitle} />
       <meta key="meta-desc" name="description" content={seoDescription} />
       {keywords && <meta key="meta-keywords" name="keywords" content={keywords} />}
+      <link rel="canonical" href={seoUrl} />
 
       {/* Open Graph / Facebook */}
       <meta key="og-type" property="og:type" content="website" />
