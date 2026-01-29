@@ -1,8 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { RefreshCw } from "lucide-react";
+import { usePortfolio } from "../../context/PortfolioContext";
 import { PERSONAL_INFO } from "../../constants/portfolioData";
 
 const WebNavbar = ({ currentTime }) => {
+  const navigate = useNavigate();
+  const { setViewMode } = usePortfolio();
 
   return (
     <div style={{
@@ -23,12 +27,16 @@ const WebNavbar = ({ currentTime }) => {
       fontSize: "11px",
     }}>
       <div style={{ display: "flex", alignItems: "center", gap: "30px" }}>
-        <div style={{ 
-          fontWeight: "900", 
-          fontSize: "16px",
-          color: "#7CB663",
-          letterSpacing: "-1px",
-        }}>
+        <div 
+          onClick={() => navigate("/")}
+          style={{ 
+            fontWeight: "900", 
+            fontSize: "16px",
+            color: "#7CB663",
+            letterSpacing: "-1px",
+            cursor: "pointer"
+          }}
+        >
           AD_
         </div>
         <div style={{ color: "#ddd", display: "flex", gap: "20px" }}>
@@ -39,10 +47,11 @@ const WebNavbar = ({ currentTime }) => {
       </div>
       <button
         onClick={() => {
-          // Clear session and reload to show mode selector
+          // Clear session and navigate to mode selector
           sessionStorage.removeItem("portfolio_visited");
           localStorage.removeItem("portfolio_mode");
-          window.location.reload();
+          if (setViewMode) setViewMode(null);
+          navigate("/");
         }}
         style={{
           padding: "8px 20px",

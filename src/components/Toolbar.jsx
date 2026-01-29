@@ -5,20 +5,21 @@ import { usePortfolio } from "../context/PortfolioContext";
 import { PERSONAL_INFO } from "../constants/portfolioData";
 
 const Toolbar = ({ onBuild }) => {
-  const { isBuilding, gradleSyncing } = usePortfolio();
+  const { isBuilding, gradleSyncing, setViewMode } = usePortfolio();
   const navigate = useNavigate();
 
   const handleModeSwitch = () => {
     // Clear session and navigate to mode selector
     sessionStorage.removeItem("portfolio_visited");
     localStorage.removeItem("portfolio_mode");
+    if (setViewMode) setViewMode(null);
     navigate('/');
   };
 
   return (
     <div className="toolbar">
       {/* Left section - Logo & Title */}
-      <div className="toolbar-left">
+      <div className="toolbar-left" onClick={handleModeSwitch} style={{ cursor: 'pointer' }}>
         <div className="toolbar-logo">
           <img src="/logo.png" alt="logo" width={24} height={24} />
         </div>
