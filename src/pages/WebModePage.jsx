@@ -27,87 +27,68 @@ import ContactSection from "../components/web/sections/ContactSection";
 
 const WebModePage = () => {
   const { setViewMode } = usePortfolio();
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [hoveredProject, setHoveredProject] = useState(null);
   const [cursorLinkLabel, setCursorLinkLabel] = useState(null);
-  const [scrollY, setScrollY] = useState(0);
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [glitchActive, setGlitchActive] = useState(false);
   const [loadProgress, setLoadProgress] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [activeSection, setActiveSection] = useState(0);
   const [showContent, setShowContent] = useState(false);
   const containerRef = useRef(null);
 
-  // Set view mode to web when this page mounts
+  // Page Orchestration: Mount, Mode, and Loading Sequence
   useEffect(() => {
+    // 1. Set mode
     setViewMode && setViewMode("web");
-  }, [setViewMode]);
 
-  // Intro animation - slower for dramatic effect
-  useEffect(() => {
+    // 2. Start loading progress
     const interval = setInterval(() => {
       setLoadProgress(prev => {
         if (prev >= 100) {
           clearInterval(interval);
           setTimeout(() => {
             setIsLoaded(true);
-            // Trigger content animation after a small delay
             setTimeout(() => setShowContent(true), 100);
           }, 500);
           return 100;
         }
-        // Slower progress with variable speed
         const increment = prev < 30 ? Math.random() * 8 : 
                          prev < 70 ? Math.random() * 5 : 
                          Math.random() * 3;
         return Math.min(prev + increment, 100);
       });
     }, 80);
+
     return () => clearInterval(interval);
-  }, []);
+  }, [setViewMode]);
 
-  // Mouse tracking - use clientX/Y for fixed positioned cursor
+  // Consolidate continuous UI updates: Mouse and Interaction tracking
   useEffect(() => {
-    const handlePointerMove = (e) => {
-      requestAnimationFrame(() => {
-        setMousePosition({ x: e.clientX, y: e.clientY });
-      });
-    };
-    window.addEventListener("pointermove", handlePointerMove, { passive: true });
-    return () => window.removeEventListener("pointermove", handlePointerMove);
-  }, []);
-
-  useEffect(() => {
-    const interactiveSelector =
-      'a[href], button, [role="button"], input[type="button"], input[type="submit"], [data-cursor-interactive="true"]';
-
+    const interactiveSelector = 'a[href], button, [role="button"], input[type="button"], input[type="submit"], [data-cursor-interactive="true"]';
+    
     const deriveLabel = (el) => {
       if (!el) return null;
-      const rawLabel =
-        el.getAttribute("data-cursor-label") ||
-        el.getAttribute("aria-label") ||
-        el.innerText ||
-        el.textContent ||
-        el.getAttribute("href");
-      if (!rawLabel) return null;
-      return rawLabel.replace(/\s+/g, " ").trim();
+      return (el.getAttribute("data-cursor-label") || el.getAttribute("aria-label") || el.innerText || el.textContent || el.getAttribute("href"))?.replace(/\s+/g, " ").trim() || null;
     };
 
-    const handlePointerMove = (event) => {
-      const interactiveEl = event.target.closest(interactiveSelector);
+    const handlePointerMove = (e) => {
+      // 1. Update mouse position via CSS variables to avoid React re-renders
+      const root = document.documentElement;
+      root.style.setProperty('--mouse-x', `${e.clientX}px`);
+      root.style.setProperty('--mouse-y', `${e.clientY}px`);
+
+      // 2. Detect interactive elements
+      const interactiveEl = e.target.closest(interactiveSelector);
       if (!interactiveEl) {
-        setCursorLinkLabel((prev) => (prev === null ? prev : null));
+        setCursorLinkLabel(prev => prev === null ? prev : null);
         return;
       }
-
       const label = deriveLabel(interactiveEl) || "LINK";
-
-      setCursorLinkLabel((prev) => (prev === label ? prev : label));
+      setCursorLinkLabel(prev => prev === label ? prev : label);
     };
 
-    document.addEventListener("pointermove", handlePointerMove);
-    return () => document.removeEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    return () => window.removeEventListener("pointermove", handlePointerMove);
   }, []);
 
   // Scroll tracking with section detection
@@ -126,7 +107,8 @@ const WebModePage = () => {
     const handleScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
-          setScrollY(window.scrollY);
+          // Update scroll CSS variable for smooth parallax without re-renders
+          document.documentElement.style.setProperty('--scroll-y', `${window.scrollY}px`);
           
           // Find which section is most visible
           let closestSection = 0;
@@ -156,50 +138,69 @@ const WebModePage = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Clock
+  // Consolidate Heartbeats: Clock and Random Glitches
   useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+    const heartbeat = setInterval(() => {
+      // Update clock every second
+      const now = new Date();
+      setCurrentTime(prev => {
+        if (prev.getSeconds() !== now.getSeconds()) return now;
+        return prev;
+      });
 
-  // Random glitch effect
-  useEffect(() => {
-    const glitchInterval = setInterval(() => {
+      // Random glitch logic (approx 8% chance every 100ms)
+      // Pure CSS variable toggle to avoid React tree re-renders
       if (Math.random() > 0.92) {
-        setGlitchActive(true);
-        setTimeout(() => setGlitchActive(false), 100 + Math.random() * 100);
+        document.documentElement.style.setProperty('--glitch-active', '1');
+        setTimeout(() => {
+          document.documentElement.style.setProperty('--glitch-active', '0');
+        }, 100 + Math.random() * 100);
       }
     }, 100);
-    return () => clearInterval(glitchInterval);
+
+    return () => clearInterval(heartbeat);
   }, []);
 
   // Scroll reveal animation observer
   useEffect(() => {
     if (!showContent) return;
     
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("active");
-          }
-        });
-      },
-      {
-        threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px",
-      }
-    );
+    // Give a small delay to ensure DOM is fully ready before querying
+    const timer = setTimeout(() => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("active");
+            }
+          });
+        },
+        {
+          threshold: 0.01,
+          rootMargin: "0px 0px 50px 0px", // Trigger slightly before it enters
+        }
+      );
 
-    // Observe all reveal elements
-    const revealElements = document.querySelectorAll(
-      ".reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-rotate"
-    );
-    revealElements.forEach((el) => observer.observe(el));
+      // Observe all reveal elements
+      const revealElements = document.querySelectorAll(
+        ".reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-rotate"
+      );
+      
+      revealElements.forEach((el) => {
+        // If element is already in viewport, trigger it immediately
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          el.classList.add("active");
+        }
+        observer.observe(el);
+      });
 
-    return () => {
-      revealElements.forEach((el) => observer.unobserve(el));
-    };
+      return () => {
+        revealElements.forEach((el) => observer.unobserve(el));
+      };
+    }, 150);
+
+    return () => clearTimeout(timer);
   }, [showContent]);
 
   // Loading screen
@@ -215,7 +216,7 @@ const WebModePage = () => {
         url="/web"
       />
       {/* Fixed elements - OUTSIDE animated container */}
-      <WebCursor mousePosition={mousePosition} interactiveLabel={cursorLinkLabel} />
+      <WebCursor interactiveLabel={cursorLinkLabel} />
       <WebSideNav activeSection={activeSection} />
       <WebNavbar currentTime={currentTime} />
       
@@ -247,7 +248,7 @@ const WebModePage = () => {
         }}
       >
         {/* ==================== SECTIONS ==================== */}
-        <HeroSection scrollY={scrollY} glitchActive={glitchActive} />
+        <HeroSection />
         <MarqueeSection />
         <AboutSection />
         <SkillsSection />

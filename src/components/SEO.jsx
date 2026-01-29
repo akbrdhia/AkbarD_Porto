@@ -20,6 +20,8 @@ const SEO = ({ title, description, keywords, image, url }) => {
       <meta key="meta-desc" name="description" content={seoDescription} />
       {keywords && <meta key="meta-keywords" name="keywords" content={keywords} />}
       <link rel="canonical" href={seoUrl} />
+      <link rel="alternate" href={seoUrl} hrefLang="x-default" />
+      <link rel="alternate" href={seoUrl} hrefLang="en" />
 
       {/* Open Graph / Facebook */}
       <meta key="og-type" property="og:type" content="website" />

@@ -44,19 +44,6 @@ const AboutSection = () => {
           pointerEvents: "none",
         }}
       />
-      <div
-        style={{
-          position: "absolute",
-          inset: "20% auto auto 20%",
-          width: "420px",
-          height: "420px",
-          background:
-            "radial-gradient(circle, rgba(124,182,99,0.18), rgba(124,182,99,0))",
-          filter: "blur(80px)",
-          opacity: 0.7,
-          pointerEvents: "none",
-        }}
-      />
 
       <div
         style={{
@@ -69,7 +56,6 @@ const AboutSection = () => {
         {/* Left column */}
         <div style={{ display: "flex", flexDirection: "column", gap: "36px" }}>
           <h2
-            className="reveal-left delay-1"
             style={{
               display: "flex",
               alignItems: "center",
@@ -92,7 +78,6 @@ const AboutSection = () => {
           </h2>
 
           <h2
-            className="reveal delay-2"
             style={{
               fontSize: "clamp(38px, 6vw, 80px)",
               fontWeight: 900,
@@ -118,7 +103,6 @@ const AboutSection = () => {
             {specSheet.map((spec) => (
               <div
                 key={spec.label}
-                className="reveal delay-3"
                 data-cursor-interactive="true"
                 data-cursor-label={spec.label}
                 style={{
@@ -165,7 +149,6 @@ const AboutSection = () => {
           </div>
 
           <div
-            className="reveal delay-4"
             style={{
               borderRadius: "20px",
               padding: "26px 30px",
@@ -207,7 +190,6 @@ const AboutSection = () => {
         {/* Right column */}
         <div style={{ display: "flex", flexDirection: "column", gap: "30px" }}>
           <div
-            className="reveal delay-2"
             style={{
               display: "grid",
               gridTemplateColumns: "minmax(0, 0.85fr) minmax(0, 1.15fr)",
@@ -343,7 +325,6 @@ const AboutSection = () => {
           </div>
 
           <div
-            className="reveal delay-3"
             style={{
               borderRadius: "20px",
               padding: "26px 30px",

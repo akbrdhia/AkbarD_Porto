@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowUpRight, Github, Play, Monitor } from "lucide-react";
 import { PERSONAL_INFO } from "../../../constants/portfolioData";
 
-const HeroSection = ({ scrollY, glitchActive }) => {
+const HeroSection = ({ glitchActive }) => {
   const navigate = useNavigate();
   const heroStats = [
     {
@@ -24,11 +24,6 @@ const HeroSection = ({ scrollY, glitchActive }) => {
   ];
 
   const setupImage = "/setup.jpg"; // place your setup photo at public/setup.jpg
-  const glowOrbs = [
-    { left: "20%", top: "25%", size: 260, color: "rgba(124,182,99,0.32)", delay: "0s" },
-    { left: "65%", top: "15%", size: 200, color: "rgba(255,0,77,0.25)", delay: "2s" },
-    { left: "40%", top: "60%", size: 280, color: "rgba(124,182,99,0.2)", delay: "4s" },
-  ];
 
   const [firstName = "AKBAR", lastName = "DHIA"] =
     PERSONAL_INFO.name?.split(" ") ?? [];
@@ -63,7 +58,7 @@ const HeroSection = ({ scrollY, glitchActive }) => {
           opacity: 0.85,
           pointerEvents: "none",
           zIndex: 0,
-          transform: `translateY(${scrollY * 0.05}px)`,
+          transform: `translateY(calc(var(--scroll-y, 0px) * 0.05))`,
         }}
       />
       <div
@@ -75,20 +70,7 @@ const HeroSection = ({ scrollY, glitchActive }) => {
           backgroundSize: "120px 120px",
           opacity: 0.4,
           pointerEvents: "none",
-          transform: `translateY(${scrollY * -0.03}px)`,
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          inset: "30% auto auto 35%",
-          width: "320px",
-          height: "320px",
-          background:
-            "radial-gradient(circle, rgba(124,182,99,0.3), rgba(124,182,99,0))",
-          filter: "blur(60px)",
-          opacity: 0.6,
-          pointerEvents: "none",
+          transform: `translateY(calc(var(--scroll-y, 0px) * -0.03))`,
         }}
       />
       <div
@@ -135,25 +117,6 @@ const HeroSection = ({ scrollY, glitchActive }) => {
           zIndex: 1,
         }}
       />
-      {glowOrbs.map((orb, idx) => (
-        <div
-          key={idx}
-          style={{
-            position: "absolute",
-            left: orb.left,
-            top: orb.top,
-            width: `${orb.size}px`,
-            height: `${orb.size}px`,
-            background: `radial-gradient(circle, ${orb.color}, transparent 70%)`,
-            filter: "blur(50px)",
-            opacity: 0.5,
-            pointerEvents: "none",
-            animation: `heroGlowDrift 9s ease-in-out infinite`,
-            animationDelay: orb.delay,
-            zIndex: 0,
-          }}
-        />
-      ))}
 
       <div
         style={{
@@ -224,17 +187,11 @@ const HeroSection = ({ scrollY, glitchActive }) => {
               }}
             >
               <span
+                className="glitch-text"
                 style={{
                   display: "block",
                   color: "#f7fff1",
-                  transform: glitchActive
-                    ? `translate(${Math.random() * 10 - 5}px, ${
-                        Math.random() * 4
-                      }px)`
-                    : "none",
-                  textShadow: glitchActive
-                    ? "3px 0 #ff004d, -3px 0 #00ffe5"
-                    : "0 0 20px rgba(0,0,0,0.35)",
+                  textShadow: "0 0 20px rgba(0,0,0,0.35)",
                 }}
               >
                 {firstName}
@@ -246,7 +203,7 @@ const HeroSection = ({ scrollY, glitchActive }) => {
                   gap: "16px",
                   color: "transparent",
                   WebkitTextStroke: "2px #7CB663",
-                  transform: `translateX(${scrollY * 0.1}px)`,
+                  transform: `translateX(calc(var(--scroll-y, 0px) * 0.1))`,
                   transition: "transform 0.3s ease-out",
                 }}
               >

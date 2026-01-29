@@ -15,29 +15,7 @@ const WebGlobalStyles = () => {
         color: #fff;
       }
 
-      body::before,
-      body::after {
-        content: "";
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-        mix-blend-mode: screen;
-      }
-
-      body::before {
-        background: radial-gradient(circle at 20% 20%, rgba(124,182,99,0.2), transparent 50%),
-                    radial-gradient(circle at 80% 30%, rgba(255,0,77,0.12), transparent 55%);
-        filter: blur(120px);
-        animation: globalGlowDrift 20s ease-in-out infinite;
-        opacity: 0.6;
-      }
-
-      body::after {
-        background: radial-gradient(circle at 40% 70%, rgba(255,255,255,0.08), transparent 60%);
-        filter: blur(160px);
-        animation: globalGlowPulse 14s ease-in-out infinite;
-        opacity: 0.3;
-      }
+      /* Global ambient glow removed for performance optimization */
 
       /* ========== SCROLL REVEAL ANIMATIONS ========== */
       .reveal {
@@ -264,6 +242,25 @@ const WebGlobalStyles = () => {
         section > div[style*="gridTemplateColumns: 1fr 1fr"] {
           grid-template-columns: 1fr !important;
         }
+      }
+
+      /* Glitch Effect */
+      .glitch-text {
+        transition: none !important;
+      }
+      
+      :root[style*="--glitch-active: 1"] .glitch-text {
+        animation: quick-glitch 0.15s infinite;
+        text-shadow: 2px 0 #ff004d, -2px 0 #00ffe5 !important;
+      }
+
+      @keyframes quick-glitch {
+        0% { transform: translate(0); }
+        20% { transform: translate(-2px, 1px); }
+        40% { transform: translate(2px, -1px); }
+        60% { transform: translate(-1px, 2px); }
+        80% { transform: translate(1px, -2px); }
+        100% { transform: translate(0); }
       }
     `}</style>
   );

@@ -114,7 +114,7 @@ const WebSideNav = ({ activeSection }) => {
         border: "1.5px solid rgba(124,182,99,0.35)",
         borderRadius: "14px",
         boxShadow: "0 20px 50px rgba(0,0,0,0.65), 14px 14px 0 rgba(124,182,99,0.12)",
-        backdropFilter: "blur(10px)",
+        backdropFilter: "blur(4px)",
         zIndex: 120,
         fontFamily: "'Space Mono', monospace",
         color: "#E8FFE0",

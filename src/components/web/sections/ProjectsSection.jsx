@@ -88,36 +88,6 @@ const ProjectsSection = () => {
           Good software feels calm even under load.
         </div>
       </div>
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          pointerEvents: "none",
-          overflow: "hidden",
-        }}
-      >
-        {[
-          { left: "12%", top: "25%", size: 320, color: "rgba(124,182,99,0.25)", delay: "0s" },
-          { left: "70%", top: "10%", size: 260, color: "rgba(255,0,77,0.15)", delay: "4s" },
-          { left: "45%", top: "60%", size: 300, color: "rgba(124,182,99,0.18)", delay: "2s" },
-        ].map((orb, idx) => (
-          <div
-            key={idx}
-            style={{
-              position: "absolute",
-              left: orb.left,
-              top: orb.top,
-              width: `${orb.size}px`,
-              height: `${orb.size}px`,
-              background: `radial-gradient(circle, ${orb.color}, transparent 70%)`,
-              filter: "blur(80px)",
-              mixBlendMode: "screen",
-              animation: "projectGlowDrift 18s ease-in-out infinite",
-              animationDelay: orb.delay,
-            }}
-          />
-        ))}
-      </div>
 
       <div
         style={{

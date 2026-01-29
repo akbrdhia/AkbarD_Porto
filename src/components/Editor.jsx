@@ -279,7 +279,7 @@ const Editor = () => {
                                   : line || "&nbsp;",
                               }}
                             />
-                            {isLastLine && showCursor && (
+                            {isLastLine && (
                               <span className="typing-cursor"></span>
                             )}
                           </div>

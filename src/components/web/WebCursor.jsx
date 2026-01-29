@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-const WebCursor = ({ mousePosition = { x: 0, y: 0 }, interactiveLabel }) => {
+const WebCursor = ({ interactiveLabel }) => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const { x, y } = mousePosition;
   const hasInteractiveTarget = Boolean(interactiveLabel);
   const accentColor = hasInteractiveTarget ? "#FF004D" : "#7CB663";
@@ -10,13 +11,22 @@ const WebCursor = ({ mousePosition = { x: 0, y: 0 }, interactiveLabel }) => {
   const [typingComplete, setTypingComplete] = useState(false);
   const [selectionRect, setSelectionRect] = useState(null);
   const [selectionDisplayRect, setSelectionDisplayRect] = useState(null);
-  const cursorPositionRef = React.useRef(mousePosition);
+  const cursorPositionRef = React.useRef({ x: 0, y: 0 });
   const selectionActiveRef = React.useRef(false);
   const animationFrameRef = React.useRef(null);
 
+  // Local pointer listener to prevent parent re-renders
   useEffect(() => {
-    cursorPositionRef.current = mousePosition;
-  }, [mousePosition]);
+    const handleMove = (e) => {
+      cursorPositionRef.current = { x: e.clientX, y: e.clientY };
+      // Wrap in rAF for smoothness, update local state for the readout
+      requestAnimationFrame(() => {
+        setMousePosition({ x: e.clientX, y: e.clientY });
+      });
+    };
+    window.addEventListener("pointermove", handleMove, { passive: true });
+    return () => window.removeEventListener("pointermove", handleMove);
+  }, []);
 
   useEffect(() => {
     let index = 0;
@@ -127,7 +137,6 @@ const WebCursor = ({ mousePosition = { x: 0, y: 0 }, interactiveLabel }) => {
               pointerEvents: "none",
               zIndex: 1,
               opacity: 0.35,
-              filter: "blur(6px)",
               boxShadow: "0 0 60px rgba(0,0,0,0.4)",
               animation: "cursorNoiseDrift 9s ease-in-out infinite",
             }}

@@ -152,21 +152,10 @@ const IDEModePage = () => {
     }
   }, [loading, setGradleSyncing, setBuildStatus, showNotification]);
 
-  // Cursor blinking
-  useEffect(() => {
-    if (isTyping) {
-      const interval = setInterval(() => {
-        setShowCursor((prev) => !prev);
-      }, 500);
-      return () => clearInterval(interval);
-    } else {
-      setShowCursor(false);
-    }
-  }, [isTyping, setShowCursor]);
-
-  // Sidebar drag resize
+  // Consolidate Resize Observers
   useEffect(() => {
     const handleMouseMove = (e) => {
+      // Sidebar handling
       if (isDraggingSidebar) {
         const newWidth = e.clientX;
         if (newWidth < 50) {
@@ -177,26 +166,8 @@ const IDEModePage = () => {
           setSidebarWidth(newWidth);
         }
       }
-    };
-
-    const handleMouseUp = () => {
-      setIsDraggingSidebar(false);
-    };
-
-    if (isDraggingSidebar) {
-      document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener("mouseup", handleMouseUp);
-    }
-
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [isDraggingSidebar, setSidebarCollapsed, setSidebarWidth, setIsDraggingSidebar]);
-
-  // Terminal drag resize
-  useEffect(() => {
-    const handleMouseMove = (e) => {
+      
+      // Terminal handling
       if (isDraggingTerminal) {
         const newHeight = window.innerHeight - e.clientY;
         if (newHeight < 30) {
@@ -210,11 +181,12 @@ const IDEModePage = () => {
     };
 
     const handleMouseUp = () => {
+      setIsDraggingSidebar(false);
       setIsDraggingTerminal(false);
     };
 
-    if (isDraggingTerminal) {
-      document.addEventListener("mousemove", handleMouseMove);
+    if (isDraggingSidebar || isDraggingTerminal) {
+      document.addEventListener("mousemove", handleMouseMove, { passive: true });
       document.addEventListener("mouseup", handleMouseUp);
     }
 
@@ -222,7 +194,7 @@ const IDEModePage = () => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [isDraggingTerminal, setTerminalHeight, setTerminalCollapsed, setIsDraggingTerminal]);
+  }, [isDraggingSidebar, isDraggingTerminal, setSidebarCollapsed, setSidebarWidth, setIsDraggingSidebar, setTerminalHeight, setTerminalCollapsed, setIsDraggingTerminal]);
 
   // Mobile blocker
   if (isMobile) {
