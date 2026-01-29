@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://akbardhia.dev/sitemap.xml
+Sitemap: https://akbardhia.me/sitemap.xml

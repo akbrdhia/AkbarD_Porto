@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://akbardhia.dev/</loc>
+    <loc>https://akbardhia.me/</loc>
     <lastmod>2026-01-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://akbardhia.dev/web</loc>
+    <loc>https://akbardhia.me/web</loc>
     <lastmod>2026-01-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://akbardhia.dev/ide</loc>
+    <loc>https://akbardhia.me/ide</loc>
     <lastmod>2026-01-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
