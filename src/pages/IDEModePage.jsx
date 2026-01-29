@@ -11,6 +11,7 @@ import Editor from "../components/Editor";
 import Terminal from "../components/Terminal";
 import StatusBar from "../components/StatusBar";
 import Notifications from "../components/Notifications";
+import SEO from "../components/SEO";
 
 const IDEModePage = () => {
   const {
@@ -241,6 +242,11 @@ const IDEModePage = () => {
 
   return (
     <div className="portfolio-container">
+      <SEO 
+        title="IDE Studio" 
+        description="Experience my work through an Interactive Android Studio IDE environment. Explore the code, build the project."
+        url="/ide"
+      />
       <style>
         {getGlobalStyles(
           sidebarCollapsed,

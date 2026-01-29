@@ -13,6 +13,9 @@ import { PERSONAL_INFO } from "../constants/portfolioData";
 // Context
 import { usePortfolio } from "../context/PortfolioContext";
 
+// Components
+import SEO from "../components/SEO";
+
 // Sections
 import HeroSection from "../components/web/sections/HeroSection";
 import MarqueeSection from "../components/web/sections/MarqueeSection";
@@ -206,6 +209,11 @@ const WebModePage = () => {
 
   return (
     <>
+      <SEO 
+        title="Portfolio Site" 
+        description="Experience my professional work through a modern brutalist web interface. Developer, Designer, and Creator."
+        url="/web"
+      />
       {/* Fixed elements - OUTSIDE animated container */}
       <WebCursor mousePosition={mousePosition} interactiveLabel={cursorLinkLabel} />
       <WebSideNav activeSection={activeSection} />
