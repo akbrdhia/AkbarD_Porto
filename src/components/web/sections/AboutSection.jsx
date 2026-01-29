@@ -68,7 +68,7 @@ const AboutSection = () => {
       >
         {/* Left column */}
         <div style={{ display: "flex", flexDirection: "column", gap: "36px" }}>
-          <div
+          <h2
             className="reveal-left delay-1"
             style={{
               display: "flex",
@@ -78,6 +78,7 @@ const AboutSection = () => {
               letterSpacing: "0.4em",
               color: "#9cf17f",
               fontFamily: "'Space Mono', monospace",
+              margin: 0,
             }}
           >
             <span
@@ -88,9 +89,9 @@ const AboutSection = () => {
               }}
             />
             01 · ABOUT
-          </div>
+          </h2>
 
-          <div
+          <h2
             className="reveal delay-2"
             style={{
               fontSize: "clamp(38px, 6vw, 80px)",
@@ -98,13 +99,14 @@ const AboutSection = () => {
               letterSpacing: "-0.04em",
               color: "#f7fff1",
               lineHeight: 1,
+              margin: 0,
             }}
           >
             Industrial builds with
             <span style={{ color: "#7CB663", display: "block" }}>
               unapologetic precision.
             </span>
-          </div>
+          </h2>
 
           <div
             style={{

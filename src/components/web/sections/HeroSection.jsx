@@ -211,7 +211,7 @@ const HeroSection = ({ scrollY, glitchActive }) => {
           }}
         >
           <div style={{ display: "flex", flexDirection: "column", gap: "30px" }}>
-            <div
+            <h1
               className="reveal delay-2"
               style={{
                 fontSize: "clamp(48px, 13vw, 170px)",
@@ -260,7 +260,7 @@ const HeroSection = ({ scrollY, glitchActive }) => {
                   Developer
                 </span>
               </span>
-            </div>
+            </h1>
 
             <div
               className="reveal-left delay-3"

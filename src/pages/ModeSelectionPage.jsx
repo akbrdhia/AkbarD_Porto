@@ -4,6 +4,7 @@ import { animate, createTimeline, stagger } from "animejs";
 import { PERSONAL_INFO } from "../constants/portfolioData";
 import { usePortfolio } from "../context/PortfolioContext";
 import { Monitor, Code2, ArrowRight } from "lucide-react";
+import SEO from "../components/SEO";
 
 const ModeSelectionPage = () => {
   const { setLoading, setViewMode } = usePortfolio();
@@ -270,6 +271,10 @@ const ModeSelectionPage = () => {
         opacity: 0,
       }}
     >
+      <SEO 
+        title="Home" 
+        description="Choose your experience: Web Developer Perspective or Android Studio IDE Perspective."
+      />
       {/* Background Elements */}
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0 }}>
         {/* Grid */}
