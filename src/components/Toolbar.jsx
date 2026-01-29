@@ -1,16 +1,18 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Minus, Square, X, Play, Loader, Bug, Hammer, Settings, Search, RotateCcw, Monitor } from "lucide-react";
 import { usePortfolio } from "../context/PortfolioContext";
 import { PERSONAL_INFO } from "../constants/portfolioData";
 
 const Toolbar = ({ onBuild }) => {
   const { isBuilding, gradleSyncing } = usePortfolio();
+  const navigate = useNavigate();
 
   const handleModeSwitch = () => {
-    // Clear session and reload to show mode selector
+    // Clear session and navigate to mode selector
     sessionStorage.removeItem("portfolio_visited");
     localStorage.removeItem("portfolio_mode");
-    window.location.reload();
+    navigate('/');
   };
 
   return (

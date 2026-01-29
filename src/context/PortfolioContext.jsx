@@ -27,24 +27,12 @@ export const PortfolioProvider = ({ children }) => {
     console.log(">>> loading changed to:", loading);
   }, [loading]);
 
-  // On mount, check storage and decide what to show
+  // On mount, minimal initialization: let URL routing drive the viewMode
   useEffect(() => {
-    const visited = sessionStorage.getItem("portfolio_visited") === "true";
-    const savedMode = localStorage.getItem("portfolio_mode");
-    
     console.log("=== Portfolio Init ===");
-    console.log("visited:", visited, "savedMode:", savedMode);
-    
-    if (visited && savedMode) {
-      // Returning visitor - skip loading
-      console.log("→ Returning visitor, going to:", savedMode);
-      setViewMode(savedMode);
-      setLoading(false);
-    } else {
-      // First visit - show loading
-      console.log("→ First visit, showing loading");
-    }
+    // Do not override routing by setting viewMode from storage. Keep viewMode for internal logic only.
     setInitialized(true);
+    setLoading(false);
   }, []);
 
   // Folders & Files

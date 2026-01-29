@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { animate, createTimeline, stagger } from "animejs";
 import { PERSONAL_INFO } from "../constants/portfolioData";
 import { usePortfolio } from "../context/PortfolioContext";
 import { Monitor, Code2, ArrowRight } from "lucide-react";
 
-const LoadingScreen = () => {
+const ModeSelectionPage = () => {
   const { setLoading, setViewMode } = usePortfolio();
+  const navigate = useNavigate();
   const [selectedMode, setSelectedMode] = useState(null);
   const [animationComplete, setAnimationComplete] = useState(false);
 
@@ -155,6 +157,10 @@ const LoadingScreen = () => {
         
         setViewMode(selectedMode);
         setLoading(false);
+
+        // Navigate to the appropriate route after the exit animation
+        if (selectedMode === 'web') navigate('/web');
+        else if (selectedMode === 'ide') navigate('/ide');
       },
     });
 
@@ -245,7 +251,7 @@ const LoadingScreen = () => {
   const accentRgb = "124,182,99";
   const accentSolid = `rgba(${accentRgb}, 0.94)`;
   const accentBorder = `rgba(${accentRgb}, 0.55)`;
-  const accentGlow = `rgba(${accentRgb}, 0.65)`;
+  // Removed unused accentGlow variable
 
   return (
     <div
@@ -746,4 +752,4 @@ const LoadingScreen = () => {
   );
 };
 
-export default LoadingScreen;
+export default ModeSelectionPage;

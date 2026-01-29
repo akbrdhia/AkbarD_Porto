@@ -1,22 +1,22 @@
 import React, { useState, useEffect, useRef } from "react";
 
 // Components
-import WebLoadingScreen from "./web/WebLoadingScreen";
-import WebCursor from "./web/WebCursor";
-import WebNavbar from "./web/WebNavbar";
-import WebSideNav from "./web/WebSideNav";
-import WebGlobalStyles from "./web/WebGlobalStyles";
+import WebLoadingScreen from "../components/web/WebLoadingScreen";
+import WebCursor from "../components/web/WebCursor";
+import WebNavbar from "../components/web/WebNavbar";
+import WebSideNav from "../components/web/WebSideNav";
+import WebGlobalStyles from "../components/web/WebGlobalStyles";
 
 // Sections
-import HeroSection from "./web/sections/HeroSection";
-import MarqueeSection from "./web/sections/MarqueeSection";
-import AboutSection from "./web/sections/AboutSection";
-import SkillsSection from "./web/sections/SkillsSection";
-import ProjectsSection from "./web/sections/ProjectsSection";
-import ExperienceSection from "./web/sections/ExperienceSection";
-import ContactSection from "./web/sections/ContactSection";
+import HeroSection from "../components/web/sections/HeroSection";
+import MarqueeSection from "../components/web/sections/MarqueeSection";
+import AboutSection from "../components/web/sections/AboutSection";
+import SkillsSection from "../components/web/sections/SkillsSection";
+import ProjectsSection from "../components/web/sections/ProjectsSection";
+import ExperienceSection from "../components/web/sections/ExperienceSection";
+import ContactSection from "../components/web/sections/ContactSection";
 
-const WebPortfolio = () => {
+const WebModePage = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [hoveredProject, setHoveredProject] = useState(null);
   const [cursorLinkLabel, setCursorLinkLabel] = useState(null);
@@ -245,4 +245,4 @@ const WebPortfolio = () => {
   );
 };
 
-export default WebPortfolio;
+export default WebModePage;
