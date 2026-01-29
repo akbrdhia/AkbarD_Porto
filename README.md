@@ -1,4 +1,4 @@
-# 🤖 AkbarD Portfolio
+# AkbarD Portfolio
 
 [![React](https://img.shields.io/badge/React-19.x-61DAFB?style=flat&logo=react&logoColor=white)](https://reactjs.org/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -7,35 +7,35 @@
 
 ![Portfolio Preview](https://github.com/user-attachments/assets/4bc5cf73-cba7-494d-ab78-9a73f76b8989)
 
-## ✨ Features
+## Features
 
-### 🎨 **Android Studio Theme**
+### **Android Studio Theme**
 - **Authentic Darcula Theme** - Pixel-perfect recreation of Android Studio's dark theme
 - **Syntax Highlighting** - Real Kotlin syntax highlighting with proper color coding
 - **File Tree Navigation** - Interactive sidebar with folder structure
 - **Tab Management** - Multi-tab editor with close functionality (max 5 tabs)
 
-### ⚡ **Interactive Elements**
+### **Interactive Elements**
 - **Auto-typing Animation** - Code files type themselves with smooth animations
 - **Blinking Cursor** - Realistic typing cursor during animations
 - **Drag & Resize Panels** - Resizable sidebar and terminal (just like a real IDE!)
 - **Build Simulation** - Fake Gradle build with realistic output logs
 - **Minimap** - Code minimap with viewport indicator
 
-### 🖥️ **Terminal Experience**
+### **Terminal Experience**
 - **Functional Terminal** - Working command-line interface
 - **Command History** - Navigate with ↑/↓ arrow keys
 - **Custom Commands** - `help`, `ls`, `cd`, `whoami`, `build`, and more
 - **Easter Eggs** - Hidden surprises (try `matrix` or `coffee`!)
 
-### 🎯 **Professional Touch**
+### **Professional Touch**
 - **Status Bar** - Shows line/column, encoding, git branch, and build status
 - **Breadcrumb Navigation** - Current file path display
 - **Toast Notifications** - Beautiful notifications for user actions
 - **Loading Screen** - Animated Android Studio splash screen
 - **Mobile Blocker** - Friendly message for mobile users
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -69,7 +69,7 @@ yarn start
 http://localhost:3000
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 src/
@@ -96,7 +96,7 @@ src/
 └── index.js                      # Entry point
 ```
 
-## 🎨 Customization
+# Customization
 
 ### Update Your Information
 
@@ -148,10 +148,10 @@ export const FILE_CONTENTS = {
 | `contact` | Show contact information |
 | `projects` | List all projects |
 | `build` | Run fake Gradle build |
-| `matrix` | 🎉 Easter egg! |
-| `coffee` | ☕ Easter egg! |
+| `matrix` | Easter egg! |
+| `coffee` | Easter egg! |
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **React 19** - UI framework
 - **Context API** - State management (no Redux!)
@@ -159,7 +159,7 @@ export const FILE_CONTENTS = {
 - **CSS-in-JS** - Dynamic styling
 - **Tailwind CSS** - inline styling
 
-## 📦 Dependencies
+## Dependencies
 
 ```json
 {
@@ -169,7 +169,7 @@ export const FILE_CONTENTS = {
 }
 ```
 
-## 🎯 Features Breakdown
+# Features Breakdown
 
 ### Auto-typing Animation
 - Types at 5ms per character (super fast!)
@@ -188,7 +188,7 @@ export const FILE_CONTENTS = {
 - 3-second build duration
 - Updates status bar on completion
 
-## 🎨 Color Palette (Darcula Theme)
+## Color Palette (Darcula Theme)
 
 ```css
 Background:     #2B2B2B
@@ -202,14 +202,14 @@ Comments:       #808080 (Gray)
 Functions:      #FFC66D (Yellow)
 ```
 
-## 📱 Browser Support
+## Browser Support
 
 - ✅ Chrome/Edge (latest)
 - ✅ Firefox (latest)
 - ✅ Safari (latest)
 - ❌ Mobile (intentionally blocked for desktop experience)
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Feel free to:
 
@@ -219,13 +219,13 @@ Contributions are welcome! Feel free to:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Inspired by [Android Studio](https://developer.android.com/studio) IDE
 - Icons by [Lucide](https://lucide.dev/)
 - Font: Consolas, Monaco, Courier New
 
-## 📸 Screenshots
+## Screenshots
 
 ### Desktop View
 ![Desktop](https://via.placeholder.com/800x400/2B2B2B/6A8759?text=Add+Desktop+Screenshot)
@@ -236,12 +236,12 @@ Contributions are welcome! Feel free to:
 ### Build Process
 ![Build](https://via.placeholder.com/800x400/2B2B2B/6A8759?text=Add+Build+Screenshot)
 
-## 🔗 Links
+## Links
 
 - **Live Demo**: [https://akbarddev.vercel.app/](https://akbarddev.vercel.app/)
 - **GitHub**: [https://github.com/akbrdhia/AkbarD_Porto/](https://github.com/akbrdhia/AkbarD_Porto/)
 
-## 💬 Contact
+## Contact
 
 **Akbar Dhia** - [akbardhia19@gmail.com](mailto:akbardhia19@gmail.com)
 
@@ -250,7 +250,5 @@ Contributions are welcome! Feel free to:
 <div align="center">
 
 **>_ Akbar D**
-
-If you found this project helpful, please give it a ⭐!
 
 </div>
