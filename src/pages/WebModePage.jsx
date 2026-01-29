@@ -7,6 +7,12 @@ import WebNavbar from "../components/web/WebNavbar";
 import WebSideNav from "../components/web/WebSideNav";
 import WebGlobalStyles from "../components/web/WebGlobalStyles";
 
+// Constants
+import { PERSONAL_INFO } from "../constants/portfolioData";
+
+// Context
+import { usePortfolio } from "../context/PortfolioContext";
+
 // Sections
 import HeroSection from "../components/web/sections/HeroSection";
 import MarqueeSection from "../components/web/sections/MarqueeSection";
@@ -17,6 +23,7 @@ import ExperienceSection from "../components/web/sections/ExperienceSection";
 import ContactSection from "../components/web/sections/ContactSection";
 
 const WebModePage = () => {
+  const { setViewMode } = usePortfolio();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [hoveredProject, setHoveredProject] = useState(null);
   const [cursorLinkLabel, setCursorLinkLabel] = useState(null);
@@ -28,6 +35,11 @@ const WebModePage = () => {
   const [activeSection, setActiveSection] = useState(0);
   const [showContent, setShowContent] = useState(false);
   const containerRef = useRef(null);
+
+  // Set view mode to web when this page mounts
+  useEffect(() => {
+    setViewMode && setViewMode("web");
+  }, [setViewMode]);
 
   // Intro animation - slower for dramatic effect
   useEffect(() => {

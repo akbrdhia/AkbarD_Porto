@@ -9,6 +9,29 @@ html, body, #root {
   padding: 0;
 }
 
+/* Prevent white flash on navigation by setting a dark default background */
+html, body {
+  background: #0a0a0a;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Remove mobile tap highlight and default focus flashes for interactive elements */
+*:focus {
+  outline: none;
+}
+
+button, .mode-card, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Ensure active states don't flash white
+   Keep background stable when elements are pressed */
+.mode-card:active, button:active {
+  background-color: inherit;
+}
+
 /* IDE mode needs overflow hidden */
 .portfolio-container {
   overflow: hidden;
