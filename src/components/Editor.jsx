@@ -5,115 +5,7 @@ import { FileText, X } from "lucide-react";
 import { usePortfolio } from "../context/PortfolioContext";
 import { FILE_CONTENTS } from "../constants/portfolioData";
 import { highlightKotlin } from "../utils/highlightSyntax";
-
-// Markdown components with custom styling
-const markdownComponents = {
-  h1: ({ children }) => (
-    <h1 style={{ color: "#CC7832", fontSize: "28px", marginBottom: "16px", borderBottom: "1px solid #3C3F41", paddingBottom: "8px" }}>
-      {children}
-    </h1>
-  ),
-  h2: ({ children }) => (
-    <h2 style={{ color: "#6A8759", fontSize: "22px", marginTop: "24px", marginBottom: "12px" }}>
-      {children}
-    </h2>
-  ),
-  h3: ({ children }) => (
-    <h3 style={{ color: "#FFC66D", fontSize: "18px", marginTop: "20px", marginBottom: "10px" }}>
-      {children}
-    </h3>
-  ),
-  p: ({ children }) => (
-    <p style={{ color: "#A9B7C6", lineHeight: "1.8", marginBottom: "12px" }}>
-      {children}
-    </p>
-  ),
-  li: ({ children }) => (
-    <li style={{ color: "#A9B7C6", marginBottom: "6px", marginLeft: "20px" }}>
-      {children}
-    </li>
-  ),
-  ul: ({ children }) => (
-    <ul style={{ marginBottom: "16px", listStyleType: "disc" }}>
-      {children}
-    </ul>
-  ),
-  hr: () => (
-    <hr style={{ border: "none", borderTop: "1px solid #3C3F41", margin: "24px 0" }} />
-  ),
-  code: ({ children }) => (
-    <code style={{ background: "#1E1E1E", padding: "2px 6px", borderRadius: "4px", color: "#6A8759", fontSize: "14px" }}>
-      {children}
-    </code>
-  ),
-  a: ({ href, children }) => (
-    <a 
-      href={href} 
-      target="_blank" 
-      rel="noopener noreferrer"
-      style={{ 
-        color: "#6A8759", 
-        textDecoration: "underline", 
-        transition: "color 0.2s ease",
-        cursor: "pointer"
-      }}
-      onMouseEnter={(e) => e.target.style.color = "#8BC34A"}
-      onMouseLeave={(e) => e.target.style.color = "#6A8759"}
-    >
-      {children}
-    </a>
-  ),
-  img: ({ src, alt }) => (
-    <img 
-      src={src} 
-      alt={alt || ""}
-      style={{ 
-        display: "inline-block",
-        margin: "4px 4px 4px 0",
-        verticalAlign: "middle",
-        maxHeight: "28px"
-      }}
-    />
-  ),
-  details: ({ children, open }) => (
-    <details 
-      open={open}
-      style={{ 
-        marginBottom: "16px",
-        background: "#1a1a1a",
-        borderRadius: "8px",
-        padding: "12px",
-        border: "1px solid #3C3F41"
-      }}
-    >
-      {children}
-    </details>
-  ),
-  summary: ({ children }) => (
-    <summary 
-      style={{ 
-        cursor: "pointer",
-        color: "#6A8759",
-        fontWeight: "bold",
-        fontSize: "16px",
-        marginBottom: "8px"
-      }}
-    >
-      {children}
-    </summary>
-  ),
-  div: ({ children, style, align }) => (
-    <div style={{ 
-      ...style,
-      textAlign: align || "left",
-      display: "flex",
-      flexWrap: "wrap",
-      gap: "4px"
-    }}>
-      {children}
-    </div>
-  ),
-};
+import { markdownComponents } from "./MarkdownComponents";
 
 const Editor = () => {
   const {
@@ -169,7 +61,7 @@ const Editor = () => {
           const timeout = setTimeout(() => {
             setCurrentTypingLine(currentTypingLine + 1);
             setCurrentTypingChar(0);
-          }, 8); // Faster line transition
+          }, 2); // Faster line transition
           return () => clearTimeout(timeout);
         }
       } else {

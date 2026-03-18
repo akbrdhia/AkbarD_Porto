@@ -19,6 +19,7 @@ const IDEModePage = () => {
     initialized,
     isMobile,
     setIsMobile,
+    openTabs,
     setOpenTabs,
     setActiveFile,
     sidebarWidth,
@@ -60,12 +61,13 @@ const IDEModePage = () => {
 
   // Open file handler
   const handleOpenFile = useCallback((fileName) => {
+    if (!openTabs.includes(fileName) && openTabs.length >= 5) {
+      showNotification("Maximum 5 tabs allowed", "error");
+      return;
+    }
+
     setOpenTabs((prevTabs) => {
       if (prevTabs.includes(fileName)) return prevTabs;
-      if (prevTabs.length >= 5) {
-        showNotification("Maximum 5 tabs allowed", "error");
-        return prevTabs;
-      }
       return [...prevTabs, fileName];
     });
 
@@ -77,7 +79,7 @@ const IDEModePage = () => {
         editorContentRef.current.scrollTo({ top: 0, behavior: "smooth" });
       }
     }, 100);
-  }, [setOpenTabs, setActiveFile, editorContentRef, showNotification]);
+  }, [openTabs, setOpenTabs, setActiveFile, editorContentRef, showNotification]);
 
   // Build handler
   const handleBuild = useCallback(() => {
