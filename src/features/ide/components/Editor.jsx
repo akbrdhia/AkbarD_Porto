@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import { FileText, X } from "lucide-react";
-import { usePortfolio } from "../context/PortfolioContext";
-import { FILE_CONTENTS } from "../constants/portfolioData";
+import { usePortfolio } from "../../../shared/context/PortfolioContext";
+import { FILE_CONTENTS } from "../../../shared/constants/portfolioData";
 import { highlightKotlin } from "../utils/highlightSyntax";
 
 // Markdown components with custom styling

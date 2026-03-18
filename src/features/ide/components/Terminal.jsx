@@ -5,8 +5,8 @@ import {
   ChevronDown,
   Maximize2,
 } from "lucide-react";
-import { usePortfolio } from "../context/PortfolioContext";
-import { WELCOME_MESSAGES } from "../constants/portfolioData";
+import { usePortfolio } from "../../../shared/context/PortfolioContext";
+import { WELCOME_MESSAGES } from "../../../shared/constants/portfolioData";
 import { processCommand } from "../utils/terminalCommands";
 
 const Terminal = ({ onFileOpen, onBuild }) => {

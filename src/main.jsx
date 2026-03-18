@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import './index.css'
-import Portfolio from './pages/Portofolio.jsx'
+import Portfolio from './features/core/pages/Portofolio.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

@@ -1,29 +1,29 @@
 import React, { useState, useEffect, useRef } from "react";
 
 // Components
-import WebLoadingScreen from "../components/web/WebLoadingScreen";
-import WebCursor from "../components/web/WebCursor";
-import WebNavbar from "../components/web/WebNavbar";
-import WebSideNav from "../components/web/WebSideNav";
-import WebGlobalStyles from "../components/web/WebGlobalStyles";
+import WebLoadingScreen from "../components/WebLoadingScreen";
+import WebCursor from "../components/WebCursor";
+import WebNavbar from "../components/WebNavbar";
+import WebSideNav from "../components/WebSideNav";
+import WebGlobalStyles from "../components/WebGlobalStyles";
 
 // Constants
-import { PERSONAL_INFO } from "../constants/portfolioData";
+import { PERSONAL_INFO } from "../../../shared/constants/portfolioData";
 
 // Context
-import { usePortfolio } from "../context/PortfolioContext";
+import { usePortfolio } from "../../../shared/context/PortfolioContext";
 
 // Components
-import SEO from "../components/SEO";
+import SEO from "../../../shared/components/SEO";
 
 // Sections
-import HeroSection from "../components/web/sections/HeroSection";
-import MarqueeSection from "../components/web/sections/MarqueeSection";
-import AboutSection from "../components/web/sections/AboutSection";
-import SkillsSection from "../components/web/sections/SkillsSection";
-import ProjectsSection from "../components/web/sections/ProjectsSection";
-import ExperienceSection from "../components/web/sections/ExperienceSection";
-import ContactSection from "../components/web/sections/ContactSection";
+import HeroSection from "../components/sections/HeroSection";
+import MarqueeSection from "../components/sections/MarqueeSection";
+import AboutSection from "../components/sections/AboutSection";
+import SkillsSection from "../components/sections/SkillsSection";
+import ProjectsSection from "../components/sections/ProjectsSection";
+import ExperienceSection from "../components/sections/ExperienceSection";
+import ContactSection from "../components/sections/ContactSection";
 
 const WebModePage = () => {
   const { setViewMode } = usePortfolio();

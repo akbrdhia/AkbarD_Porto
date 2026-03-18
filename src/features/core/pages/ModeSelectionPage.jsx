@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { animate, createTimeline, stagger } from "animejs";
-import { PERSONAL_INFO } from "../constants/portfolioData";
-import { usePortfolio } from "../context/PortfolioContext";
+import { PERSONAL_INFO } from "../../../shared/constants/portfolioData";
+import { usePortfolio } from "../../../shared/context/PortfolioContext";
 import { Monitor, Code2, ArrowRight } from "lucide-react";
-import SEO from "../components/SEO";
+import SEO from "../../../shared/components/SEO";
 
 const ModeSelectionPage = () => {
   const { setLoading, setViewMode } = usePortfolio();

@@ -1,6 +1,6 @@
 import React from "react";
 import { Mail, Github, Linkedin, Instagram, ArrowUpRight } from "lucide-react";
-import { PERSONAL_INFO } from "../../../constants/portfolioData";
+import { PERSONAL_INFO } from "../../../../shared/constants/portfolioData";
 
 const ContactSection = () => {
   const links = [

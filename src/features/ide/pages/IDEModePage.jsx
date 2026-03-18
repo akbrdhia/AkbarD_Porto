@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from "react";
-import { getGlobalStyles } from "../styles/globalStyles";
-import { usePortfolio } from "../context/PortfolioContext";
+import { getGlobalStyles } from "../../../shared/styles/globalStyles";
+import { usePortfolio } from "../../../shared/context/PortfolioContext";
 
 // Components
 import MobileBlocker from "../components/MobileBlocker";
@@ -10,8 +10,8 @@ import Sidebar from "../components/Sidebar";
 import Editor from "../components/Editor";
 import Terminal from "../components/Terminal";
 import StatusBar from "../components/StatusBar";
-import Notifications from "../components/Notifications";
-import SEO from "../components/SEO";
+import Notifications from "../../core/components/Notifications";
+import SEO from "../../../shared/components/SEO";
 
 const IDEModePage = () => {
   const {

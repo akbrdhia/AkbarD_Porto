@@ -1,6 +1,6 @@
 import React from "react";
 import { Cpu } from "lucide-react";
-import { PERSONAL_INFO } from "../../../constants/portfolioData";
+import { PERSONAL_INFO } from "../../../../shared/constants/portfolioData";
 
 const AboutSection = () => {
   const specSheet = [

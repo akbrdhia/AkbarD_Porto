@@ -6,8 +6,8 @@ import {
   Folder,
   FileText,
 } from "lucide-react";
-import { usePortfolio } from "../context/PortfolioContext";
-import { FILE_STRUCTURE } from "../constants/portfolioData";
+import { usePortfolio } from "../../../shared/context/PortfolioContext";
+import { FILE_STRUCTURE } from "../../../shared/constants/portfolioData";
 
 const Sidebar = ({ onFileOpen }) => {
   const {
