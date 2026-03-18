@@ -1,5 +1,5 @@
 import React from "react";
-import { usePortfolio } from "../context/PortfolioContext";
+import { usePortfolio } from "../../../shared/context/PortfolioContext";
 
 const Notifications = () => {
   const { notifications } = usePortfolio();

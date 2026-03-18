@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { RefreshCw } from "lucide-react";
-import { usePortfolio } from "../../context/PortfolioContext";
-import { PERSONAL_INFO } from "../../constants/portfolioData";
+import { usePortfolio } from "../../../shared/context/PortfolioContext";
+import { PERSONAL_INFO } from "../../../shared/constants/portfolioData";
 
 const WebNavbar = ({ currentTime }) => {
   const navigate = useNavigate();

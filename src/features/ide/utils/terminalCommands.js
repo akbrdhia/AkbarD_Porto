@@ -1,4 +1,4 @@
-import { PERSONAL_INFO } from "../constants/portfolioData.js";
+import { PERSONAL_INFO } from "../../../shared/constants/portfolioData.js";
 
 /**
  * Process terminal commands

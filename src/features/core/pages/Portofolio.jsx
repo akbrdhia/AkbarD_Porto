@@ -1,11 +1,11 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { PortfolioProvider } from "../context/PortfolioContext";
+import { PortfolioProvider } from "../../../shared/context/PortfolioContext";
 
 // Pages
 import ModeSelectionPage from "./ModeSelectionPage";
-import WebModePage from "./WebModePage";
-import IDEModePage from "./IDEModePage";
+import WebModePage from "../../web/pages/WebModePage";
+import IDEModePage from "../../ide/pages/IDEModePage";
 
 const Portfolio = () => {
   return (

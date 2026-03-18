@@ -1,6 +1,6 @@
 import React from "react";
 import { Loader } from "lucide-react";
-import { usePortfolio } from "../context/PortfolioContext";
+import { usePortfolio } from "../../../shared/context/PortfolioContext";
 
 const StatusBar = () => {
   const { gradleSyncing, cursorPosition, buildStatus } = usePortfolio();
