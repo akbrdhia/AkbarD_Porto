@@ -26,72 +26,20 @@ const Editor = () => {
     editorContentRef,
   } = usePortfolio();
 
-  // Auto-typing logic
+  // Instant rendering logic (no auto-typing)
   useEffect(() => {
     if (!typedFiles[activeFile] && FILE_CONTENTS[activeFile]) {
-      setIsTyping(true);
-      setCurrentTypingLine(0);
-      setCurrentTypingChar(0);
-
+      setTypedFiles((prev) => ({ ...prev, [activeFile]: true }));
+      setIsTyping(false);
       if (editorContentRef.current) {
         editorContentRef.current.scrollTop = 0;
       }
-    } else {
-      setIsTyping(false);
     }
-  }, [activeFile]);
-
-  useEffect(() => {
-    if (isTyping && FILE_CONTENTS[activeFile]) {
-      const lines = FILE_CONTENTS[activeFile].split("\n");
-
-      if (currentTypingLine < lines.length) {
-        const currentLine = lines[currentTypingLine];
-
-        if (currentTypingChar < currentLine.length) {
-          const timeout = setTimeout(() => {
-            setCurrentTypingChar(currentTypingChar + 1);
-            setCursorPosition({
-              line: currentTypingLine + 1,
-              column: currentTypingChar + 2,
-            });
-          }, 2); // Faster typing speed
-          return () => clearTimeout(timeout);
-        } else {
-          const timeout = setTimeout(() => {
-            setCurrentTypingLine(currentTypingLine + 1);
-            setCurrentTypingChar(0);
-          }, 2); // Faster line transition
-          return () => clearTimeout(timeout);
-        }
-      } else {
-        setIsTyping(false);
-        setTypedFiles((prev) => ({ ...prev, [activeFile]: true }));
-      }
-    }
-  }, [isTyping, currentTypingLine, currentTypingChar, activeFile]);
+  }, [activeFile, typedFiles, setTypedFiles, setIsTyping, editorContentRef]);
 
   const getDisplayedContent = () => {
     if (!FILE_CONTENTS[activeFile]) return "";
-
-    if (typedFiles[activeFile]) {
-      return FILE_CONTENTS[activeFile];
-    }
-
-    if (isTyping) {
-      const lines = FILE_CONTENTS[activeFile].split("\n");
-      const displayedLines = lines.slice(0, currentTypingLine + 1);
-      if (displayedLines.length > 0) {
-        const lastLineIndex = displayedLines.length - 1;
-        displayedLines[lastLineIndex] = displayedLines[lastLineIndex].substring(
-          0,
-          currentTypingChar
-        );
-      }
-      return displayedLines.join("\n");
-    }
-
-    return "";
+    return FILE_CONTENTS[activeFile];
   };
 
   const closeTab = (fileName, e) => {
