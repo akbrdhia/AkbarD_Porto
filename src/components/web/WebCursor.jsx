@@ -2,6 +2,17 @@ import React, { useEffect, useState } from "react";
 
 const WebCursor = ({ interactiveLabel }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  // Mouse tracking
+  useEffect(() => {
+    const handlePointerMove = (e) => {
+      requestAnimationFrame(() => {
+        setMousePosition({ x: e.clientX, y: e.clientY });
+      });
+    };
+    window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    return () => window.removeEventListener("pointermove", handlePointerMove);
+  }, []);
+
   const { x, y } = mousePosition;
   const hasInteractiveTarget = Boolean(interactiveLabel);
   const accentColor = hasInteractiveTarget ? "#FF004D" : "#7CB663";

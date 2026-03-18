@@ -4,7 +4,19 @@ import { ArrowUpRight, Github, Play, Monitor } from "lucide-react";
 import { PERSONAL_INFO } from "../../../constants/portfolioData";
 
 const HeroSection = ({ glitchActive }) => {
-  const navigate = useNavigate();
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      requestAnimationFrame(() => {
+        setScrollY(window.scrollY);
+      });
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const heroStats = [
     {
       label: "PLATFORMS",

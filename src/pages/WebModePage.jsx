@@ -27,9 +27,10 @@ import ContactSection from "../components/web/sections/ContactSection";
 
 const WebModePage = () => {
   const { setViewMode } = usePortfolio();
-  const [hoveredProject, setHoveredProject] = useState(null);
+    const [hoveredProject, setHoveredProject] = useState(null);
   const [cursorLinkLabel, setCursorLinkLabel] = useState(null);
-  const [currentTime, setCurrentTime] = useState(new Date());
+    const [currentTime, setCurrentTime] = useState(new Date());
+  const [glitchActive, setGlitchActive] = useState(false);
   const [loadProgress, setLoadProgress] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [activeSection, setActiveSection] = useState(0);
@@ -62,10 +63,11 @@ const WebModePage = () => {
     return () => clearInterval(interval);
   }, [setViewMode]);
 
-  // Consolidate continuous UI updates: Mouse and Interaction tracking
+
   useEffect(() => {
-    const interactiveSelector = 'a[href], button, [role="button"], input[type="button"], input[type="submit"], [data-cursor-interactive="true"]';
-    
+    const interactiveSelector =
+      'a[href], button, [role="button"], input[type="button"], input[type="submit"], [data-cursor-interactive="true"]';
+
     const deriveLabel = (el) => {
       if (!el) return null;
       return (el.getAttribute("data-cursor-label") || el.getAttribute("aria-label") || el.innerText || el.textContent || el.getAttribute("href"))?.replace(/\s+/g, " ").trim() || null;
@@ -107,9 +109,6 @@ const WebModePage = () => {
     const handleScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
-          // Update scroll CSS variable for smooth parallax without re-renders
-          document.documentElement.style.setProperty('--scroll-y', `${window.scrollY}px`);
-          
           // Find which section is most visible
           let closestSection = 0;
           let minDistance = Infinity;
@@ -248,7 +247,7 @@ const WebModePage = () => {
         }}
       >
         {/* ==================== SECTIONS ==================== */}
-        <HeroSection />
+        <HeroSection glitchActive={glitchActive} />
         <MarqueeSection />
         <AboutSection />
         <SkillsSection />
