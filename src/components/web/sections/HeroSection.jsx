@@ -2,7 +2,20 @@ import React, { useEffect, useState } from "react";
 import { ArrowUpRight, Github, Play } from "lucide-react";
 import { PERSONAL_INFO } from "../../../constants/portfolioData";
 
-const HeroSection = ({ scrollY, glitchActive }) => {
+const HeroSection = ({ glitchActive }) => {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      requestAnimationFrame(() => {
+        setScrollY(window.scrollY);
+      });
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const heroStats = [
     {
       label: "PLATFORMS",

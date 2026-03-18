@@ -27,11 +27,9 @@ import ContactSection from "../components/web/sections/ContactSection";
 
 const WebModePage = () => {
   const { setViewMode } = usePortfolio();
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [hoveredProject, setHoveredProject] = useState(null);
+    const [hoveredProject, setHoveredProject] = useState(null);
   const [cursorLinkLabel, setCursorLinkLabel] = useState(null);
-  const [scrollY, setScrollY] = useState(0);
-  const [currentTime, setCurrentTime] = useState(new Date());
+    const [currentTime, setCurrentTime] = useState(new Date());
   const [glitchActive, setGlitchActive] = useState(false);
   const [loadProgress, setLoadProgress] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -67,16 +65,6 @@ const WebModePage = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Mouse tracking - use clientX/Y for fixed positioned cursor
-  useEffect(() => {
-    const handlePointerMove = (e) => {
-      requestAnimationFrame(() => {
-        setMousePosition({ x: e.clientX, y: e.clientY });
-      });
-    };
-    window.addEventListener("pointermove", handlePointerMove, { passive: true });
-    return () => window.removeEventListener("pointermove", handlePointerMove);
-  }, []);
 
   useEffect(() => {
     const interactiveSelector =
@@ -126,8 +114,6 @@ const WebModePage = () => {
     const handleScroll = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
-          setScrollY(window.scrollY);
-          
           // Find which section is most visible
           let closestSection = 0;
           let minDistance = Infinity;
@@ -215,7 +201,7 @@ const WebModePage = () => {
         url="/web"
       />
       {/* Fixed elements - OUTSIDE animated container */}
-      <WebCursor mousePosition={mousePosition} interactiveLabel={cursorLinkLabel} />
+      <WebCursor interactiveLabel={cursorLinkLabel} />
       <WebSideNav activeSection={activeSection} />
       <WebNavbar currentTime={currentTime} />
       
@@ -247,7 +233,7 @@ const WebModePage = () => {
         }}
       >
         {/* ==================== SECTIONS ==================== */}
-        <HeroSection scrollY={scrollY} glitchActive={glitchActive} />
+        <HeroSection glitchActive={glitchActive} />
         <MarqueeSection />
         <AboutSection />
         <SkillsSection />
