@@ -13,6 +13,10 @@ export const getGlobalStyles = (
       padding: 0;
       box-sizing: border-box;
     }
+
+    input, textarea, button, pre, code {
+      font-family: inherit;
+    }
   
     .portfolio-container {
       width: 100vw;
@@ -21,7 +25,7 @@ export const getGlobalStyles = (
       flex-direction: column;
       background: #2B2B2B;
       color: #A9B7C6;
-      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      font-family: 'JetBrains Mono', 'Consolas', 'Monaco', 'Courier New', monospace;
       overflow: hidden;
     }
   
