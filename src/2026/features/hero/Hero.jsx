@@ -1,14 +1,26 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 const Hero = () => {
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 500], [0, 150]);
+
   return (
-    <section className="min-h-screen flex flex-col justify-center px-6 md:px-20 py-32 overflow-hidden bg-p26-surface text-p26-on-surface">
+    <section className="relative min-h-screen flex flex-col justify-center px-6 md:px-20 py-32 overflow-hidden bg-p26-surface text-p26-on-surface">
+      {/* Background layer with parallax effect */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div 
+          style={{ y }}
+          className="absolute inset-0 bg-[url('/setup.jpg')] bg-cover bg-center scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-p26-bg-hero/60 to-p26-bg-deep/90 backdrop-brightness-50" />
+      </div>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: [0.2, 0.0, 0, 1.0] }}
-        className="max-w-4xl"
+        className="relative z-10 max-w-4xl"
       >
         <span className="text-p26-primary-container font-mono text-sm tracking-widest uppercase mb-6 block font-semibold">
           Selected Works 2026
