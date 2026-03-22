@@ -3,13 +3,7 @@ import ProjectCard from './ProjectCard';
 
 const GalleryGrid = () => {
   return (
-    <section style={{
-      display: 'grid',
-      gridTemplateColumns: '60fr 40fr',
-      gap: 0,
-      width: '100vw',
-      marginTop: '5rem'
-    }}>
+    <section className="grid grid-cols-[60fr_40fr] gap-0 w-screen mt-20">
       <ProjectCard color="#4A7EF5" />
       <ProjectCard color="#F5426C" />
       <ProjectCard color="#42F5A1" />

@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "node src/utils/terminalCommands.test.js"
+    "test": "node src/2025/utils/terminalCommands.test.js"
   },
   "dependencies": {
     "animejs": "^4.2.2",
