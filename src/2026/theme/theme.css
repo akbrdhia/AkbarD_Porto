@@ -8,7 +8,7 @@
   --color-p26-on-primary-container: #2B1700;
 
   /* Neutral / Surface */
-  --color-p26-surface: #FCF9F8;
+  --color-p26-surface: #2A2520;
   --color-p26-surface-bright: #FFF8F5;
   --color-p26-surface-container-low: #F6F3F2;
   --color-p26-surface-container: #F0EDEC;
@@ -16,9 +16,14 @@
   --color-p26-surface-container-highest: #E4E1E0;
 
   /* On-Surface (Text) */
-  --color-p26-on-surface: #1C1B1B;
+  --color-p26-on-surface: #FEF0E4;
   --color-p26-on-surface-variant: #4D4443;
   --color-p26-outline: #7F7373;
+
+  /* New Backgrounds from Reality Analysis */
+  --color-p26-bg-deep: #242120;
+  --color-p26-bg-amber: #F5A623;
+  --color-p26-bg-cream: #FEF0E4;
 
   /* Motion Timing (Section 9) */
   --duration-p26-instant: 80ms;

@@ -1,13 +1,36 @@
 @layer base {
   .p26-display-lg {
     font-size: clamp(2rem, 5vw + 0.5rem, 3.5rem);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.05em;
     line-height: 1.1;
-    font-family: var(--font-display);
+    font-family: 'Archivo Narrow', sans-serif;
+    font-stretch: condensed;
   }
   .p26-body-lg {
     font-size: 1rem;
     line-height: 1.6;
     font-family: var(--font-body);
+  }
+}
+
+@layer components {
+  .p26-pill-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    background-color: var(--color-p26-primary-container);
+    color: var(--color-p26-on-primary-container);
+    font-weight: 600;
+    transition: all var(--duration-p26-base) var(--ease-p26-standard);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.875rem;
+  }
+
+  .p26-pill-cta:hover {
+    filter: brightness(1.1);
+    gap: 0.75rem;
   }
 }
