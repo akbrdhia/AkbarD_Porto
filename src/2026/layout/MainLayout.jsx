@@ -1,9 +1,13 @@
 import React from 'react';
+import Navbar from './Navbar';
+import '../theme/theme.css';
+import '../theme/typography.css';
 
 const MainLayout = ({ children }) => {
   return (
-    <div className="min-h-screen bg-p26-surface text-p26-on-surface selection:bg-p26-primary-container selection:text-p26-on-primary-container font-body">
-      <main className="relative z-10">
+    <div style={{ minHeight: '100vh', width: '100vw', background: 'var(--bg)', color: 'var(--text)' }}>
+      <Navbar />
+      <main>
         {children}
       </main>
     </div>

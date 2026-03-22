@@ -1,41 +1,13 @@
-@import "tailwindcss";
+:root {
+  --bg: #000000;
+  --text: #ffffff;
+  --accent: #F5C842;
+}
 
-@theme {
-  /* Primary (Amber/Gold) */
-  --color-p26-primary: #875200;
-  --color-p26-on-primary: #FFFFFF;
-  --color-p26-primary-container: #F59D21;
-  --color-p26-on-primary-container: #2B1700;
-
-  /* Neutral / Surface */
-  --color-p26-surface: #2A2520;
-  --color-p26-surface-bright: #FFF8F5;
-  --color-p26-surface-container-low: #F6F3F2;
-  --color-p26-surface-container: #F0EDEC;
-  --color-p26-surface-container-high: #EAE7E6;
-  --color-p26-surface-container-highest: #E4E1E0;
-
-  /* On-Surface (Text) */
-  --color-p26-on-surface: #FEF0E4;
-  --color-p26-on-surface-variant: #4D4443;
-  --color-p26-outline: #7F7373;
-
-  /* New Backgrounds from Reality Analysis */
-  --color-p26-bg-hero: #2A2520;
-  --color-p26-bg-deep: #242120;
-  --color-p26-bg-amber: #F5A623;
-  --color-p26-bg-cream: #FEF0E4;
-
-  /* Motion Timing (Section 9) */
-  --duration-p26-instant: 80ms;
-  --duration-p26-fast: 150ms;
-  --duration-p26-base: 250ms;
-  --duration-p26-slow: 400ms;
-  --duration-p26-languid: 600ms;
-  --duration-p26-cinematic: 900ms;
-
-  /* Easing (Section 9) */
-  --ease-p26-standard: cubic-bezier(0.2, 0.0, 0, 1.0);
-  --ease-p26-out: cubic-bezier(0.0, 0.0, 0.2, 1);
-  --ease-p26-expressive: cubic-bezier(0.34, 1.56, 0.64, 1);
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Crucial for text bleed */
 }

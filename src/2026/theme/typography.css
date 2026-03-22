@@ -1,57 +1,28 @@
-@layer base {
-  .p26-display-lg {
-    font-size: clamp(2rem, 5vw + 0.5rem, 3.5rem);
-    letter-spacing: -0.05em;
-    line-height: 1.1;
-    font-family: 'Archivo Narrow', sans-serif;
-    font-stretch: condensed;
-    font-weight: 900;
-  }
-  .p26-headline-md {
-    font-size: clamp(1.5rem, 3vw + 0.5rem, 2.25rem);
-    letter-spacing: -0.03em;
-    line-height: 1.2;
-    font-family: 'Archivo Narrow', sans-serif;
-    font-weight: 700;
-  }
-  .p26-label-mono {
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    line-height: 1.0;
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 500;
-    text-transform: uppercase;
-  }
-  .p26-body-lg {
-    font-size: 1rem;
-    line-height: 1.6;
-    font-family: var(--font-body);
-  }
-  .p26-body-md {
-    font-size: 0.875rem;
-    line-height: 1.5;
-    font-family: var(--font-body);
-  }
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;900&display=swap');
+
+:root {
+  --font-family: 'Sora', sans-serif;
 }
 
-@layer components {
-  .p26-pill-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    border-radius: 9999px;
-    background-color: var(--color-p26-primary-container);
-    color: var(--color-p26-on-primary-container);
-    font-weight: 600;
-    transition: all var(--duration-p26-base) var(--ease-p26-standard);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-size: 0.875rem;
-  }
+body {
+  font-family: var(--font-family);
+}
 
-  .p26-pill-cta:hover {
-    filter: brightness(1.1);
-    gap: 0.75rem;
-  }
+.hero-text {
+  font-size: clamp(18vw, 22vw, 26vw);
+  font-weight: 900;
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.statement-text {
+  font-size: clamp(1.5rem, 3vw, 2.8rem);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.nav-text {
+  font-size: 0.85rem;
+  font-weight: 400;
 }
