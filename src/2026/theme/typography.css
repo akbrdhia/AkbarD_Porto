@@ -1,0 +1,13 @@
+@layer base {
+  .p26-display-lg {
+    font-size: clamp(2rem, 5vw + 0.5rem, 3.5rem);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    font-family: var(--font-display);
+  }
+  .p26-body-lg {
+    font-size: 1rem;
+    line-height: 1.6;
+    font-family: var(--font-body);
+  }
+}
