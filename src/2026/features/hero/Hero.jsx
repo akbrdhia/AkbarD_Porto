@@ -35,23 +35,25 @@ const Hero = () => {
   // 4. Apply final y value based on reduced motion preference
   const y = shouldReduceMotion ? 0 : springY;
 
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <section 
       ref={containerRef}
-      className="relative overflow-hidden pt-[10vh] px-12 min-h-[120vh] bg-black text-white font-['Sora',sans-serif]"
+      className="relative overflow-hidden pt-[10vh] px-12 min-h-[80vh] bg-black text-white font-['Sora',sans-serif]"
     >
       {/* Background Layer (Title) */}
-      <div className="absolute top-0 left-0 z-0 pointer-events-none overflow-hidden w-full px-12">
+      <div className="absolute top-0 left-0 z-0 pointer-events-none overflow-hidden w-screen mt-[2vh]">
         <motion.div
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.8 }}
+          initial={{ y: "100vh" }}
+          animate={{ y: 0 }}
+          transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}
           className="will-change-transform"
         >
           <motion.h1 
             style={{ y }}
             aria-hidden="true"
-            className="text-[clamp(22vw,26vw,30vw)] font-black leading-[0.8] tracking-tighter m-0 p-0 opacity-80 whitespace-nowrap will-change-transform"
+            className="text-[clamp(24vw,28vw,32vw)] font-black leading-[0.8] tracking-tighter m-0 p-0 text-white whitespace-nowrap will-change-transform"
           >
             AkbarD
           </motion.h1>
@@ -62,22 +64,38 @@ const Hero = () => {
       <motion.div 
         initial={{ y: 30, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
+        transition={{ duration: 1.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-10 mt-[45vh]"
       >
-        <p className="text-[2.75rem] md:text-[3.5rem] font-bold leading-tight w-full">
-          <Link to="/2026/about" className="inline-block mr-[100px] cursor-pointer group relative text-[1.5rem] md:text-[1.5rem] tracking-widest align-middle text-white no-underline">
-            about →
+        <p className="text-[3.25rem] md:text-[4.5rem] font-bold leading-tight w-full">
+          <Link to="/2026/about" className="inline-block mr-[350px] cursor-pointer group relative text-[2rem] md:text-[2.2rem] tracking-widest align-middle text-white no-underline">
+            About →
             <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-white transition-transform duration-500 origin-left scale-x-100 group-hover:origin-right group-hover:scale-x-0"></span>
           </Link>
           Software engineer who 
-          <span className="inline-block align-middle mx-6 overflow-hidden rounded-2xl border-2 border-white/20 -rotate-3 hover:rotate-0 transition-all duration-500 shadow-2xl">
+          <motion.span 
+            animate={{ rotate: 360, scale: isHovered ? 1.1 : 1 }}
+            transition={{ 
+              rotate: {
+                duration: isHovered ? 1000000 : 8, 
+                repeat: Infinity, 
+                ease: "linear" 
+              },
+              scale: {
+                duration: 0.3,
+                ease: "easeOut"
+              }
+            }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            className="inline-block align-middle mx-6 overflow-hidden rounded-2xl"
+          >
             <img 
               src="/about-portrait.jpg" 
               alt="Portrait" 
               className="h-[1.4em] md:h-[1.6em] w-auto object-cover"
             />
-          </span>
+          </motion.span>
           gives a damn about how things work and how they look.
         </p>
       </motion.div>
