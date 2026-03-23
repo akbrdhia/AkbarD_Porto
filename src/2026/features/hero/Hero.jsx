@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
   const containerRef = useRef(null);
@@ -21,8 +22,8 @@ const Hero = () => {
   });
 
   // 2. Map scroll to y offset (Scale down for mobile viewports)
-  // Adjusted to ~12.5% of scroll distance (150px for 120vh container)
-  const yTransform = useTransform(scrollYProgress, [0, 1], [0, isMobile ? 80 : 150]);
+  // Adjusted to ~20% of scroll distance (240px for 120vh container)
+  const yTransform = useTransform(scrollYProgress, [0, 1], [0, isMobile ? 150 : 240]);
 
   // 3. Smooth the motion (Updated to spec: stiffness 400, damping 90)
   const springY = useSpring(yTransform, {
@@ -65,10 +66,10 @@ const Hero = () => {
         className="relative z-10 mt-12"
       >
         <p className="text-[2.75rem] md:text-[3.5rem] font-bold leading-tight w-full">
-          <span className="inline-block mr-[100px] cursor-pointer group relative text-[1.5rem] md:text-[1.5rem] tracking-widest align-middle">
+          <Link to="/2026/about" className="inline-block mr-[100px] cursor-pointer group relative text-[1.5rem] md:text-[1.5rem] tracking-widest align-middle text-white no-underline">
             about →
             <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-white transition-transform duration-500 origin-left scale-x-100 group-hover:origin-right group-hover:scale-x-0"></span>
-          </span>
+          </Link>
           Software engineer who gives a damn about how things work and how they look.
         </p>
       </motion.div>
