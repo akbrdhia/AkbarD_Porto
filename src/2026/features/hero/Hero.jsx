@@ -1,9 +1,18 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'framer-motion';
 
 const Hero = () => {
   const containerRef = useRef(null);
   const shouldReduceMotion = useReducedMotion();
+  const [isMobile, setIsMobile] = useState(false);
+
+  // 0. Handle responsiveness
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // 1. Set up scroll tracking
   const { scrollYProgress } = useScroll({
@@ -11,13 +20,13 @@ const Hero = () => {
     offset: ["start start", "end start"]
   });
 
-  // 2. Map scroll to y offset
-  const yTransform = useTransform(scrollYProgress, [0, 1], [0, 200]);
+  // 2. Map scroll to y offset (Scale down for mobile viewports)
+  const yTransform = useTransform(scrollYProgress, [0, 1], [0, isMobile ? 100 : 200]);
 
-  // 3. Smooth the motion
+  // 3. Smooth the motion (Updated to spec: stiffness 400, damping 90)
   const springY = useSpring(yTransform, {
-    stiffness: 100,
-    damping: 30,
+    stiffness: 400,
+    damping: 90,
     restDelta: 0.001
   });
 
@@ -31,16 +40,20 @@ const Hero = () => {
     >
       {/* Background Layer (Title) */}
       <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none overflow-hidden">
-        <motion.h1 
-          style={{ y }}
+        <motion.div
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8 }}
-          aria-hidden="true"
-          className="text-[clamp(22vw,26vw,30vw)] font-black leading-[0.8] tracking-tighter m-0 p-0 lowercase opacity-80 will-change-transform whitespace-nowrap"
+          className="flex items-center justify-center will-change-transform"
         >
-          akbard
-        </motion.h1>
+          <motion.h1 
+            style={{ y }}
+            aria-hidden="true"
+            className="text-[clamp(22vw,26vw,30vw)] font-black leading-[0.8] tracking-tighter m-0 p-0 lowercase opacity-80 whitespace-nowrap"
+          >
+            akbard
+          </motion.h1>
+        </motion.div>
       </div>
 
       {/* Foreground Layer (Tagline) */}
