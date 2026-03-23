@@ -21,7 +21,8 @@ const Hero = () => {
   });
 
   // 2. Map scroll to y offset (Scale down for mobile viewports)
-  const yTransform = useTransform(scrollYProgress, [0, 1], [0, isMobile ? 100 : 200]);
+  // Adjusted to ~12.5% of scroll distance (150px for 120vh container)
+  const yTransform = useTransform(scrollYProgress, [0, 1], [0, isMobile ? 80 : 150]);
 
   // 3. Smooth the motion (Updated to spec: stiffness 400, damping 90)
   const springY = useSpring(yTransform, {
@@ -49,7 +50,7 @@ const Hero = () => {
           <motion.h1 
             style={{ y }}
             aria-hidden="true"
-            className="text-[clamp(22vw,26vw,30vw)] font-black leading-[0.8] tracking-tighter m-0 p-0 lowercase opacity-80 whitespace-nowrap"
+            className="text-[clamp(22vw,26vw,30vw)] font-black leading-[0.8] tracking-tighter m-0 p-0 lowercase opacity-80 whitespace-nowrap will-change-transform"
           >
             akbard
           </motion.h1>
