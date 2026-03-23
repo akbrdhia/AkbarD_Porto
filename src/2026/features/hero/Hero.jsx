@@ -3,24 +3,30 @@ import { motion } from 'framer-motion';
 
 const Hero = () => {
   return (
-    <section className="pt-[10vh] pl-6 min-h-[70vh] overflow-hidden">
-      <motion.div
-        initial={{ y: 100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <h1 className="text-[clamp(18vw,22vw,26vw)] font-black leading-[0.85] tracking-tight whitespace-nowrap m-0 p-0 font-['Sora',sans-serif]">
-          AkbarD
-        </h1>
-      </motion.div>
-      <motion.div
+    <section className="pt-[10vh] px-12 min-h-[70vh] bg-black text-white font-['Sora',sans-serif]">
+      {/* Name */}
+      <motion.h1 
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-        className="mt-8"
+        transition={{ duration: 0.8 }}
+        className="text-[clamp(22vw,26vw,30vw)] font-black leading-[0.8] tracking-tighter m-0 p-0"
       >
-        <p className="text-[clamp(1.5rem,3vw,2.8rem)] font-semibold leading-tight font-['Sora',sans-serif]">
-          Software engineer who gives a damn about how things work <br />and how they look.
+        AkbarD
+      </motion.h1>
+
+      {/* Subtext */}
+      <motion.div 
+        initial={{ y: 30, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="mt-12"
+      >
+        <p className="text-[2.75rem] md:text-[3.5rem] font-bold leading-tight w-full">
+          <span className="inline-block mr-[100px] cursor-pointer group relative text-[1.5rem] md:text-[1.5rem] tracking-widest align-middle">
+            about →
+            <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-white transition-transform duration-500 origin-left scale-x-100 group-hover:origin-right group-hover:scale-x-0"></span>
+          </span>
+          Software engineer who gives a damn about how things work and how they look.
         </p>
       </motion.div>
     </section>

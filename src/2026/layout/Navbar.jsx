@@ -10,13 +10,6 @@ const navItems = [
   { id: 'contact', label: 'contact' }
 ];
 const NavItem = ({ label }) => {
-  // Random initial offsets for "acak-acak" feel
-  const [initialOffset] = useState({
-    x: Math.random() * 40 - 20,
-    y: Math.random() * 20 - 10,
-    rotate: Math.random() * 10 - 5
-  });
-
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -45,22 +38,11 @@ const NavItem = ({ label }) => {
   };
 
   return (
-    <motion.div
-      animate={{
-        x: [0, Math.random() * 25 - 12.5, Math.random() * 25 - 12.5, Math.random() * 25 - 12.5, 0],
-        y: [0, Math.random() * 15 - 7.5, Math.random() * 15 - 7.5, Math.random() * 15 - 7.5, 0],
-        rotate: [0, Math.random() * 10 - 5, Math.random() * 10 - 5, 0],
-      }}
-      transition={{
-        duration: 4 + Math.random() * 4,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }}
-    >
+    <motion.div>
       <motion.button
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        style={{ x, y, rotate: initialOffset.rotate }}
+        style={{ x, y }}
         className="text-[0.85rem] font-normal cursor-pointer hover:text-[#F5C842] transition-colors relative"
         onClick={() => console.log(`Navigating to ${label}...`)}
       >
