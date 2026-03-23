@@ -3,6 +3,26 @@ import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'fr
 
 const Hero = () => {
   const containerRef = useRef(null);
+  const shouldReduceMotion = useReducedMotion();
+
+  // 1. Set up scroll tracking
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  });
+
+  // 2. Map scroll to y offset
+  const yTransform = useTransform(scrollYProgress, [0, 1], [0, 200]);
+
+  // 3. Smooth the motion
+  const springY = useSpring(yTransform, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  // 4. Apply final y value based on reduced motion preference
+  const y = shouldReduceMotion ? 0 : springY;
 
   return (
     <section 
@@ -12,6 +32,7 @@ const Hero = () => {
       {/* Background Layer (Title) */}
       <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none overflow-hidden">
         <motion.h1 
+          style={{ y }}
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8 }}
