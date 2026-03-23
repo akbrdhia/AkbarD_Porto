@@ -56,30 +56,43 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className={`fixed z-[100] flex justify-between transition-all duration-500 ease-in-out font-['Sora',sans-serif] text-white ${
-      isScrolled 
-        ? 'top-4 left-6 right-6 py-6 px-8 bg-white/10 backdrop-blur-2xl rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]' 
-        : 'top-0 left-0 right-0 py-8 px-8 bg-transparent'
-    }`}>
-      <div className="flex items-center gap-2">
-        <div className="text-[1.1rem] font-bold tracking-tighter uppercase">AkbarD</div>
-      </div>
+    <motion.nav 
+      layout
+      className={`fixed z-[100] transition-all duration-500 ease-in-out font-['Sora',sans-serif] text-white ${
+        isScrolled 
+          ? 'top-4 left-6 right-6 py-6 px-10 bg-white/10 backdrop-blur-2xl rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]' 
+          : 'top-0 left-0 right-0 py-8 px-12 bg-transparent'
+      }`}
+    >
+      <div className="max-w-[1800px] mx-auto flex items-center justify-between">
+        {/* Left: Brand */}
+        <motion.div layout className="flex-1">
+          <div className="text-[1.1rem] font-bold tracking-tighter">AkbarD</div>
+        </motion.div>
 
-      <div className={`flex items-center gap-6 md:gap-10 flex-wrap justify-center max-w-[70%] text-white transition-all duration-500 ${
-        isScrolled ? 'ml-0' : 'ml-[35%]'
-      }`}>
-        {navItems.map((item) => (
-          <NavItem key={item.id} label={item.label} />
-        ))}
-      </div>
+        {/* Center: Links */}
+        <motion.div 
+          layout
+          className={`flex-[2] flex items-center justify-center gap-6 transition-all duration-500 ${
+            isScrolled ? 'ml-0' : 'ml-[22%]'
+          }`}
+        >
+          {navItems.map((item) => (
+            <NavItem key={item.id} label={item.label} />
+          ))}
+        </motion.div>
 
-      <motion.div className={`flex items-center gap-2 text-white transition-all duration-500 ${
-        isScrolled ? 'mr-0' : 'mr-110'
-      }`}>
-        <div className="text-[1.1rem] font-bold tracking-tighter uppercase">Bogor, Indonesia</div>
-        <div className="w-2 h-2 rounded-full bg-white" />
-      </motion.div>
-    </nav>
+        {/* Right: Location */}
+        <motion.div layout className="flex-1 flex justify-end">
+          <motion.div layout className={`flex items-center gap-2 text-white transition-all duration-500 ${
+            isScrolled ? 'mr-0' : 'mr-80'
+          }`}>
+            <div className="text-[1.1rem] font-bold tracking-tighter whitespace-nowrap">Bogor, Indonesia</div>
+            <div className="w-2 h-2 rounded-full bg-white " />
+          </motion.div>
+        </motion.div>
+      </div>
+    </motion.nav>
   );
 };
 
