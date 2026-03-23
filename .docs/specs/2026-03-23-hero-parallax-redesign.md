@@ -12,10 +12,11 @@ Redesign the 2026 Portfolio Hero section to feature a layered, parallax effect. 
 ## Architecture
 
 ### 1. Layout & Layering
-- **Container:** `Hero.jsx` will be a `relative` container with `min-h-[120vh]` to allow for scroll space.
+- **Container:** `Hero.jsx` will be a `relative` container with `min-h-[120vh]` to allow for scroll space and `overflow-hidden` to prevent horizontal scrollbars from the oversized title.
 - **Background Layer (z-0):** The "akbard" title.
   - Position: `absolute` or `fixed` within the hero container.
-  - Styling: `text-[clamp(22vw,26vw,30vw)]`, `font-black`, `lowercase`, `opacity-80` (approx).
+  - Styling: `text-[clamp(22vw,26vw,30vw)]`, `font-black`, `lowercase`, `opacity-80`, `will-change: transform`.
+  - Accessibility: `aria-hidden="true"`.
   - Overflow: Allowed to bleed off edges as per `DESIGN.md`.
 - **Foreground Layer (z-10):** The tagline text.
   - Position: `relative`.
@@ -24,20 +25,24 @@ Redesign the 2026 Portfolio Hero section to feature a layered, parallax effect. 
 
 ### 2. Motion & Parallax
 - **Library:** `framer-motion`.
-- **Scroll Tracking:** Use `useScroll` to monitor the vertical scroll progress of the hero section.
+- **Scroll Tracking:** Use `useScroll` with a `target` ref pointing to the Hero section container.
+- **Motion Reduction:** Use `useReducedMotion` to dampen or disable the parallax effect for users with motion sensitivities.
 - **Parallax Transform:** 
-  - Use `useTransform` to map scroll progress (e.g., `0` to `500px`) to a subtle `y` offset for the background title (e.g., `0` to `100px`).
-  - The foreground tagline will scroll at the default 1:1 rate.
+  - Use `useTransform` to map scroll progress (e.g., `0` to `500px`) to a subtle `y` offset for the background title.
+  - Intensity: Move ~15-20% of scroll distance (e.g., `0` to `100px`). Scale this intensity down for mobile viewports.
+  - Smoothness: Wrap the transform output in `useSpring` (e.g., `useSpring(yTransform, { stiffness: 400, damping: 90 })`) for fluid motion.
 - **Entrance Animation:** 
   - Title: Fade in and slide up slightly on mount.
   - Tagline: Slide up from `y: 30` with a slight delay.
 
-### 3. Interactions
+### 3. Interactions & Performance
 - The `about →` link within the tagline must remain clickable and maintain its hover state (animated underline).
+- Leverage GPU acceleration by ensuring the parallax is purely transform-based.
 
 ## Success Criteria
 - [ ] Title "akbard" is visually behind the tagline.
-- [ ] Title is lowercase.
+- [ ] Title is lowercase and accessible (`aria-hidden`).
 - [ ] Title moves noticeably slower than the tagline when scrolling.
 - [ ] "about →" link remains interactive.
 - [ ] No horizontal scrollbars created by the overflowing title.
+- [ ] Parallax is disabled or minimal if "Reduced Motion" is enabled.
