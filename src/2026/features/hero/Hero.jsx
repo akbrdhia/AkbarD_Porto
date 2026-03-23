@@ -1,25 +1,33 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform, useSpring, useReducedMotion } from 'framer-motion';
 
 const Hero = () => {
-  return (
-    <section className="pt-[10vh] px-12 min-h-[70vh] bg-black text-white font-['Sora',sans-serif]">
-      {/* Name */}
-      <motion.h1 
-        initial={{ y: 50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        className="text-[clamp(22vw,26vw,30vw)] font-black leading-[0.8] tracking-tighter m-0 p-0"
-      >
-        AkbarD
-      </motion.h1>
+  const containerRef = useRef(null);
 
-      {/* Subtext */}
+  return (
+    <section 
+      ref={containerRef}
+      className="relative overflow-hidden pt-[10vh] px-12 min-h-[120vh] bg-black text-white font-['Sora',sans-serif]"
+    >
+      {/* Background Layer (Title) */}
+      <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none overflow-hidden">
+        <motion.h1 
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          aria-hidden="true"
+          className="text-[clamp(22vw,26vw,30vw)] font-black leading-[0.8] tracking-tighter m-0 p-0 lowercase opacity-80 will-change-transform whitespace-nowrap"
+        >
+          akbard
+        </motion.h1>
+      </div>
+
+      {/* Foreground Layer (Tagline) */}
       <motion.div 
         initial={{ y: 30, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.2 }}
-        className="mt-12"
+        className="relative z-10 mt-12"
       >
         <p className="text-[2.75rem] md:text-[3.5rem] font-bold leading-tight w-full">
           <span className="inline-block mr-[100px] cursor-pointer group relative text-[1.5rem] md:text-[1.5rem] tracking-widest align-middle">
