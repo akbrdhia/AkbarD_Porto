@@ -267,7 +267,7 @@ const HeroSection = ({ glitchActive }) => {
               style={{ display: "flex", gap: "18px", flexWrap: "wrap" }}
             >
               <button
-                onClick={() => navigate('/select')}
+                onClick={() => navigate('/2025')}
                 data-cursor-interactive="true"
                 data-cursor-label="IDE STUDIO"
                 style={{

@@ -30,8 +30,8 @@ const ModeSelectionPage = () => {
       setViewMode(selectedMode);
       setLoading(false);
 
-      if (selectedMode === 'web') navigate('/web');
-      else if (selectedMode === 'ide') navigate('/ide');
+      if (selectedMode === 'web') navigate('web');
+      else if (selectedMode === 'ide') navigate('ide');
     }, 2800);
   };
 

@@ -11,6 +11,7 @@ const App = () => {
         <Route path="/" element={<Navigate to="/2025" replace />} />
         <Route path="/2025/*" element={<Portfolio2025 />} />
         <Route path="/2026/*" element={<Portfolio2026 />} />
+        <Route path="*" element={<Navigate to="/2025" replace />} />
       </Routes>
       <VersionSwitcher />
     </>

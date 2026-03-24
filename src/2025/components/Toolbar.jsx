@@ -13,7 +13,7 @@ const Toolbar = ({ onBuild }) => {
     sessionStorage.removeItem("portfolio_visited");
     localStorage.removeItem("portfolio_mode");
     if (setViewMode) setViewMode(null);
-    navigate('/');
+    navigate('/2025');
   };
 
   return (

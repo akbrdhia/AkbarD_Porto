@@ -14,7 +14,7 @@ const Portfolio = () => {
         <Route path="/" element={<ModeSelectionPage />} />
         <Route path="/web" element={<WebModePage />} />
         <Route path="/ide" element={<IDEModePage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to="." replace />} />
       </Routes>
     </PortfolioProvider>
   );
