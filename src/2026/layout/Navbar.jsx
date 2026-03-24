@@ -64,13 +64,13 @@ const Navbar = () => {
   return (
     <motion.nav 
       layout
-      className={`fixed z-[100] w-full transition-all duration-500 ease-in-out font-['Sora',sans-serif] text-white ${
+      className={`fixed z-[100] transition-all duration-500 ease-in-out font-['Sora',sans-serif] text-white ${
         isScrolled 
-          ? 'top-4 left-6 right-6 py-6 px-10 bg-white/10 backdrop-blur-2xl rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.37)]' 
-          : 'top-0 left-0 py-8 px-12 bg-transparent'
+          ? 'top-4 left-4 right-4 md:left-6 md:right-6 py-4 px-6 md:py-6 md:px-10 bg-white/10 backdrop-blur-2xl rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] max-w-[1800px] mx-auto' 
+          : 'top-0 left-0 right-0 py-8 px-6 md:px-12 bg-transparent'
       }`}
     >
-      <div className="max-w-[1800px] mx-auto flex items-center justify-between px-4">
+      <div className="flex items-center justify-between">
         {/* Left: Brand */}
         <motion.div layout className="flex-1">
           <Link to="/2026" className="text-[1.1rem] font-bold tracking-tighter text-white no-underline">
@@ -78,11 +78,11 @@ const Navbar = () => {
           </Link>
         </motion.div>
 
-        {/* Center: Links */}
+        {/* Center: Links (Hidden on mobile) */}
         <motion.div 
           layout
-          className={`flex-[2] flex items-center justify-center gap-6 transition-all duration-500 ${
-            isScrolled ? 'ml-0' : 'ml-[25%]'
+          className={`flex-[2] hidden lg:flex items-center justify-center gap-6 transition-all duration-500 ${
+            isScrolled ? 'ml-0' : 'ml-[10%]'
           }`}
         >
           {navItems.map((item) => {
@@ -109,10 +109,10 @@ const Navbar = () => {
         {/* Right: Location */}
         <div className="flex-1 flex justify-end">
           <motion.div layout className={`flex items-center gap-2 text-white transition-all duration-500 ${
-            isScrolled ? 'mr-0' : 'mr-80'
+            isScrolled ? 'mr-0' : 'mr-4 md:mr-10'
           }`}>
-            <div className="text-[1.1rem] font-bold tracking-tighter whitespace-nowrap">Bogor, Indonesia</div>
-            <div className="w-2 h-2 rounded-full bg-white" />
+            <div className="text-[1.1rem] font-bold tracking-tighter whitespace-nowrap hidden sm:block">Bogor, Indonesia</div>
+            <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
           </motion.div>
         </div>
       </div>

@@ -4,10 +4,9 @@ import { Link } from 'react-router-dom';
 
 const ProjectCard = ({ project, index }) => {
   const isLarge = index === 0 || index === 3; 
-  const projectId = project.name.toLowerCase().replace(/\s+/g, '-');
 
   return (
-    <Link to={`/2026/project/${projectId}`} className="block">
+    <Link to={`/2026/project/${project.id}`} className="block">
       <motion.div 
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}

@@ -1,69 +1,11 @@
 import React, { useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-
-const projects = [
-  {
-    id: "ods-form",
-    name: "ODS Form, Custom Form Builder",
-    brand: "ODS (Online Data System)",
-    ledBy: "Akbar Dhia",
-    roles: "Full Stack Development",
-    year: "2025",
-    description: "A fail-safe custom form builder natively integrated with ODS Mandiri to track cooperative profiles in real-time and eliminate data gaps.",
-    tech: ["React", "Tailwind", "Laravel"],
-    status: "LIVE",
-    accentColor: "#4A7EF5",
-    preview: "/projects/odsform.png",
-    link: "odsform.kop.go.id",
-  },
-  {
-    id: "manager-usaha-v2",
-    name: "Manager Usaha, AI Inventory",
-    brand: "Manager Usaha (Small Business AI)",
-    ledBy: "AkbarD",
-    roles: "Mobile Development",
-    year: "2024",
-    description: "Business metrics & inventory automation with on-device AI classification. A comprehensive tool for small business owners to manage their stock and financial health with minimal manual entry.",
-    tech: ["Kotlin", "Laravel", "ML Kit"],
-    status: "LIVE",
-    accentColor: "#9CCC65",
-    preview: "/Manager_usahav2.png",
-    link: "",
-  },
-  {
-    id: "cogito",
-    name: "Cogito, Debate Companion",
-    brand: "Cogito (AI Debate Platform)",
-    ledBy: "AkbarD",
-    roles: "AI Engineering",
-    year: "2024",
-    description: "AI debate companion that generates counter-arguments in real time. Designed to help users sharpen their rhetorical skills and explore multiple perspectives on any given topic.",
-    tech: ["Express", "PostgreSQL", "Kotlin", "Qwen"],
-    status: "BETA",
-    accentColor: "#AED581",
-    preview: "/assets/projects/cogito.jpg",
-    link: "https://github.com/LazyPota/Cogito/tree/main",
-  },
-  {
-    id: "sako",
-    name: "Sako, Simpan Pinjam",
-    brand: "Sako (Cooperative Finance)",
-    ledBy: "AkbarD",
-    roles: "Full Stack Development",
-    year: "2023",
-    description: "Simpan-pinjam assistant for cooperatives—payments, analytics, plus reporting. Digitizing traditional financial systems with a modern, secure, and accessible platform.",
-    tech: ["React", "Laravel"],
-    status: "BETA",
-    accentColor: "#C5E1A5",
-    preview: "/Sako-login.png",
-    link: "",
-  },
-];
+import { PROJECTS } from '../../../constants/projects';
 
 const ProjectDetail = () => {
   const { projectId } = useParams();
-  const project = projects.find(p => p.id === projectId);
+  const project = PROJECTS.find(p => p.id === projectId);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -162,16 +104,20 @@ const ProjectDetail = () => {
 
       {/* 6. More Projects Section */}
       <section className="px-12 py-40 border-t border-white/10">
-        <h2 className="text-white/30 text-xs uppercase tracking-[0.5em] mb-20">(More Projects)</h2>
-        <div className="flex flex-col group/list">
-          {projects.filter(p => p.id !== project.id).map((otherProject) => (
-            <Link 
-              key={otherProject.id}
-              to={`/2026/project/${otherProject.id}`}
-              className="text-[clamp(3rem,8vw,8rem)] font-black tracking-tighter leading-[0.85] uppercase transition-all duration-500 opacity-40 hover:!opacity-100 hover:translate-x-8 block mb-8"
-            >
-              {otherProject.brand}
-            </Link>
+        <h2 className="text-white/30 text-xs uppercase tracking-[0.5em] mb-12">(More Projects)</h2>
+        <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
+          {PROJECTS.filter(p => p.id !== project.id).map((otherProject, index, array) => (
+            <React.Fragment key={otherProject.id}>
+              <Link 
+                to={`/2026/project/${otherProject.id}`}
+                className="text-[clamp(2rem,5vw,5rem)] font-black tracking-tighter uppercase transition-all duration-500 opacity-40 hover:opacity-100 hover:text-white"
+              >
+                {otherProject.name}
+              </Link>
+              {index < array.length - 1 && (
+                <span className="text-[clamp(2rem,5vw,5rem)] font-black opacity-20">,</span>
+              )}
+            </React.Fragment>
           ))}
         </div>
       </section>
