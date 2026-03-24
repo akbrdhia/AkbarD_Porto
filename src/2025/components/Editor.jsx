@@ -42,7 +42,7 @@ const markdownComponents = {
     <hr style={{ border: "none", borderTop: "1px solid #3C3F41", margin: "24px 0" }} />
   ),
   code: ({ children }) => (
-    <code style={{ background: "#1E1E1E", padding: "2px 6px", borderRadius: "4px", color: "#6A8759", fontSize: "14px" }}>
+    <code style={{ background: "#1E1E1E", padding: "2px 6px", borderRadius: "4px", color: "#6A8759", fontSize: "14px", fontFamily: "inherit" }}>
       {children}
     </code>
   ),
@@ -279,7 +279,7 @@ const Editor = () => {
                                   : line || "&nbsp;",
                               }}
                             />
-                            {isLastLine && showCursor && (
+                            {isLastLine && (
                               <span className="typing-cursor"></span>
                             )}
                           </div>

@@ -37,33 +37,31 @@ const WebModePage = () => {
   const [showContent, setShowContent] = useState(false);
   const containerRef = useRef(null);
 
-  // Set view mode to web when this page mounts
+  // Page Orchestration: Mount, Mode, and Loading Sequence
   useEffect(() => {
+    // 1. Set mode
     setViewMode && setViewMode("web");
-  }, [setViewMode]);
 
-  // Intro animation - slower for dramatic effect
-  useEffect(() => {
+    // 2. Start loading progress
     const interval = setInterval(() => {
       setLoadProgress(prev => {
         if (prev >= 100) {
           clearInterval(interval);
           setTimeout(() => {
             setIsLoaded(true);
-            // Trigger content animation after a small delay
             setTimeout(() => setShowContent(true), 100);
           }, 500);
           return 100;
         }
-        // Slower progress with variable speed
         const increment = prev < 30 ? Math.random() * 8 : 
                          prev < 70 ? Math.random() * 5 : 
                          Math.random() * 3;
         return Math.min(prev + increment, 100);
       });
     }, 80);
+
     return () => clearInterval(interval);
-  }, []);
+  }, [setViewMode]);
 
 
   useEffect(() => {
@@ -72,30 +70,27 @@ const WebModePage = () => {
 
     const deriveLabel = (el) => {
       if (!el) return null;
-      const rawLabel =
-        el.getAttribute("data-cursor-label") ||
-        el.getAttribute("aria-label") ||
-        el.innerText ||
-        el.textContent ||
-        el.getAttribute("href");
-      if (!rawLabel) return null;
-      return rawLabel.replace(/\s+/g, " ").trim();
+      return (el.getAttribute("data-cursor-label") || el.getAttribute("aria-label") || el.innerText || el.textContent || el.getAttribute("href"))?.replace(/\s+/g, " ").trim() || null;
     };
 
-    const handlePointerMove = (event) => {
-      const interactiveEl = event.target.closest(interactiveSelector);
+    const handlePointerMove = (e) => {
+      // 1. Update mouse position via CSS variables to avoid React re-renders
+      const root = document.documentElement;
+      root.style.setProperty('--mouse-x', `${e.clientX}px`);
+      root.style.setProperty('--mouse-y', `${e.clientY}px`);
+
+      // 2. Detect interactive elements
+      const interactiveEl = e.target.closest(interactiveSelector);
       if (!interactiveEl) {
-        setCursorLinkLabel((prev) => (prev === null ? prev : null));
+        setCursorLinkLabel(prev => prev === null ? prev : null);
         return;
       }
-
       const label = deriveLabel(interactiveEl) || "LINK";
-
-      setCursorLinkLabel((prev) => (prev === label ? prev : label));
+      setCursorLinkLabel(prev => prev === label ? prev : label);
     };
 
-    document.addEventListener("pointermove", handlePointerMove);
-    return () => document.removeEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    return () => window.removeEventListener("pointermove", handlePointerMove);
   }, []);
 
   // Scroll tracking with section detection
@@ -142,50 +137,69 @@ const WebModePage = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Clock
+  // Consolidate Heartbeats: Clock and Random Glitches
   useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+    const heartbeat = setInterval(() => {
+      // Update clock every second
+      const now = new Date();
+      setCurrentTime(prev => {
+        if (prev.getSeconds() !== now.getSeconds()) return now;
+        return prev;
+      });
 
-  // Random glitch effect
-  useEffect(() => {
-    const glitchInterval = setInterval(() => {
+      // Random glitch logic (approx 8% chance every 100ms)
+      // Pure CSS variable toggle to avoid React tree re-renders
       if (Math.random() > 0.92) {
-        setGlitchActive(true);
-        setTimeout(() => setGlitchActive(false), 100 + Math.random() * 100);
+        document.documentElement.style.setProperty('--glitch-active', '1');
+        setTimeout(() => {
+          document.documentElement.style.setProperty('--glitch-active', '0');
+        }, 100 + Math.random() * 100);
       }
     }, 100);
-    return () => clearInterval(glitchInterval);
+
+    return () => clearInterval(heartbeat);
   }, []);
 
   // Scroll reveal animation observer
   useEffect(() => {
     if (!showContent) return;
     
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("active");
-          }
-        });
-      },
-      {
-        threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px",
-      }
-    );
+    // Give a small delay to ensure DOM is fully ready before querying
+    const timer = setTimeout(() => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("active");
+            }
+          });
+        },
+        {
+          threshold: 0.01,
+          rootMargin: "0px 0px 50px 0px", // Trigger slightly before it enters
+        }
+      );
 
-    // Observe all reveal elements
-    const revealElements = document.querySelectorAll(
-      ".reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-rotate"
-    );
-    revealElements.forEach((el) => observer.observe(el));
+      // Observe all reveal elements
+      const revealElements = document.querySelectorAll(
+        ".reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-rotate"
+      );
 
-    return () => {
-      revealElements.forEach((el) => observer.unobserve(el));
-    };
+      revealElements.forEach((el) => {
+        // If element is already in viewport, trigger it immediately
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          el.classList.add("active");
+        }
+        observer.observe(el);
+      });
+
+      return () => {
+        revealElements.forEach((el) => observer.unobserve(el));
+      };
+    }, 150);
+
+    return () => clearTimeout(timer);
   }, [showContent]);
 
   // Loading screen
@@ -196,8 +210,8 @@ const WebModePage = () => {
   return (
     <>
       <SEO 
-        title="Portfolio Site" 
-        description="Experience my professional work through a modern brutalist web interface. Developer, Designer, and Creator."
+        title="Professional Web Portfolio"
+        description="Explore Akbar Dhia's professional work and projects through a modern, responsive web interface. Specializing in Full-Stack Development, UI/UX Design, and innovative web solutions."
         url="/web"
       />
       {/* Fixed elements - OUTSIDE animated container */}
