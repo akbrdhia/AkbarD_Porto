@@ -76,21 +76,29 @@ const Hero = () => {
             AkbarD
           </motion.h1>
 
-          {/* Peeking Mascot Container */}
-          <div className={`absolute bottom-0 left-[10%] w-[25vw] h-[25vw] pointer-events-none ${isMobile ? '!right-[-18%] !top-[5%] !left-auto !bottom-auto !w-[35vw] !h-[35vw]' : ''}`}>
-            <div className="w-full h-full overflow-hidden relative">
-              <motion.div
-                initial={isMobile ? { x: "100%", y: 0, rotate: -90 } : { y: "100%", x: 0, rotate: 0 }}
-                animate={isMobile 
-                  ? { x: "-5vw", y: 0, rotate: -90 } 
-                  : { y: isTitleHovered ? "35%" : "100%", x: 0, rotate: 0 }
-                }
+          {/* Peeking Mascot Container - Hidden on Mobile */}
+          {!isMobile && (
+            <div className="absolute bottom-0 left-[10%] w-[25vw] h-[25vw] pointer-events-none">
+              <div className="w-full h-full overflow-hidden relative">
+                <motion.div
+                  initial={{ y: "100%", x: 0 }}
+                  animate={{ y: isTitleHovered ? "35%" : "100%", x: 0 }}
+                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  className="w-full h-full will-change-transform transform-gpu"
+                >
+                  <Mascot isMobile={isMobile} />
+                </motion.div>
+              </div>
+              
+              {/* Expanding Baseline */}
+              <motion.div 
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: isTitleHovered ? 1 : 0 }}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full h-full will-change-transform transform-gpu"
-              >
-                <Mascot isMobile={isMobile} />
-              </motion.div>
+                className="absolute bottom-0 left-[10%] w-[80%] h-[4px] bg-white origin-center"
+              />
             </div>
+          )}
             
             {/* Expanding Baseline */}
             <motion.div 
