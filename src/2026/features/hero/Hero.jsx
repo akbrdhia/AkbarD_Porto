@@ -71,21 +71,21 @@ const Hero = () => {
             style={{ y, opacity }}
             onClick={isMobile ? handleTitleClick : undefined}
             aria-hidden="true"
-            className={`text-[clamp(18vw,22vw,24vw)] md:text-[clamp(24vw,28vw,32vw)] font-black leading-[0.8] tracking-tighter m-0 p-0 text-white whitespace-nowrap will-change-transform ${isMobile ? 'cursor-pointer' : ''}`}
+            className={`text-[clamp(18vw,22vw,24vw)] md:text-[clamp(24vw,28vw,32vw)] font-black leading-[0.8] tracking-tighter m-0 p-0 text-white whitespace-nowrap will-change-transform ${isMobile ? 'cursor-pointer !text-[clamp(25vw,28vw,30vw)] !tracking-[-0.07em]' : ''}`}
           >
             AkbarD
           </motion.h1>
 
           {/* Peeking Mascot Container */}
-          <div className="absolute bottom-0 left-[10%] w-[25vw] h-[25vw] pointer-events-none">
+          <div className={`absolute bottom-0 left-[10%] w-[25vw] h-[25vw] pointer-events-none ${isMobile ? '!right-[-5%] !top-[8%] !left-auto !bottom-auto !w-[35vw] !h-[35vw]' : ''}`}>
             <div className="w-full h-full overflow-hidden relative">
               <motion.div
                 initial={{ y: "100%" }}
-                animate={{ y: isTitleHovered ? "35%" : "100%" }}
+                animate={{ y: (isTitleHovered || isMobile) ? "35%" : "100%" }}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                 className="w-full h-full"
               >
-                <Mascot />
+                <Mascot isMobile={isMobile} />
               </motion.div>
             </div>
             
