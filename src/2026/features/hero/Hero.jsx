@@ -46,6 +46,10 @@ const Hero = () => {
   const [isTitleHovered, setIsTitleHovered] = useState(false);
   const [isPortraitHovered, setIsPortraitHovered] = useState(false);
 
+  const handleTitleClick = () => {
+    window.dispatchEvent(new CustomEvent('toggle-mobile-menu'));
+  };
+
   return (
     <section 
       ref={containerRef}
@@ -53,7 +57,7 @@ const Hero = () => {
     >
       {/* Background Layer (Title) */}
       <div 
-        className="absolute top-0 left-0 z-0 pointer-events-none overflow-hidden w-screen mt-[2vh]"
+        className={`absolute top-0 left-0 z-0 overflow-hidden w-screen mt-[2vh] ${isMobile ? '' : 'pointer-events-none'}`}
         onMouseEnter={() => setIsTitleHovered(true)}
         onMouseLeave={() => setIsTitleHovered(false)}
       >
@@ -61,12 +65,13 @@ const Hero = () => {
           initial={{ y: "100vh" }}
           animate={{ y: 0 }}
           transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}
-          className="will-change-transform relative"
+          className={`will-change-transform relative ${isMobile ? '-mt-[8vh]' : ''}`}
         >
           <motion.h1 
             style={{ y, opacity }}
+            onClick={isMobile ? handleTitleClick : undefined}
             aria-hidden="true"
-            className="text-[clamp(18vw,22vw,24vw)] md:text-[clamp(24vw,28vw,32vw)] font-black leading-[0.8] tracking-tighter m-0 p-0 text-white whitespace-nowrap will-change-transform"
+            className={`text-[clamp(18vw,22vw,24vw)] md:text-[clamp(24vw,28vw,32vw)] font-black leading-[0.8] tracking-tighter m-0 p-0 text-white whitespace-nowrap will-change-transform ${isMobile ? 'cursor-pointer' : ''}`}
           >
             AkbarD
           </motion.h1>
@@ -100,7 +105,7 @@ const Hero = () => {
         initial={{ y: 30, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 mt-[35vh] md:mt-[45vh]"
+        className={`relative z-10 mt-[35vh] md:mt-[45vh] ${isMobile ? '-mt-[5vh]' : ''}`}
       >
         <p className="text-[3.25rem] md:text-[4.5rem] font-bold leading-tight w-full">
           <Link to="/2026/about" className="inline-block mr-[350px] cursor-pointer group relative text-[2rem] md:text-[2.2rem] tracking-widest align-middle text-white no-underline">
