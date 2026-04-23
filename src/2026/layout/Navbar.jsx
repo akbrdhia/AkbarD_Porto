@@ -154,14 +154,26 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    const handleToggleMenu = () => setIsOverlayOpen(true);
+
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('toggle-mobile-menu', handleToggleMenu);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('toggle-mobile-menu', handleToggleMenu);
+    };
   }, []);
 
   return (
     <>
       <motion.nav 
         layout
+        initial={false}
+        animate={{ 
+          opacity: isScrolled ? 1 : (window.innerWidth < 1024 ? 0 : 1),
+          pointerEvents: isScrolled ? 'auto' : (window.innerWidth < 1024 ? 'none' : 'auto')
+        }}
         className={`fixed z-[100] transition-all duration-500 ease-in-out font-['Sora',sans-serif] text-white ${
           isScrolled 
             ? 'top-4 left-4 right-4 md:left-6 md:right-6 py-4 px-6 md:py-6 md:px-10 bg-white/10 backdrop-blur-2xl rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] max-w-[1800px] mx-auto' 
