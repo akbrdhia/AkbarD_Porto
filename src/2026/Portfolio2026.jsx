@@ -4,6 +4,7 @@ import MainLayout from './layout/MainLayout';
 import Hero from './features/hero/Hero';
 import GalleryGrid from './features/gallery/GalleryGrid';
 import ProjectDetail from './features/projects/ProjectDetail';
+import AboutPage from './features/about/AboutPage';
 
 const Portfolio2026 = () => {
   return (
@@ -15,6 +16,7 @@ const Portfolio2026 = () => {
             <GalleryGrid />
           </>
         } />
+        <Route path="/about" element={<AboutPage />} />
         <Route path="/project/:projectId" element={<ProjectDetail />} />
       </Routes>
     </MainLayout>
