@@ -58,8 +58,6 @@ const Hero = () => {
       {/* Background Layer (Title) */}
       <div 
         className={`absolute top-0 left-0 z-0 overflow-hidden w-screen mt-[2vh] ${isMobile ? '' : 'pointer-events-none'}`}
-        onMouseEnter={() => setIsTitleHovered(true)}
-        onMouseLeave={() => setIsTitleHovered(false)}
       >
         <motion.div
           initial={{ y: "100vh" }}
@@ -70,18 +68,23 @@ const Hero = () => {
           <motion.h1 
             style={{ y, opacity }}
             onClick={isMobile ? handleTitleClick : undefined}
+            onMouseEnter={() => setIsTitleHovered(true)}
+            onMouseLeave={() => setIsTitleHovered(false)}
             aria-hidden="true"
-            className={`text-[clamp(18vw,22vw,24vw)] md:text-[clamp(24vw,28vw,32vw)] font-black leading-[0.8] tracking-tighter m-0 p-0 text-white whitespace-nowrap will-change-transform ${isMobile ? 'cursor-pointer !text-[clamp(25vw,28vw,30vw)] !tracking-[-0.07em]' : ''}`}
+            className={`text-[clamp(18vw,22vw,24vw)] md:text-[clamp(24vw,28vw,32vw)] font-black leading-[0.8] tracking-tighter m-0 p-0 text-white whitespace-nowrap will-change-transform pointer-events-auto ${isMobile ? 'cursor-pointer !text-[clamp(25vw,28vw,30vw)] !tracking-[-0.07em]' : ''}`}
           >
             AkbarD
           </motion.h1>
 
           {/* Peeking Mascot Container */}
-          <div className={`absolute bottom-0 left-[10%] w-[25vw] h-[25vw] pointer-events-none ${isMobile ? '!right-[-5%] !top-[8%] !left-auto !bottom-auto !w-[35vw] !h-[35vw]' : ''}`}>
+          <div className={`absolute bottom-0 left-[10%] w-[25vw] h-[25vw] pointer-events-none ${isMobile ? '!right-[-10%] !top-[12%] !left-auto !bottom-auto !w-[35vw] !h-[35vw]' : ''}`}>
             <div className="w-full h-full overflow-hidden relative">
               <motion.div
-                initial={{ y: "100%" }}
-                animate={{ y: (isTitleHovered || isMobile) ? "35%" : "100%" }}
+                initial={isMobile ? { x: "100%", y: 0 } : { y: "100%", x: 0 }}
+                animate={isMobile 
+                  ? { x: "0%", y: 0 } 
+                  : { y: isTitleHovered ? "35%" : "100%", x: 0 }
+                }
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                 className="w-full h-full"
               >
