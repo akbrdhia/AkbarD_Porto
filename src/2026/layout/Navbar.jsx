@@ -216,7 +216,7 @@ const Navbar = () => {
           </div>
 
           {/* Right: Location */}
-          <div className="flex justify-start lg:-ml-[10vw]">
+          <div className="flex justify-end">
             <motion.div layout className={`flex items-center gap-2 text-white transition-all duration-500 ${
               isScrolled ? 'mr-0' : 'mr-4 md:mr-10'
             }`}>
