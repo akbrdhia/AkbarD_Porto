@@ -65,7 +65,7 @@ const Hero = () => {
           initial={{ y: "100vh" }}
           animate={{ y: 0 }}
           transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}
-          className={`will-change-transform relative ${isMobile ? '-mt-[8vh]' : ''}`}
+          className="will-change-transform relative"
         >
           <motion.h1 
             style={{ y, opacity }}
@@ -105,7 +105,7 @@ const Hero = () => {
         initial={{ y: 30, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className={`relative z-10 mt-[35vh] md:mt-[45vh] ${isMobile ? '-mt-[5vh]' : ''}`}
+        className="relative z-10 mt-[35vh] md:mt-[45vh]"
       >
         <p className="text-[3.25rem] md:text-[4.5rem] font-bold leading-tight w-full">
           <Link to="/2026/about" className="inline-block mr-[350px] cursor-pointer group relative text-[2rem] md:text-[2.2rem] tracking-widest align-middle text-white no-underline">
