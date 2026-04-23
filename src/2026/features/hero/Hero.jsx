@@ -77,13 +77,13 @@ const Hero = () => {
           </motion.h1>
 
           {/* Peeking Mascot Container */}
-          <div className={`absolute bottom-0 left-[10%] w-[25vw] h-[25vw] pointer-events-none ${isMobile ? '!right-[-10%] !top-[12%] !left-auto !bottom-auto !w-[35vw] !h-[35vw]' : ''}`}>
+          <div className={`absolute bottom-0 left-[10%] w-[25vw] h-[25vw] pointer-events-none ${isMobile ? '!right-[-12%] !top-[10%] !left-auto !bottom-auto !w-[35vw] !h-[35vw]' : ''}`}>
             <div className="w-full h-full overflow-hidden relative">
               <motion.div
-                initial={isMobile ? { x: "100%", y: 0 } : { y: "100%", x: 0 }}
+                initial={isMobile ? { x: "100%", y: 0, rotate: -90 } : { y: "100%", x: 0, rotate: 0 }}
                 animate={isMobile 
-                  ? { x: "0%", y: 0 } 
-                  : { y: isTitleHovered ? "35%" : "100%", x: 0 }
+                  ? { x: "0%", y: 0, rotate: -90 } 
+                  : { y: isTitleHovered ? "35%" : "100%", x: 0, rotate: 0 }
                 }
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                 className="w-full h-full will-change-transform transform-gpu"
