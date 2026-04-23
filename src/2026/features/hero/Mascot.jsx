@@ -34,6 +34,8 @@ const Mascot = ({ isMobile = false }) => {
 
   useEffect(() => {
     if (isMobile) return;
+
+    const handleMouseMove = (e) => {
       if (!mascotRef.current) return;
 
       const rect = mascotRef.current.getBoundingClientRect();
@@ -53,7 +55,7 @@ const Mascot = ({ isMobile = false }) => {
 
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [mouseX, mouseY]);
+  }, [isMobile, mouseX, mouseY]);
 
   return (
     <motion.div
