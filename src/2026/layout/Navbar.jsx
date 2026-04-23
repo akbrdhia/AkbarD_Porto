@@ -217,11 +217,22 @@ const Navbar = () => {
 
           {/* Right: Location */}
           <div className="flex justify-end">
-            <motion.div layout className={`flex items-center gap-2 text-white transition-all duration-500 ${
-              isScrolled ? 'mr-0' : 'mr-4 md:mr-10'
-            }`}>
-              <div className="text-[1.1rem] font-bold tracking-tighter whitespace-nowrap hidden sm:block">Bogor, Indonesia</div>
-              <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+            <motion.div 
+              layout 
+              className={`flex items-center gap-2 transition-all duration-500 ${
+                isScrolled ? 'mr-0' : 'mr-4 md:mr-10'
+              }`}
+              animate={{ color: isScrolled ? '#ffffff' : '#000000' }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="text-[1.1rem] font-bold tracking-tighter whitespace-nowrap hidden sm:block">
+                Bogor, Indonesia
+              </div>
+              <motion.div 
+                className="w-2 h-2 rounded-full animate-pulse"
+                animate={{ backgroundColor: isScrolled ? '#ffffff' : '#000000' }}
+                transition={{ duration: 0.5 }}
+              />
             </motion.div>
           </div>
         </div>
