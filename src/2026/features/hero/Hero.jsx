@@ -32,8 +32,16 @@ const Hero = () => {
     restDelta: 0.001
   });
 
-  // 4. Apply final y value based on reduced motion preference
+  // 4. Create opacity transform based on scroll
+  const opacityTransform = useTransform(
+    scrollYProgress,
+    [0, 0.2],
+    isMobile ? [1, 0] : [1, 0.2]
+  );
+
+  // 5. Apply final y and opacity values based on reduced motion preference
   const y = shouldReduceMotion ? 0 : springY;
+  const opacity = shouldReduceMotion ? 1 : opacityTransform;
 
   const [isTitleHovered, setIsTitleHovered] = useState(false);
   const [isPortraitHovered, setIsPortraitHovered] = useState(false);
@@ -41,14 +49,13 @@ const Hero = () => {
   return (
     <section 
       ref={containerRef}
-      className="relative overflow-hidden pt-[10vh] px-12 min-h-[80vh] bg-black text-white font-['Sora',sans-serif]"
+      className="relative overflow-hidden pt-[80px] md:pt-[10vh] px-12 min-h-[80vh] bg-black text-white font-['Sora',sans-serif]"
     >
       {/* Background Layer (Title) */}
       <div 
         className="absolute top-0 left-0 z-0 pointer-events-none overflow-hidden w-screen mt-[2vh]"
         onMouseEnter={() => setIsTitleHovered(true)}
         onMouseLeave={() => setIsTitleHovered(false)}
-        style={{ pointerEvents: 'auto' }}
       >
         <motion.div
           initial={{ y: "100vh" }}
@@ -57,9 +64,9 @@ const Hero = () => {
           className="will-change-transform relative"
         >
           <motion.h1 
-            style={{ y }}
+            style={{ y, opacity }}
             aria-hidden="true"
-            className="text-[clamp(18vw,22vw,24vw)] md:text-[clamp(24vw,28vw,32vw)] font-black leading-[0.8] tracking-tighter m-0 p-0 text-white opacity-80 md:opacity-100 whitespace-nowrap will-change-transform"
+            className="text-[clamp(18vw,22vw,24vw)] md:text-[clamp(24vw,28vw,32vw)] font-black leading-[0.8] tracking-tighter m-0 p-0 text-white whitespace-nowrap will-change-transform"
           >
             AkbarD
           </motion.h1>
