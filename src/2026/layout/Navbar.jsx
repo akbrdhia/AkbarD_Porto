@@ -179,7 +179,7 @@ const Navbar = () => {
           {/* Center: Links (Hidden on mobile) */}
           <motion.div 
             layout
-            className={`hidden lg:flex items-center justify-center gap-6 transition-all duration-500 lg:pl-[26vw] ${
+            className={`hidden lg:flex items-center justify-center gap-6 transition-all duration-500 lg:pl-[20vw] ${
               isScrolled ? 'ml-0' : 'ml-[10%]'
             }`}
           >
@@ -216,7 +216,7 @@ const Navbar = () => {
           </div>
 
           {/* Right: Location */}
-          <div className="flex justify-end">
+          <div className="flex justify-start lg:-ml-[10vw]">
             <motion.div layout className={`flex items-center gap-2 text-white transition-all duration-500 ${
               isScrolled ? 'mr-0' : 'mr-4 md:mr-10'
             }`}>
