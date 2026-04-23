@@ -68,9 +68,15 @@ const Mascot = ({ isMobile = false }) => {
         repeat: Infinity, 
         ease: "easeInOut" 
       }}
-      className="w-full h-full flex items-center justify-center relative"
+      className="w-full h-full flex items-center justify-center relative will-change-transform"
     >
-      <svg viewBox="0 0 271 271" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full relative z-0">
+      <svg 
+        viewBox="0 0 271 271" 
+        fill="none" 
+        xmlns="http://www.w3.org/2000/svg" 
+        className="w-full h-full relative z-0"
+        shapeRendering="optimizeSpeed"
+      >
         {/* face white */}
         <path d="M68.7675 144.171C73.7709 142.527 78.3134 146.499 79.9592 148.69L75.1863 136.528L77.9842 113.026L101.355 90.5098L156.737 89.3594L171.961 93.6325L184.305 98.3166L192.04 131.598V138.501L195.826 143.842H203.232L206.03 146.883L207.429 149.677L209.157 155.264L205.207 161.756L204.22 165.043V165.701L203.232 166.687L198.788 168.084L197.143 171.535L193.769 174.001L186.856 175.069L182.988 187.888L164.473 211.802L149.989 221.334H120.035L96.6644 202.433L85.1435 177.698C81.1387 174.357 71.2363 170.138 73.0467 167.344C73.231 167.06 66.5457 165.701 62.8425 160.277C59.1394 154.854 62.5134 146.225 68.7675 144.171Z" fill="white"/>
         {/* head outline */}

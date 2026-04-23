@@ -86,7 +86,7 @@ const Hero = () => {
                   : { y: isTitleHovered ? "35%" : "100%", x: 0 }
                 }
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full h-full"
+                className="w-full h-full will-change-transform transform-gpu"
               >
                 <Mascot isMobile={isMobile} />
               </motion.div>
