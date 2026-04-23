@@ -1,22 +1,18 @@
 import React from 'react';
 import AboutHero from './components/AboutHero';
-import StatementText from './components/StatementText';
-import { PERSONAL_INFO } from '../../../2025/constants/portfolioData';
+import Manifesto from './components/Manifesto';
+import ExperienceTimeline from './components/ExperienceTimeline';
+import SkillsCloud from './components/SkillsCloud';
 
 const AboutPage = () => {
   return (
     <div className="bg-black text-white min-h-screen">
       <AboutHero />
+      <Manifesto />
+      <ExperienceTimeline />
+      <SkillsCloud />
       
-      {/* Bio Section */}
-      <section className="px-[8vw] py-32 md:py-64 max-w-[1400px]">
-        <h2 className="text-white/30 text-xs uppercase tracking-[0.5em] mb-16 md:mb-24">
-          (THE STORY)
-        </h2>
-        <StatementText text={PERSONAL_INFO.bio} />
-      </section>
-
-      {/* Spacing for future content */}
+      {/* Footer Spacing */}
       <div className="h-[20vh]" />
     </div>
   );
