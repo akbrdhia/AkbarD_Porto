@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { motion, useSpring, useMotionValue } from 'framer-motion';
 
-const Mascot = () => {
+const Mascot = ({ isMobile = false }) => {
   const mascotRef = React.useRef(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -10,8 +10,30 @@ const Mascot = () => {
   const eyeX = useSpring(mouseX, springConfig);
   const eyeY = useSpring(mouseY, springConfig);
 
+  // Random eye movement for mobile
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    if (!isMobile) return;
+
+    const moveEyesRandomly = () => {
+      const angle = Math.random() * Math.PI * 2;
+      const distance = Math.random() * 12;
+      
+      mouseX.set(Math.cos(angle) * distance);
+      mouseY.set(Math.sin(angle) * distance);
+    };
+
+    // Initial move
+    moveEyesRandomly();
+
+    const intervalId = setInterval(() => {
+      moveEyesRandomly();
+    }, 2000 + Math.random() * 2000);
+
+    return () => clearInterval(intervalId);
+  }, [isMobile, mouseX, mouseY]);
+
+  useEffect(() => {
+    if (isMobile) return;
       if (!mascotRef.current) return;
 
       const rect = mascotRef.current.getBoundingClientRect();
