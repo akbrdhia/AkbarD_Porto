@@ -1,65 +1,54 @@
 import React, { useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useGSAP } from '@gsap/react';
+import { motion as Motion, useScroll, useTransform } from 'framer-motion';
 import { PERSONAL_INFO } from '../../../../2025/constants/portfolioData';
 
-gsap.registerPlugin(ScrollTrigger);
+const KineticWord = ({ word, index, progress }) => {
+  // Each word has a unique parallax speed and direction
+  const y = useTransform(progress, [0, 1], [200 * (index % 5 - 2), -200 * (index % 5 - 2)]);
+  const opacity = useTransform(progress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
+  const scale = useTransform(progress, [0, 0.5, 1], [0.7, 1.2, 0.7]);
+  
+  return (
+    <Motion.span
+      style={{ y, opacity, scale }}
+      className="inline-block text-[clamp(3rem,15vw,18rem)] font-black leading-[0.75] tracking-tighter text-white uppercase italic select-none"
+    >
+      {word}
+    </Motion.span>
+  );
+};
 
 const Manifesto = () => {
   const containerRef = useRef(null);
-  const textRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["top start", "bottom end"]
+  });
 
-  useGSAP(() => {
-    const words = textRef.current.querySelectorAll('.word');
-    
-    gsap.from(words, {
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: 'top 80%',
-        end: 'bottom 20%',
-        scrub: true,
-      },
-      opacity: 0.1,
-      stagger: 0.1,
-      ease: 'none',
-    });
-  }, { scope: containerRef });
-
-  const bioWords = PERSONAL_INFO.bio.split(' ');
+  const bioWords = PERSONAL_INFO.bio.trim().split(/\s+/);
 
   return (
-    <section ref={containerRef} className="bg-black py-32 md:py-64 px-[8vw]">
-      <div className="max-w-[1400px]">
-        <h2 className="text-white/30 text-xs uppercase tracking-[0.5em] mb-16 md:mb-24">
-          (THE STORY)
-        </h2>
-        
-        <div ref={textRef} className="flex flex-wrap gap-x-[0.3em] gap-y-[0.1em]">
+    <section 
+      ref={containerRef} 
+      className="relative bg-black min-h-[400vh] px-[4vw] overflow-hidden"
+    >
+      {/* Sticky Kinetic Wall - The "Stack" */}
+      <div className="sticky top-0 h-screen flex flex-col justify-center items-center overflow-hidden">
+        <div className="flex flex-wrap justify-center gap-x-12 gap-y-0 max-w-[95vw]">
           {bioWords.map((word, i) => (
-            <span 
+            <KineticWord 
               key={i} 
-              className="word text-[clamp(2rem,5vw,5rem)] font-medium leading-[1.1] tracking-tight text-white"
-            >
-              {word}
-            </span>
+              word={word} 
+              index={i} 
+              progress={scrollYProgress} 
+            />
           ))}
         </div>
+      </div>
 
-        <div className="mt-32 grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-32">
-          <div className="space-y-8">
-            <p className="text-white/60 text-xl leading-relaxed">
-              I architect stacks that scale across platforms without losing coherence. 
-              Iteration speed and human signal are my core dependencies.
-            </p>
-          </div>
-          <div className="space-y-8">
-            <p className="text-white/60 text-xl leading-relaxed">
-              Most sessions start with headphones on—music is the metronome that keeps
-              me iterating fast. I care about launching things that feel intentional.
-            </p>
-          </div>
-        </div>
+      {/* Transition to next section */}
+      <div className="h-screen flex items-center justify-center">
+        <div className="w-full h-[1px] bg-white/20" />
       </div>
     </section>
   );

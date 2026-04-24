@@ -1,55 +1,95 @@
-import React, { useState, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { useRef, Suspense } from 'react';
+import { motion as Motion, useScroll, useVelocity, useSpring, useTransform } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useGSAP } from '@gsap/react';
+import LiquidHero from './LiquidHero';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const AboutHero = () => {
-  const { scrollY } = useScroll();
-  const [isMobile, setIsMobile] = useState(false);
+  const containerRef = useRef(null);
+  const photoRef = useRef(null);
+  const textRef = useRef(null);
 
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-  
-  // Parallax: Text moves faster than Photo
-  const textY = useTransform(scrollY, [0, 500], [0, -150]);
-  const photoY = useTransform(scrollY, [0, 500], [0, -50]);
+  const { scrollY } = useScroll();
+  const scrollVelocity = useVelocity(scrollY);
+  const smoothVelocity = useSpring(scrollVelocity, {
+    damping: 50,
+    stiffness: 400
+  });
+
+  const skew = useTransform(smoothVelocity, [-2000, 2000], [-5, 5]);
+  const blur = useTransform(smoothVelocity, [-2000, 0, 2000], [2, 0, 2]);
+
+  useGSAP(() => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top top',
+        end: '+=200%',
+        scrub: 1,
+        pin: true,
+        anticipatePin: 1,
+      }
+    });
+
+    // Cinematic reveal
+    tl.fromTo(photoRef.current, 
+      { scale: 1.5, opacity: 0, y: 100 },
+      { scale: 1, opacity: 1, y: 0, duration: 1.5, ease: 'expo.out' }
+    )
+    .fromTo('.hero-line', 
+      { y: 150, opacity: 0, skewY: 10 },
+      { y: 0, opacity: 1, skewY: 0, stagger: 0.1, duration: 1.2, ease: 'power4.out' },
+      '-=1'
+    )
+    // Morphing transition to next section
+    .to(photoRef.current, {
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'center top',
+        end: 'bottom top',
+        scrub: true,
+      },
+      y: 200,
+      scale: 0.8,
+      filter: 'blur(20px)',
+      opacity: 0,
+    });
+
+
+  }, { scope: containerRef });
 
   return (
-    <section className="relative h-screen w-full bg-black overflow-hidden select-none">
-      {/* Photo Layer */}
-      <motion.div 
-        style={{ y: isMobile ? 0 : photoY }}
-        className="absolute bottom-0 right-0 w-full md:w-1/2 h-[50vh] md:h-[80vh] z-10"
+    <section ref={containerRef} className="relative h-screen w-full bg-black overflow-hidden select-none">
+      {/* Photo Layer (WebGL) */}
+      <div 
+        ref={photoRef}
+        className="absolute bottom-0 right-0 w-full md:w-1/2 h-[60vh] md:h-[85vh] z-10"
       >
-        <img 
-          src="/about-portrait.jpg" 
-          alt="Portrait" 
-          className="w-full h-full object-cover grayscale brightness-50 md:brightness-75 transition-all duration-700"
-        />
-      </motion.div>
+        <Suspense fallback={<div className="w-full h-full bg-black" />}>
+          <LiquidHero />
+        </Suspense>
+      </div>
 
       {/* Typography Layer */}
-      <motion.div 
-        style={{ y: isMobile ? 0 : textY }}
+      <Motion.div 
+        ref={textRef}
+        style={{ skewX: skew, filter: useTransform(blur, (v) => `blur(${v}px)`) }}
         className="relative z-20 pt-[15vh] md:pt-[20vh] px-[6vw] md:pl-[8vw] pointer-events-none"
       >
         <div className="flex flex-col gap-0">
           {['HELLO', 'I AM', '— AKBAR.'].map((line, i) => (
-            <motion.h1 
+            <h1 
               key={line}
-              initial={{ y: 60, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 + (i * 0.1), duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="text-[clamp(3.5rem,15vw,16vw)] font-black leading-[0.85] md:leading-[0.8] tracking-tighter text-white"
+              className={`hero-line line-${i} text-[clamp(2.5rem,15vw,16vw)] font-black leading-[0.85] md:leading-[0.8] tracking-tighter text-white`}
             >
               {line}
-            </motion.h1>
+            </h1>
           ))}
         </div>
-      </motion.div>
+      </Motion.div>
     </section>
   );
 };

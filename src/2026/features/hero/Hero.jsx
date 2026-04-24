@@ -64,27 +64,29 @@ const Hero = () => {
             AkbarD
           </motion.h1>
 
-          {/* Peeking Mascot Container */}
-          <div className="absolute bottom-0 left-[10%] w-[25vw] h-[25vw] pointer-events-none">
-            <div className="w-full h-full overflow-hidden relative">
-              <motion.div
-                initial={{ y: "100%" }}
-                animate={{ y: isTitleHovered ? "35%" : "100%" }}
+          {/* Peeking Mascot Container - Desktop Only */}
+          {!isMobile && (
+            <div className="absolute bottom-0 left-[10%] w-[25vw] h-[25vw] pointer-events-none">
+              <div className="w-full h-full overflow-hidden relative">
+                <motion.div
+                  initial={{ y: "100%" }}
+                  animate={{ y: isTitleHovered ? "35%" : "100%" }}
+                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                  className="w-full h-full"
+                >
+                  <Mascot />
+                </motion.div>
+              </div>
+              
+              {/* Expanding Baseline */}
+              <motion.div 
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: isTitleHovered ? 1 : 0 }}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full h-full"
-              >
-                <Mascot />
-              </motion.div>
+                className="absolute bottom-0 left-[10%] w-[80%] h-[4px] bg-white origin-center"
+              />
             </div>
-            
-            {/* Expanding Baseline */}
-            <motion.div 
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: isTitleHovered ? 1 : 0 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute bottom-0 left-[10%] w-[80%] h-[4px] bg-white origin-center"
-            />
-          </div>
+          )}
         </motion.div>
       </div>
 

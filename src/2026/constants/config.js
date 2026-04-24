@@ -1,0 +1,18 @@
+import { PERSONAL_INFO } from '../../2025/constants/portfolioData';
+
+export const CONFIG_2026 = {
+  social: [
+    { name: 'Email', url: `mailto:${PERSONAL_INFO.email}` },
+    { name: 'LinkedIn', url: `https://linkedin.com/in/${PERSONAL_INFO.linkedin}` },
+    { name: 'GitHub', url: `https://github.com/akbrdhia` },
+    { name: 'Instagram', url: 'https://instagram.com/akbardhia' }, // Placeholder based on pattern
+    { name: 'Behance', url: '#' }
+  ],
+  nav: [
+    { name: 'Home', path: '/2026' },
+    { name: 'About', path: '/2026/about' },
+    { name: 'Projects', path: '/2026/projects' }
+  ],
+  location: PERSONAL_INFO.location,
+  timezone: 'Western Indonesian Time'
+};

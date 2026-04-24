@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { motion, useSpring, useMotionValue } from 'framer-motion';
+import { motion as Motion, useSpring, useMotionValue } from 'framer-motion';
 
 const skills = [
   "Kotlin", "Flutter", "Jetpack Compose", "Android Jetpack", "Retrofit", 
@@ -10,59 +10,57 @@ const skills = [
   "WebSocket", "Firebase", "IoT (ESP32)", "Basic Cybersecurity"
 ];
 
-const SkillPill = ({ skill, containerRef }) => {
+const SkillPill = ({ skill, initialPos, floatConfig, mouseX: globalMouseX, mouseY: globalMouseY }) => {
   const pillRef = useRef(null);
-  
-  // Random initial position within a reasonable range
-  const [initialPos] = useState({
-    x: Math.random() * 80 - 40, // -40% to 40%
-    y: Math.random() * 80 - 40, // -40% to 40%
-  });
+  const [rect, setRect] = useState(null);
 
-  // Random floating duration and offset
-  const [floatConfig] = useState({
-    duration: 3 + Math.random() * 4,
-    xOffset: 10 + Math.random() * 20,
-    yOffset: 10 + Math.random() * 20,
-  });
-
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  const localMouseX = useMotionValue(0);
+  const localMouseY = useMotionValue(0);
 
   const springConfig = { damping: 25, stiffness: 150 };
-  const translateX = useSpring(mouseX, springConfig);
-  const translateY = useSpring(mouseY, springConfig);
+  const translateX = useSpring(localMouseX, springConfig);
+  const translateY = useSpring(localMouseY, springConfig);
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      if (!containerRef.current || !pillRef.current) return;
+    const updateRect = () => {
+      if (pillRef.current) {
+        setRect(pillRef.current.getBoundingClientRect());
+      }
+    };
 
-      const pillRect = pillRef.current.getBoundingClientRect();
+    updateRect();
+    window.addEventListener('resize', updateRect);
+    return () => window.removeEventListener('resize', updateRect);
+  }, []);
+
+  useEffect(() => {
+    if (!rect) return;
+
+    const unsubscribeX = globalMouseX.on("change", (latestX) => {
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const latestY = globalMouseY.get();
       
-      const centerX = pillRect.left + pillRect.width / 2;
-      const centerY = pillRect.top + pillRect.height / 2;
-      
-      const distanceX = e.clientX - centerX;
-      const distanceY = e.clientY - centerY;
+      const distanceX = latestX - centerX;
+      const distanceY = latestY - centerY;
       const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
       
       const maxDistance = 200;
       if (distance < maxDistance) {
         const power = (maxDistance - distance) / maxDistance;
-        mouseX.set(-distanceX * power * 0.5);
-        mouseY.set(-distanceY * power * 0.5);
+        localMouseX.set(-distanceX * power * 0.5);
+        localMouseY.set(-distanceY * power * 0.5);
       } else {
-        mouseX.set(0);
-        mouseY.set(0);
+        localMouseX.set(0);
+        localMouseY.set(0);
       }
-    };
+    });
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [containerRef, mouseX, mouseY]);
+    return () => unsubscribeX();
+  }, [rect, globalMouseX, globalMouseY, localMouseX, localMouseY]);
 
   return (
-    <motion.div
+    <Motion.div
       ref={pillRef}
       style={{
         x: translateX,
@@ -70,9 +68,9 @@ const SkillPill = ({ skill, containerRef }) => {
         left: `${50 + initialPos.x}%`,
         top: `${50 + initialPos.y}%`,
       }}
-      className="absolute"
+      className="absolute -translate-x-1/2 -translate-y-1/2"
     >
-      <motion.div
+      <Motion.div
         animate={{
           x: [0, floatConfig.xOffset, 0, -floatConfig.xOffset, 0],
           y: [0, -floatConfig.yOffset, 0, floatConfig.yOffset, 0],
@@ -82,32 +80,64 @@ const SkillPill = ({ skill, containerRef }) => {
           repeat: Infinity,
           ease: "linear"
         }}
-        className="px-6 py-3 bg-white/5 border border-white/10 rounded-full backdrop-blur-sm hover:bg-white/10 hover:border-white/30 transition-colors cursor-default"
+        className="px-4 py-2 md:px-6 md:py-3 bg-white/5 border border-white/10 rounded-full backdrop-blur-sm hover:bg-white/10 hover:border-white/30 transition-colors cursor-default"
       >
-        <span className="text-white font-bold text-sm md:text-base whitespace-nowrap">
+        <span className="text-white font-bold text-xs md:text-base whitespace-nowrap">
           {skill}
         </span>
-      </motion.div>
-    </motion.div>
+      </Motion.div>
+    </Motion.div>
   );
 };
 
 const SkillsCloud = () => {
   const containerRef = useRef(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  
+  // Pre-calculate configs to avoid re-renders and keep positions stable
+  const [pillConfigs] = useState(() => skills.map(() => ({
+    initialPos: {
+      x: Math.random() * 90 - 45, // Wider spread
+      y: Math.random() * 90 - 45,
+    },
+    floatConfig: {
+      duration: 3 + Math.random() * 4,
+      xOffset: 10 + Math.random() * 20,
+      yOffset: 10 + Math.random() * 20,
+    }
+  })));
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [mouseX, mouseY]);
 
   return (
-    <section className="bg-black py-32 px-[8vw] overflow-hidden">
+    <section className="bg-black py-24 md:py-32 px-[6vw] md:px-[8vw] overflow-hidden">
       <div className="max-w-[1400px] mx-auto">
-        <h2 className="text-white/30 text-xs uppercase tracking-[0.5em] mb-16">
+        <h2 className="text-white/30 text-xs uppercase tracking-[0.5em] mb-12 md:mb-16">
           (TECH STACK)
         </h2>
         
         <div 
           ref={containerRef} 
-          className="relative h-[60vh] md:h-[80vh] w-full border border-white/5 rounded-3xl overflow-hidden bg-gradient-to-b from-white/[0.02] to-transparent"
+          className="relative h-[70vh] md:h-[80vh] w-full border border-white/5 rounded-3xl overflow-hidden bg-gradient-to-b from-white/[0.02] to-transparent"
         >
           {skills.map((skill, index) => (
-            <SkillPill key={index} skill={skill} containerRef={containerRef} />
+            <SkillPill 
+              key={index} 
+              skill={skill} 
+              initialPos={pillConfigs[index].initialPos}
+              floatConfig={pillConfigs[index].floatConfig}
+              mouseX={mouseX}
+              mouseY={mouseY}
+            />
           ))}
           
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
