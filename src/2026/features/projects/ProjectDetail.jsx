@@ -19,6 +19,8 @@ const ProjectDetail = () => {
       <section className="relative w-full h-[55vh] md:h-[75vh] group overflow-hidden">
         <div className="absolute inset-0 z-20 pointer-events-none opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
         
+        <div className="absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10 md:hidden pointer-events-none" />
+
         <div className="w-full h-full bg-[#111]">
           <img 
             src={project.preview} 
@@ -100,19 +102,19 @@ const ProjectDetail = () => {
       </section>
 
       {/* 6. More Projects Section */}
-      <section className="px-12 py-40 border-t border-white/10">
+      <section className="px-6 md:px-12 py-20 md:py-40 border-t border-white/10">
         <h2 className="text-white/30 text-xs uppercase tracking-[0.5em] mb-12">(More Projects)</h2>
-        <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
+        <div className="flex flex-col md:flex-row md:flex-wrap md:items-baseline gap-y-4 md:gap-x-4 md:gap-y-2">
           {PROJECTS.filter(p => p.id !== project.id).map((otherProject, index, array) => (
             <React.Fragment key={otherProject.id}>
               <Link 
                 to={`/2026/project/${otherProject.id}`}
-                className="text-[clamp(2rem,5vw,5rem)] font-black tracking-tighter uppercase transition-all duration-500 opacity-40 hover:opacity-100 hover:text-white"
+                className="text-[clamp(2.5rem,5vw,5rem)] font-black tracking-tighter uppercase transition-all duration-500 opacity-40 hover:opacity-100 hover:text-white leading-[1]"
               >
                 {otherProject.name}
               </Link>
               {index < array.length - 1 && (
-                <span className="text-[clamp(2rem,5vw,5rem)] font-black opacity-20">,</span>
+                <span className="hidden md:inline-block text-[clamp(2.5rem,5vw,5rem)] font-black opacity-20 leading-[1]">,</span>
               )}
             </React.Fragment>
           ))}

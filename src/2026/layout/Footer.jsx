@@ -72,9 +72,8 @@ const Footer = () => {
   useGSAP(() => {
     const chars = textRef.current.querySelectorAll('.footer-char');
     
-    // Cinematic Staggered Entrance
     gsap.fromTo(chars, 
-      { y: '100%', opacity: 0 },
+      { y: '50%', opacity: 0 },
       { 
         y: '0%', 
         opacity: 1, 
@@ -89,16 +88,19 @@ const Footer = () => {
       }
     );
 
-    // Subtle Parallax on Scroll
-    gsap.to(textRef.current, {
-      y: 50,
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: 'top bottom',
-        end: 'bottom bottom',
-        scrub: true
+    gsap.fromTo(textRef.current, 
+      { y: '-60%' },
+      {
+        y: '0%',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top bottom',
+          end: 'bottom bottom',
+          scrub: 1.5
+        }
       }
-    });
+    );
   }, { scope: containerRef });
 
   const nameChars = "AkbarD".split("");
