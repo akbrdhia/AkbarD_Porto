@@ -1,43 +1,19 @@
-# 2026 Features
+# 2026 FEATURES
 
-Feature-based modules. Each feature = one route or one reusable visual unit.
+## OVERVIEW
+Feature-based modules for the Motion Studio redesign. Each directory is a self-contained visual or functional unit.
 
-## STRUCTURE
-```
-features/
-├── hero/
-│   ├── Hero.jsx         # Landing hero — massive typographic wordmark
-│   └── Mascot.jsx       # Character illustration (currently disabled on mobile)
-├── gallery/
-│   ├── GalleryGrid.jsx  # Project grid on home route — 60/40 asymmetric layout
-│   └── ProjectCard.jsx  # Individual card (full-bleed, no border, no caption overlay)
-├── projects/
-│   └── ProjectDetail.jsx # Route: /2026/project/:projectId
-└── about/
-    ├── AboutPage.jsx    # Route: /2026/about — assembles subcomponents
-    └── components/
-        ├── AboutHero.jsx
-        ├── ExperienceTimeline.jsx
-        ├── LiquidHero.jsx
-        ├── Manifesto.jsx
-        ├── SkillsCloud.jsx
-        └── TheVoid.jsx
-```
+## WHERE TO LOOK
+- **about/**: Manifesto kinetic text, ExperienceTimeline, SkillsCloud.
+- **gallery/**: GalleryGrid (60/40 asymmetric) + ProjectCard.
+- **hero/**: Typographic wordmark + Mascot illustration.
+- **projects/**: ProjectDetail route and specific project views.
 
 ## CONVENTIONS
-- Each feature is self-contained — no cross-feature imports
-- `AboutPage.jsx` assembles `about/components/` — components are NOT used elsewhere
-- `GalleryGrid` consumes project data from `src/2025/constants/portfolioData.js` (via config.js — known coupling)
-- `ProjectCard`: no border-radius, no shadow, no caption overlay on the grid — DESIGN.md rule
-
-## ADDING A NEW FEATURE
-1. Create `features/<name>/` with `<Name>.jsx` as the route component
-2. Add `<Route path="/<name>" element={<Name />} />` in `Portfolio2026.jsx`
-3. Add nav entry in `constants/config.js` if publicly navigable
-4. Follow DESIGN.md — read it first
-
-## ANTI-PATTERNS
-- ❌ Importing one feature's components inside another feature
-- ❌ Adding state management — use prop drilling or React context if truly needed
-- ❌ Rounded card borders or box shadows on project cards
-- ❌ Adding captions/overlays on GalleryGrid cards
+- **Self-Containment**: No cross-feature imports. Features are isolated.
+- **Components**: Sub-components live in `features/<feature>/components/`.
+- **Data**: Gallery consumes shared `PROJECTS` constant from `src/constants/projects.js`.
+- **Kinetic Text**: About feature uses `Manifesto.jsx` for kinetic typography.
+- **Styling**: Tailwind CSS 4 exclusively. Pure black (#000000) backgrounds.
+- **Animation**: Framer Motion for reveals, GSAP for complex timelines.
+- **Routing**: Relative paths only (e.g., `about` not `/about`) within features.
