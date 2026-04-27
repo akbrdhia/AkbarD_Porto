@@ -16,8 +16,8 @@ const Portfolio2026 = () => {
             <GalleryGrid />
           </>
         } />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/project/:projectId" element={<ProjectDetail />} />
+        <Route path="about" element={<AboutPage />} />
+        <Route path="project/:projectId" element={<ProjectDetail />} />
       </Routes>
     </MainLayout>
   );

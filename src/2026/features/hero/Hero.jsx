@@ -45,7 +45,7 @@ const Hero = () => {
     >
       {/* Background Layer (Title) */}
       <div 
-        className="absolute top-0 left-0 z-0 pointer-events-none overflow-hidden w-screen mt-[2vh]"
+        className="absolute inset-0 z-0 pointer-events-none overflow-hidden"
         onMouseEnter={() => setIsTitleHovered(true)}
         onMouseLeave={() => setIsTitleHovered(false)}
         style={{ pointerEvents: 'auto' }}
@@ -54,39 +54,41 @@ const Hero = () => {
           initial={{ y: "100vh" }}
           animate={{ y: 0 }}
           transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}
-          className="will-change-transform relative"
+          className="will-change-transform relative w-full h-full"
         >
-          <motion.h1 
-            style={{ y }}
-            aria-hidden="true"
-            className="text-[clamp(18vw,22vw,24vw)] md:text-[clamp(24vw,28vw,32vw)] font-black leading-[0.8] tracking-tighter m-0 p-0 text-white opacity-80 md:opacity-100 whitespace-nowrap will-change-transform"
-          >
-            AkbarD
-          </motion.h1>
+          <div className="md:relative md:inline-block">
+              <motion.h1 
+                style={{ y }}
+                aria-hidden="true"
+                className="absolute top-0 right-[-2vw] rotate-180 [writing-mode:vertical-rl] md:static md:rotate-0 md:[writing-mode:horizontal-tb] md:mt-[2vh] text-[22vh] md:text-[clamp(24vw,28vw,32vw)] font-black leading-[0.8] tracking-tighter m-0 p-0 text-white opacity-40 md:opacity-100 whitespace-nowrap will-change-transform"
+              >
+                AkbarD
+              </motion.h1>
 
-          {/* Peeking Mascot Container - Desktop Only */}
-          {!isMobile && (
-            <div className="absolute bottom-0 left-[10%] w-[25vw] h-[25vw] pointer-events-none">
-              <div className="w-full h-full overflow-hidden relative">
-                <motion.div
-                  initial={{ y: "100%" }}
-                  animate={{ y: isTitleHovered ? "35%" : "100%" }}
-                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                  className="w-full h-full"
-                >
-                  <Mascot />
-                </motion.div>
-              </div>
-              
-              {/* Expanding Baseline */}
-              <motion.div 
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: isTitleHovered ? 1 : 0 }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute bottom-0 left-[10%] w-[80%] h-[4px] bg-white origin-center"
-              />
-            </div>
-          )}
+              {/* Peeking Mascot Container - Desktop Only */}
+              {!isMobile && (
+                <div className="absolute bottom-8 left-[10%] w-[25vw] h-[25vw] pointer-events-none">
+                  <div className="w-full h-full overflow-hidden relative">
+                    <motion.div
+                      initial={{ y: "100%" }}
+                      animate={{ y: isTitleHovered ? "35%" : "100%" }}
+                      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                      className="w-full h-full"
+                    >
+                      <Mascot />
+                    </motion.div>
+                  </div>
+                  
+                  {/* Expanding Baseline */}
+                  <motion.div 
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: isTitleHovered ? 1 : 0 }}
+                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute bottom-0 left-[10%] w-[80%] h-[4px] bg-white origin-center"
+                  />
+                </div>
+              )}
+          </div>
         </motion.div>
       </div>
 
@@ -95,10 +97,10 @@ const Hero = () => {
         initial={{ y: 30, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 mt-[35vh] md:mt-[45vh]"
+        className="relative z-10 mt-[20vh] md:mt-[45vh]"
       >
         <p className="text-[3.25rem] md:text-[4.5rem] font-bold leading-tight w-full">
-          <Link to="/2026/about" className="inline-block mr-[350px] cursor-pointer group relative text-[2rem] md:text-[2.2rem] tracking-widest align-middle text-white no-underline">
+          <Link to="about" className="inline-block mr-[350px] cursor-pointer group relative text-[2rem] md:text-[2.2rem] tracking-widest align-middle text-white no-underline">
             About →
             <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-white transition-transform duration-500 origin-left scale-x-100 group-hover:origin-right group-hover:scale-x-0"></span>
           </Link>
