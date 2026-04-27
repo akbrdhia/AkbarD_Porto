@@ -23,7 +23,7 @@ const Mascot = () => {
 
       // Calculate angle and limit distance
       const angle = Math.atan2(deltaY, deltaX);
-      const distance = Math.min(Math.hypot(deltaX, deltaY) / 15, 12);
+      const distance = Math.min(Math.hypot(deltaX, deltaY) / 20, 6);
 
       mouseX.set(Math.cos(angle) * distance); 
       mouseY.set(Math.sin(angle) * distance);
@@ -44,7 +44,7 @@ const Mascot = () => {
         repeat: Infinity, 
         ease: "easeInOut" 
       }}
-      className="w-full h-full flex items-center justify-center relative"
+      className="w-[25vw] h-[25vw] flex items-center justify-center relative"
     >
       <svg viewBox="0 0 271 271" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full relative z-0">
         {/* face white */}

@@ -41,7 +41,7 @@ const Hero = () => {
   return (
     <section 
       ref={containerRef}
-      className="relative overflow-hidden pt-[10vh] px-12 min-h-[80vh] bg-black text-white font-['Sora',sans-serif]"
+      className="relative overflow-hidden pt-[10vh] min-h-[80vh] bg-black text-white font-['Sora',sans-serif]"
     >
       {/* Background Layer (Title) */}
       <div 
@@ -56,24 +56,25 @@ const Hero = () => {
           transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}
           className="will-change-transform relative w-full h-full"
         >
-          <div className="md:relative md:inline-block">
+          <div className="md:inline-grid md:grid-cols-1 md:grid-rows-1 overflow-hidden px-12 items-start">
               <motion.h1 
                 style={{ y }}
                 aria-hidden="true"
-                className="absolute top-0 right-[-2vw] rotate-180 [writing-mode:vertical-rl] md:static md:rotate-0 md:[writing-mode:horizontal-tb] md:mt-[2vh] text-[22vh] md:text-[clamp(24vw,28vw,32vw)] font-black leading-[0.8] tracking-tighter m-0 p-0 text-white opacity-40 md:opacity-100 whitespace-nowrap will-change-transform"
+                className="col-start-1 row-start-1 absolute top-0 right-[-2vw] rotate-180 [writing-mode:vertical-rl] md:static md:rotate-0 md:[writing-mode:horizontal-tb] md:mt-[2vh] text-[22vh] md:text-[clamp(24vw,28vw,32vw)] font-black leading-[0.8] tracking-tighter m-0 p-0 pb-0 mb-0 md:-mb-[0.12em] text-white opacity-40 md:opacity-100 whitespace-nowrap will-change-transform"
               >
                 AkbarD
               </motion.h1>
-
-              {/* Peeking Mascot Container - Desktop Only */}
+          </div>
+        </motion.div>
+      </div>
               {!isMobile && (
-                <div className="absolute bottom-8 left-[10%] w-[25vw] h-[25vw] pointer-events-none">
-                  <div className="w-full h-full overflow-hidden relative">
+                <div className="col-start-1 row-start-1 self-end justify-self-start ml-[10%] w-[25vw] h-[20vw] pointer-events-none translate-y-[-0.2vh] mt-[-10vh]">
+                  <div className="w-full overflow-hidden relative">
                     <motion.div
                       initial={{ y: "100%" }}
-                      animate={{ y: isTitleHovered ? "35%" : "100%" }}
+                      animate={{ y: isTitleHovered ? "15%" : "100%" }}
                       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                      className="w-full h-full"
+                      className="w-full"
                     >
                       <Mascot />
                     </motion.div>
@@ -88,19 +89,15 @@ const Hero = () => {
                   />
                 </div>
               )}
-          </div>
-        </motion.div>
-      </div>
-
       {/* Foreground Layer (Tagline) */}
       <motion.div 
         initial={{ y: 30, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 mt-[20vh] md:mt-[45vh]"
+        className="relative z-10 px-12 md:px-16 w-full md:bg-black"
       >
         <p className="text-[3.25rem] md:text-[4.5rem] font-bold leading-tight w-full">
-          <Link to="about" className="inline-block mr-[350px] cursor-pointer group relative text-[2rem] md:text-[2.2rem] tracking-widest align-middle text-white no-underline">
+          <Link to="about" className="inline-block mr-[350px] cursor-pointer group relative text-[2rem] md:text-[2.2rem] tracking-widest align-middle text-white no-underline bg-black/80 backdrop-blur-sm px-4 py-2 rounded-lg -ml-4 z-20">
             About →
             <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-white transition-transform duration-500 origin-left scale-x-100 group-hover:origin-right group-hover:scale-x-0"></span>
           </Link>
