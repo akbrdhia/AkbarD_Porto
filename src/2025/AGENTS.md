@@ -1,45 +1,32 @@
-# 2025 — IDE Portfolio Module
+# 2025 MODULE: IDE PORTFOLIO
 
-Legacy version. Stable. Active dev is in `src/2026/`.
+## OVERVIEW
+Legacy Android Studio IDE imitation (Darcula theme) for maintenance and stability.
 
 ## STRUCTURE
-```
-2025/
-├── pages/         # Route-level components (Portofolio.jsx, IDEModePage, WebModePage, ModeSelectionPage)
-├── components/    # IDE UI + web mode UI
-│   └── web/       # Web-mode only: navbar, cursor, sections
-├── context/       # PortfolioContext — sole state manager
-├── constants/     # portfolioData.js — personal info + project content (shared by 2026 config)
-├── styles/        # globalStyles.js — CSS-in-JS object map for IDE components
-├── utils/         # terminalCommands.js + test file
-└── assets/        # react.svg only
-```
+- `components/`: IDE UI (Terminal, Editor, Sidebar, etc.) and legacy web sections.
+- `constants/`: `portfolioData.js` (content source for both 2025 and 2026).
+- `context/`: `PortfolioContext.jsx` (central state for IDE simulation).
+- `pages/`: Route entries including misspelled `Portofolio.jsx`.
+- `styles/`: `globalStyles.js` (Darcula theme inline style objects).
+- `utils/`: Terminal command logic and syntax highlighting.
 
 ## WHERE TO LOOK
-| Task | File |
-|------|------|
-| Content/personal data | `constants/portfolioData.js` |
-| IDE state | `context/PortfolioContext.jsx` |
-| IDE editor simulation | `components/Editor.jsx` |
-| Terminal logic | `utils/terminalCommands.js` |
-| Web mode sections | `components/web/sections/` |
-| All IDE styles | `styles/globalStyles.js` |
-| Route entry | `pages/Portofolio.jsx` (misspelled — intentional) |
+- **IDE State**: `context/PortfolioContext.jsx`
+- **Terminal Logic**: `utils/terminalCommands.js`
+- **Editor Simulation**: `components/Editor.jsx`
+- **Terminal UI**: `components/Terminal.jsx`
+- **Styling/Theme**: `styles/globalStyles.js`
+- **Main Entry**: `pages/Portofolio.jsx` (Note: intentional typo in filename)
 
 ## CONVENTIONS
-- State via Context only — no props passed 3+ levels; use `usePortfolio()` hook
-- Styles as JS objects from `globalStyles.js`, not inline or Tailwind
-- Internal navigation: use relative paths (`navigate('ide')` not `navigate('/2025/ide')`)
-- ModeSelectionPage persists user choice to sessionStorage + localStorage
+- Use `usePortfolio()` hook for all IDE state.
+- Styles must be imported from `globalStyles.js` as JS objects.
+- No Tailwind for IDE components; maintain Darcula pixel-perfection.
+- Internal links use relative paths to stay within `/2025/` prefix.
 
 ## ANTI-PATTERNS
-- ❌ Renaming `Portofolio.jsx` without updating `src/App.jsx`
-- ❌ Adding Tailwind classes to IDE components — use JS style objects
-- ❌ Using React Router absolute paths inside these nested routes
-- ❌ Importing anything from `src/2026/` into this module
-- ❌ Removing the `PortfolioProvider` wrapper from `Portofolio.jsx`
-
-## NOTES
-- `console.log` debug statements in `PortfolioContext.jsx` — known, not removed yet
-- `terminalCommands.test.js` is a raw Node script, not vitest/jest
-- Web mode (`/2025/web`) is a separate scroll-based experience distinct from IDE mode
+- ❌ Renaming `Portofolio.jsx` (breaks top-level routing).
+- ❌ Adding Tailwind classes to IDE components.
+- ❌ Importing 2026 features into this module.
+- ❌ Using absolute paths without `/2025/` prefix.
