@@ -19,13 +19,27 @@ const ProjectDetail = () => {
       animate={{ opacity: 1 }}
       className="min-h-screen w-screen bg-black text-white font-['Sora',sans-serif] overflow-x-hidden"
     >
-      {/* 1. Project Title Section */}
-      <section className="px-12 pt-24 pb-12">
+      {/* 1. Full-Bleed Visual Hero Section (Moved to TOP for Cinematic View Transition) */}
+      <section className="relative w-full h-[55vh] md:h-[75vh] group overflow-hidden">
+        <div className="absolute inset-0 z-20 pointer-events-none opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+        
+        <div className="w-full h-full bg-[#111]">
+          <img 
+            src={project.preview} 
+            alt={project.name}
+            style={{ viewTransitionName: `project-image-${project.id.replace(/[^a-zA-Z0-9]/g, '-')}` }}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      </section>
+
+      {/* 2. Project Title Section (Overlapping on mobile) */}
+      <section className="px-6 md:px-12 -mt-[8vh] md:mt-16 relative z-30 pointer-events-none">
         <motion.h1 
-          initial={{ y: 100, opacity: 0 }}
+          initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="text-[clamp(2.5rem,6vw,6rem)] font-black leading-[0.9] tracking-tighter uppercase max-w-[1200px]"
+          transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="text-[clamp(3.5rem,10vw,9rem)] font-black leading-[0.85] tracking-tighter uppercase max-w-[1400px] mix-blend-difference pointer-events-auto"
         >
           {project.name.split(',').map((part, i) => (
             <React.Fragment key={i}>
@@ -36,38 +50,25 @@ const ProjectDetail = () => {
         </motion.h1>
       </section>
 
-      {/* 2. Metadata Row */}
-      <section className="px-12 pb-8 mt-32">
-        <div className="flex justify-between items-end w-full border-b border-white/10 pb-8">
+      {/* 3. Metadata Row (2x2 Grid on Mobile) */}
+      <section className="px-6 md:px-12 pb-8 mt-16 md:mt-32">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-6 w-full border-b border-white/10 pb-12"
+        >
           {[
             { label: 'Brand', value: project.brand },
             { label: 'Led By', value: project.ledBy },
             { label: 'Roles', value: project.roles },
             { label: 'Year', value: project.year }
           ].map((item, i) => (
-            <div key={item.label} className={i === 3 ? 'text-right' : ''}>
-              <p className="text-white/60 text-[12px] uppercase tracking-[0.2em] mb-1">({item.label})</p>
-              <p className="text-lg font-medium text-white tracking-tight">{item.value}</p>
+            <div key={item.label} className={i === 3 ? 'md:text-right' : ''}>
+              <p className="text-white/60 text-[10px] md:text-[12px] uppercase tracking-[0.2em] mb-2">({item.label})</p>
+              <p className="text-base md:text-lg font-medium text-white tracking-tight">{item.value}</p>
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* 3. Full-Bleed Visual Hero Section */}
-      <section className="relative w-full group overflow-hidden">
-        <div className="absolute inset-0 z-20 pointer-events-none opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-        
-        <motion.div 
-          initial={{ y: 40, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="w-full aspect-video bg-[#111]"
-        >
-          <img 
-            src={project.preview} 
-            alt={project.name} 
-            className="w-full h-full object-cover"
-          />
         </motion.div>
       </section>
 

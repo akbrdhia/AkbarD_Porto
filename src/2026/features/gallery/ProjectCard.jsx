@@ -6,7 +6,7 @@ const ProjectCard = ({ project, index }) => {
   const isLarge = index === 0 || index === 3; 
 
   return (
-    <Link to={`/2026/project/${project.id}`} className="block">
+    <Link to={`/2026/project/${project.id}`} viewTransition className="block">
       <motion.div 
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -20,6 +20,7 @@ const ProjectCard = ({ project, index }) => {
         <motion.img 
           src={project.preview} 
           alt={project.name}
+          style={{ viewTransitionName: `project-image-${project.id.replace(/[^a-zA-Z0-9]/g, '-')}` }}
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out scale-110 group-hover:scale-100"
         />
         
