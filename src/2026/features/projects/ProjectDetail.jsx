@@ -7,10 +7,6 @@ const ProjectDetail = () => {
   const { projectId } = useParams();
   const project = PROJECTS.find(p => p.id === projectId);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   if (!project) return <div>Project not found</div>;
 
   return (
