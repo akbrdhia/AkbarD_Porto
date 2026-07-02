@@ -5,6 +5,7 @@ import Hero from './features/hero/Hero';
 import GalleryGrid from './features/gallery/GalleryGrid';
 import ProjectDetail from './features/projects/ProjectDetail';
 import AboutPage from './features/about/AboutPage';
+import ProjectsPage from './features/projects/ProjectsPage';
 
 const Portfolio2026 = () => {
   return (
@@ -17,6 +18,7 @@ const Portfolio2026 = () => {
           </>
         } />
         <Route path="about" element={<AboutPage />} />
+        <Route path="projects" element={<ProjectsPage />} />
         <Route path="project/:projectId" element={<ProjectDetail />} />
       </Routes>
     </MainLayout>

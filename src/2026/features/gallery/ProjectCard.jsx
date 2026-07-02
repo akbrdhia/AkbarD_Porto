@@ -20,6 +20,7 @@ const ProjectCard = ({ project, index }) => {
         <motion.img 
           src={project.preview} 
           alt={project.name}
+          onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/600x400/1a1a1a/666666?text=unavailable' }}
           style={{ viewTransitionName: `project-image-${project.id.replace(/[^a-zA-Z0-9]/g, '-')}` }}
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out scale-110 group-hover:scale-100"
         />
@@ -29,7 +30,7 @@ const ProjectCard = ({ project, index }) => {
 
         {/* Content */}
         <div className="absolute inset-0 p-8 flex flex-col justify-end">
-          <p className="text-[#F5C842] text-xs font-bold tracking-widest uppercase mb-2">
+          <p className="text-xs font-bold tracking-widest uppercase mb-2" style={{ color: project.accentColor || '#F5C842' }}>
             {project.year} — {project.status}
           </p>
           <h3 className="text-white text-3xl md:text-4xl font-black tracking-tighter leading-none mb-4">
