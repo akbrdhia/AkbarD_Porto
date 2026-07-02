@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { PROJECTS } from '../../../constants/projects';
 
-const categories = ['All', 'Web', 'Android', 'Backend', 'AI'];
+const categories = ['All', 'Web', 'Android', 'Backend', 'AI', 'Tools'];
 
 const ProjectsPage = () => {
   const [search, setSearch] = useState('');
