@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { PROJECTS } from '../../../constants/projects';
@@ -6,6 +6,7 @@ import { PROJECTS } from '../../../constants/projects';
 const ProjectDetail = () => {
   const { projectId } = useParams();
   const project = PROJECTS.find(p => p.id === projectId);
+  const [hoveredLabel, setHoveredLabel] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -91,17 +92,35 @@ const ProjectDetail = () => {
             { label: 'Development', value: 'Akbar Dhia' },
             { label: 'Stack', value: project.tech.join(', ') },
             { label: 'Status', value: project.status, accent: project.accentColor },
-            { label: 'Location', value: project.location }
+            { label: 'Location', value: project.location },
+            { label: 'Link', value: project.link || 'unavailable', link: project.link || null }
           ].map((item) => (
             <div key={item.label}>
               <p className="text-xs uppercase tracking-[0.2em] mb-2" style={{ color: item.accent || project.accentColor || '#ffffff' }}>({item.label})</p>
-              <p className="text-base md:text-xl font-bold uppercase" style={item.accent ? { color: item.accent } : {}}>{item.value}</p>
+              {item.link ? (
+                <a
+                  href={item.link.startsWith('http') ? item.link : `https://${item.link}`}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='group inline-flex items-center gap-1.5 text-base md:text-xl font-bold uppercase transition-colors duration-300'
+                  style={{ color: hoveredLabel === item.label ? (item.accent || project.accentColor) : undefined }}
+                  onMouseEnter={() => setHoveredLabel(item.label)}
+                  onMouseLeave={() => setHoveredLabel(null)}
+                >
+                  {item.value}
+                  <span className='inline-block text-sm md:text-base transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5'>↗</span>
+                </a>
+              ) : (
+                <p className={`text-base md:text-xl font-bold uppercase ${item.value === 'unavailable' ? 'text-white/20' : ''}`}
+                  style={item.accent ? { color: item.accent } : {}}>
+                  {item.value}
+                </p>
+              )}
             </div>
           ))}
         </div>
       </section>
 
-      {/* 6. More Projects */}
       <section className="px-6 md:px-12 py-16 md:py-40 border-t border-white/10">
         <p className="text-white/30 text-[0.6rem] md:text-xs uppercase tracking-[0.5em] mb-8 md:mb-12">(More Projects)</p>
         <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">

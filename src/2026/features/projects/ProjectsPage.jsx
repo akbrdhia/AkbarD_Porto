@@ -64,14 +64,15 @@ const ProjectsPage = () => {
           </div>
 
           <div className='columns-1 md:columns-2 gap-5 md:gap-6'>
-            <AnimatePresence>
+            <AnimatePresence mode='popLayout'>
               {filtered.map((project, i) => (
                 <motion.div
                   key={project.id}
+                  layout
                   initial={{ y: 40, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -20, opacity: 0 }}
-                  transition={{ duration: 0.5, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                  exit={{ y: -20, opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.5, delay: i * 0.06, ease: [0.16, 1, 0.3, 1], layout: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }}
                   className='break-inside-avoid mb-5 md:mb-6'
                 >
                   <Link
