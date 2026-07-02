@@ -5,8 +5,8 @@ export const CONFIG_2026 = {
     { name: 'Email', url: `mailto:${PERSONAL_INFO.email}` },
     { name: 'LinkedIn', url: `https://linkedin.com/in/${PERSONAL_INFO.linkedin}` },
     { name: 'GitHub', url: `https://github.com/akbrdhia` },
-    { name: 'Instagram', url: 'https://instagram.com/akbardhia' }, // Placeholder based on pattern
-    { name: 'Behance', url: '#' }
+    { name: 'Instagram', url: 'https://www.instagram.com/bukan__akbarr/' },
+    { name: 'Blog', url: 'https://blog.akbardhia.me' }
   ],
   nav: [
     { name: 'Home', path: '/2026' },
