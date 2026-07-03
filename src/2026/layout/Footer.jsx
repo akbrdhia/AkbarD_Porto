@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion as Motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -48,6 +49,7 @@ const MagneticLetter = ({ char, index }) => {
 };
 
 const Footer = () => {
+  const location = useLocation();
   const [time, setTime] = useState('');
   const containerRef = useRef(null);
   const textRef = useRef(null);
@@ -101,7 +103,7 @@ const Footer = () => {
         }
       }
     );
-  }, { scope: containerRef });
+  }, { scope: containerRef, dependencies: [location.pathname] });
 
   const nameChars = "AkbarD".split("");
 
