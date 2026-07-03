@@ -7,11 +7,10 @@ const navItems = [
   { id: 'about', label: 'about', path: '/2026/about' },
   { id: 'projects', label: 'projects', path: '/2026/projects' },
   { id: 'play', label: 'play', path: '/2026/play' },
-  { id: 'team', label: 'team', path: '/2026/team' },
   { id: 'contact', label: 'contact', path: '/2026/contact' }
 ];
 
-const KineticOverlay = ({ isOpen, onClose, location, isProjectPage }) => {
+const KineticOverlay = ({ isOpen, onClose, onOpenContact, location, isProjectPage }) => {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -88,15 +87,26 @@ const KineticOverlay = ({ isOpen, onClose, location, isProjectPage }) => {
 
               return (
                 <motion.div key={item.id} variants={itemVariants} className="overflow-hidden">
-                  <Link 
-                    to={item.path} 
-                    onClick={onClose}
-                    className={`block text-[12vw] leading-[1.1] font-black uppercase tracking-tighter transition-colors ${
-                      isActive ? 'text-white/20' : 'text-white hover:text-white/40'
-                    }`}
-                  >
-                    {item.label}
-                  </Link>
+                  {item.id === 'contact' ? (
+                    <button
+                      onClick={() => { onClose(); onOpenContact(); }}
+                      className={`block w-full text-left text-[12vw] leading-[1.1] font-black uppercase tracking-tighter transition-colors ${
+                        'text-white hover:text-white/40'
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  ) : (
+                    <Link 
+                      to={item.path} 
+                      onClick={onClose}
+                      className={`block text-[12vw] leading-[1.1] font-black uppercase tracking-tighter transition-colors ${
+                        isActive ? 'text-white/20' : 'text-white hover:text-white/40'
+                      }`}
+                    >
+                      {item.label}
+                    </Link>
+                  )}
                 </motion.div>
               );
             })}
@@ -146,7 +156,7 @@ const NavItem = ({ label, path, isActive }) => {
   );
 };
 
-const Navbar = () => {
+const Navbar = ({ onOpenContact }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const location = useLocation();
@@ -191,6 +201,20 @@ const Navbar = () => {
                 isActive = location.pathname === '/2026' && !isProjectPage;
               } else {
                 isActive = location.pathname === item.path;
+              }
+
+              if (item.id === 'contact') {
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => onOpenContact()}
+                    className={`text-[1rem] font-medium cursor-pointer transition-colors bg-transparent border-none ${
+                      'text-white hover:text-white/60'
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                );
               }
 
               return (
@@ -239,6 +263,7 @@ const Navbar = () => {
       <KineticOverlay 
         isOpen={isOverlayOpen} 
         onClose={() => setIsOverlayOpen(false)} 
+        onOpenContact={onOpenContact}
         location={location}
         isProjectPage={isProjectPage}
       />

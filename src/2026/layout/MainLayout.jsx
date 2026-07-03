@@ -3,11 +3,11 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import SmoothScroll from './SmoothScroll';
 
-const MainLayout = ({ children }) => {
+const MainLayout = ({ children, onOpenContact }) => {
   return (
     <SmoothScroll>
       <div className="min-h-screen w-full bg-black text-white overflow-x-hidden font-['Sora',sans-serif]">
-        <Navbar />
+        <Navbar onOpenContact={onOpenContact} />
         <main>
           {children}
         </main>
