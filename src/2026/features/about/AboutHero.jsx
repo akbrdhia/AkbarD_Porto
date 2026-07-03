@@ -64,7 +64,7 @@ const AboutHero = () => {
                 transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 className="inline-block"
               >
-                <ShimmerText delay={2.5} duration={2.5}>
+                <ShimmerText delay={0.4}>
                   Developer
                 </ShimmerText>
               </motion.span>

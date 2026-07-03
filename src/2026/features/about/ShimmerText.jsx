@@ -1,4 +1,4 @@
-const ShimmerText = ({ children, className = '' }) => {
+const ShimmerText = ({ children, className = '', delay = 0 }) => {
   return (
     <span
       className={className}
@@ -8,7 +8,7 @@ const ShimmerText = ({ children, className = '' }) => {
         backgroundSize: '200% 100%',
         WebkitBackgroundClip: 'text',
         backgroundClip: 'text',
-        animation: 'shimmer-sweep 4s 2.5s ease-in-out infinite',
+        animation: `shimmer-sweep 4s ${delay}s ease-in-out infinite`,
       }}
     >
       {children}
