@@ -94,10 +94,10 @@ const Hero = () => {
         initial={{ y: 30, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-10 px-12 md:px-16 w-full md:bg-black"
+        className="relative z-10 px-6 sm:px-10 md:px-16 w-full max-w-[80vw] sm:max-w-none md:bg-black"
       >
         <p className="text-[3.25rem] md:text-[4.5rem] font-bold leading-tight w-full">
-          <Link to="about" className="inline-block mr-[350px] cursor-pointer group relative text-[2rem] md:text-[2.2rem] tracking-widest align-middle text-white no-underline bg-black/80 backdrop-blur-sm px-4 py-2 rounded-lg -ml-4 z-20">
+          <Link to="about" className="inline-block mb-3 md:mb-0 md:mr-[350px] cursor-pointer group relative text-[2rem] md:text-[2.2rem] tracking-widest align-middle text-white no-underline bg-black/80 backdrop-blur-sm px-8 py-2 rounded-lg -ml-4 z-20 whitespace-nowrap">
             About →
             <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-white transition-transform duration-500 origin-left scale-x-100 group-hover:origin-right group-hover:scale-x-0"></span>
           </Link>
