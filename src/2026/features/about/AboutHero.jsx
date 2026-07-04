@@ -43,7 +43,7 @@ const AboutHero = () => {
                 initial={reduce ? {} : { opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 1.2, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full h-auto block rounded-3xl"
+                className="w-full h-auto block"
               />
             </div>
           </span>
@@ -81,7 +81,7 @@ const AboutHero = () => {
           <img
             src="/about-portrait.jpg"
             alt=""
-            className="w-full h-auto block rounded-3xl"
+            className="w-full h-auto block"
           />
         </motion.div>
       </div>

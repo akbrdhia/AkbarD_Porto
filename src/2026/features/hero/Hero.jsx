@@ -97,7 +97,7 @@ const Hero = () => {
         className="relative z-10 px-6 sm:px-10 md:px-16 w-full max-w-[80vw] sm:max-w-none md:bg-black"
       >
         <p className="text-[3.25rem] md:text-[4.5rem] font-bold leading-tight w-full">
-          <Link to="about" className="inline-block mb-3 md:mb-0 md:mr-[350px] cursor-pointer group relative text-[2rem] md:text-[2.2rem] tracking-widest align-middle text-white no-underline bg-black/80 backdrop-blur-sm px-8 py-2 rounded-lg -ml-4 z-20 whitespace-nowrap">
+            <Link to="about" data-cursor="open" className="inline-block mb-3 md:mb-0 md:mr-[350px] cursor-pointer group relative text-[2rem] md:text-[2.2rem] tracking-widest align-middle text-white no-underline border border-white/30 px-8 py-2 -ml-4 z-20 whitespace-nowrap hover:border-white transition-colors duration-300">
             About →
             <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-white transition-transform duration-500 origin-left scale-x-100 group-hover:origin-right group-hover:scale-x-0"></span>
           </Link>
@@ -117,7 +117,7 @@ const Hero = () => {
             }}
             onMouseEnter={() => setIsPortraitHovered(true)}
             onMouseLeave={() => setIsPortraitHovered(false)}
-            className="inline-block align-middle mx-6 overflow-hidden rounded-2xl"
+            className="inline-block align-middle mx-6 overflow-hidden"
           >
             <img 
               src="/about-portrait.jpg" 
