@@ -15,18 +15,18 @@ const rows = [
     align: 'right',
     num: '02',
     content: [
-      'i work across',
-      'Android, web,',
-      'and backend',
+      'i ship.',
+      'you use it.',
+      'simple.',
     ],
   },
   {
     align: 'left',
     num: '03',
     content: [
-      'first real taste of',
-      'building for',
-      'production,',
+      'across',
+      'every',
+      'layer.',
     ],
   },
 ];
