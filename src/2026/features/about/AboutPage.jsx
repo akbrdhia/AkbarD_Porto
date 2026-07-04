@@ -1,15 +1,15 @@
 import AboutHero from './AboutHero';
 import AboutJourney from './AboutJourney';
-import AboutExperience from './AboutExperience';
+import AboutSkills from './AboutSkills';
 import AboutIdentity from './AboutIdentity';
 
-const AboutPage = () => {
+const AboutPage = ({ onOpenContact }) => {
   return (
     <div className="bg-black text-white">
       <AboutHero />
       <AboutJourney />
-      <AboutExperience />
-      <AboutIdentity />
+      <AboutSkills />
+      <AboutIdentity onOpenContact={onOpenContact} />
     </div>
   );
 };

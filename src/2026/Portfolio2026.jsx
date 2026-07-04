@@ -20,7 +20,7 @@ const Portfolio2026 = () => {
             <GalleryGrid />
           </>
         } />
-        <Route path="about" element={<AboutPage />} />
+        <Route path="about" element={<AboutPage onOpenContact={() => setIsContactOpen(true)} />} />
         <Route path="projects" element={<ProjectsPage />} />
         <Route path="project/:projectId" element={<ProjectDetail />} />
       </Routes>
