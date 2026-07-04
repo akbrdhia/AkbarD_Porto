@@ -7,7 +7,6 @@ const navItems = [
   { id: 'home', label: 'home', path: '/2026' },
   { id: 'about', label: 'about', path: '/2026/about' },
   { id: 'projects', label: 'projects', path: '/2026/projects' },
-  { id: 'play', label: 'play', path: '/2026/play' },
   { id: 'contact', label: 'contact', path: '/2026/contact' }
 ];
 
@@ -40,7 +39,7 @@ const NavItem = ({ label, path, isActive }) => {
           onMouseLeave={handleMouseLeave}
           style={{ x, y }}
           className={`text-[1rem] font-medium cursor-pointer transition-colors relative ${
-            isActive ? 'text-white/40' : 'text-white hover:text-white/60'
+            isActive ? 'text-white' : 'text-white/45 hover:text-white'
           }`}
         >
           {label}
@@ -67,7 +66,7 @@ const Navbar = ({ onOpenContact }) => {
         layout
         className={`z-[100] transition-all duration-500 ease-in-out font-['Sora',sans-serif] text-white top-0 left-0 right-0 py-8 px-6 md:px-12 bg-transparent ${
           isScrolled 
-            ? 'lg:fixed lg:top-4 lg:left-4 lg:right-4 lg:py-4 lg:px-10 lg:bg-white/10 lg:backdrop-blur-2xl lg:rounded-3xl lg:shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] lg:max-w-[1800px] lg:mx-auto' 
+            ? 'lg:fixed lg:top-4 lg:left-4 lg:right-4 lg:py-4 lg:px-10 lg:max-w-[1800px] lg:mx-auto' 
             : 'lg:fixed'
         }`}
       >
@@ -101,6 +100,7 @@ const Navbar = ({ onOpenContact }) => {
                   <button
                     key={item.id}
                     onClick={() => onOpenContact()}
+                    data-cursor="contact"
                     className={`text-[1rem] font-medium cursor-pointer transition-colors bg-transparent border-none ${
                       'text-white hover:text-white/60'
                     }`}
@@ -126,7 +126,7 @@ const Navbar = ({ onOpenContact }) => {
             <motion.div 
               layout 
               className="flex items-center gap-2"
-              animate={{ color: isScrolled ? '#ffffff' : '#ffffff' }}
+              animate={{ color: isScrolled ? '#ffffff' : '#000000' }}
               transition={{ duration: 0.5 }}
             >
               <div className="text-[1.1rem] font-bold tracking-tighter whitespace-nowrap hidden lg:block">
@@ -134,7 +134,8 @@ const Navbar = ({ onOpenContact }) => {
               </div>
               <motion.div 
                 className="w-2 h-2 rounded-full animate-pulse hidden lg:block"
-                animate={{ backgroundColor: '#ffffff' }}
+                animate={{ backgroundColor: isScrolled ? '#ffffff' : '#000000' }}
+                transition={{ duration: 0.5 }}
               />
             </motion.div>
           </div>
