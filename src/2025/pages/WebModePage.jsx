@@ -50,15 +50,15 @@ const WebModePage = () => {
           setTimeout(() => {
             setIsLoaded(true);
             setTimeout(() => setShowContent(true), 100);
-          }, 500);
+          }, 200);
           return 100;
         }
-        const increment = prev < 30 ? Math.random() * 8 : 
-                         prev < 70 ? Math.random() * 5 : 
-                         Math.random() * 3;
+        const increment = prev < 30 ? Math.random() * 20 :
+                         prev < 70 ? Math.random() * 15 :
+                         Math.random() * 10;
         return Math.min(prev + increment, 100);
       });
-    }, 80);
+    }, 30);
 
     return () => clearInterval(interval);
   }, [setViewMode]);

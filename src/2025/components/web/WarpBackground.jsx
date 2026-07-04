@@ -11,7 +11,7 @@ const WarpBackground = ({ active = false }) => {
 
     const ctx = canvas.getContext('2d');
     let animationFrameId;
-    const numStars = 800; // Increased
+    const numStars = 300;
 
     const initStars = () => {
       const w = window.innerWidth;
@@ -40,8 +40,8 @@ const WarpBackground = ({ active = false }) => {
       ctx.fillRect(0, 0, w, h);
 
       // Smooth accelerate speed
-      const targetSpeed = active ? 0.25 : 0.002;
-      speedRef.current += (targetSpeed - speedRef.current) * 0.03;
+      const targetSpeed = active ? 0.5 : 0.002;
+      speedRef.current += (targetSpeed - speedRef.current) * 0.2;
 
       ctx.save();
       ctx.translate(w / 2, h / 2);
@@ -71,7 +71,7 @@ const WarpBackground = ({ active = false }) => {
           const py = (s.y / (s.z + speedRef.current * w * stretch)) * w;
           
           ctx.beginPath();
-          ctx.strokeStyle = `rgba(34, 197, 94, ${opacity * 2})`;
+          ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 2})`;
           ctx.lineWidth = size * 1.5;
           ctx.lineCap = 'round';
           ctx.moveTo(x, y);

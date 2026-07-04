@@ -32,7 +32,7 @@ const ModeSelectionPage = () => {
 
       if (selectedMode === 'web') navigate('web');
       else if (selectedMode === 'ide') navigate('ide');
-    }, 2800);
+    }, 1200);
   };
 
   return (

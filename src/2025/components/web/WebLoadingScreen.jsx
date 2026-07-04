@@ -20,8 +20,8 @@ const WebLoadingScreen = ({ loadProgress }) => {
         position: "absolute",
         inset: "-50%",
         backgroundImage: `
-          linear-gradient(rgba(106, 135, 89, 0.1) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(106, 135, 89, 0.1) 1px, transparent 1px)
+          linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
         `,
         backgroundSize: "50px 50px",
         transform: `rotate(${loadProgress * 0.5}deg) scale(${1 + loadProgress * 0.01})`,
@@ -41,7 +41,7 @@ const WebLoadingScreen = ({ loadProgress }) => {
         {Math.min(Math.floor(loadProgress), 100)}
         <span style={{ 
           fontSize: "0.3em", 
-          color: "#7CB663",
+          color: "#ffffff",
           verticalAlign: "super",
         }}>%</span>
       </div>
@@ -60,9 +60,9 @@ const WebLoadingScreen = ({ loadProgress }) => {
           top: 0,
           height: "100%",
           width: `${loadProgress}%`,
-          background: "linear-gradient(90deg, #7CB663, #8BC34A)",
+          background: "linear-gradient(90deg, #ffffff, #cccccc)",
           transition: "width 0.1s",
-          boxShadow: "0 0 20px #7CB663",
+          boxShadow: "0 0 20px rgba(255,255,255,0.4)",
         }} />
       </div>
       
@@ -76,7 +76,7 @@ const WebLoadingScreen = ({ loadProgress }) => {
         alignItems: "center",
         gap: "10px",
       }}>
-        <Sparkles size={14} color="#7CB663" style={{ animation: "spin 2s linear infinite" }} />
+        <Sparkles size={14} color="#ffffff" style={{ animation: "spin 2s linear infinite" }} />
         LOADING BRUTALIST EXPERIENCE
       </div>
 
