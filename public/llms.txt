@@ -4,16 +4,16 @@
 
 ## About
 
-- [About](https://www.akbardhia.me/2026/about): Background, skills, and experience. Interned at KEMENKOP RI building ODS Form — a data system used by cooperatives across Indonesia.
+- [About](https://akbardhia.me/2026/about): Background, skills, and experience. Interned at KEMENKOP RI building ODS Form — a data system used by cooperatives across Indonesia.
 
 ## Projects
 
-- [ODS Form](https://www.akbardhia.me/2026/project/ods-form): Custom form builder integrated with ODS Mandiri for real-time cooperative data tracking. Built with React, Tailwind, Laravel. Live at KEMENKOP RI.
-- [ODS Mandiri](https://www.akbardhia.me/2026/project/ods-mandiri): National online data system for Indonesian cooperatives — financial reporting, member profiles, legal documentation. React + Laravel.
-- [Manager Usaha V2](https://www.akbardhia.me/2026/project/manager-usaha-v2): Android business management app with on-device ML classification. Kotlin + Laravel + ML Kit. Live on Play Store.
-- [Cogito](https://www.akbardhia.me/2026/project/cogito): AI debate companion for real-time counter-argument generation. Hackathon project. Kotlin + Express + PostgreSQL + Qwen.
-- [YAMLens](https://www.akbardhia.me/2026/project/yamlens): YAML validation and visualization tool.
-- [Solera](https://www.akbardhia.me/2026/project/solera): Web project. React-based.
+- [ODS Form](https://akbardhia.me/2026/project/ods-form): Custom form builder integrated with ODS Mandiri for real-time cooperative data tracking. Built with React, Tailwind, Laravel. Live at KEMENKOP RI.
+- [ODS Mandiri](https://akbardhia.me/2026/project/ods-mandiri): National online data system for Indonesian cooperatives — financial reporting, member profiles, legal documentation. React + Laravel.
+- [Manager Usaha V2](https://akbardhia.me/2026/project/manager-usaha-v2): Android business management app with on-device ML classification. Kotlin + Laravel + ML Kit. Live on Play Store.
+- [Cogito](https://akbardhia.me/2026/project/cogito): AI debate companion for real-time counter-argument generation. Hackathon project. Kotlin + Express + PostgreSQL + Qwen.
+- [YAMLens](https://akbardhia.me/2026/project/yamlens): YAML validation and visualization tool.
+- [Solera](https://akbardhia.me/2026/project/solera): Web project. React-based.
 
 ## Stack
 
@@ -25,7 +25,7 @@ Tools: Docker, Git, Figma
 
 ## Links
 
-- [Portfolio](https://www.akbardhia.me): Main portfolio site
+- [Portfolio](https://akbardhia.me): Main portfolio site
 - [GitHub](https://github.com/akbrdhia): Open source projects and contributions
 - [LinkedIn](https://linkedin.com/in/akbardhia): Professional profile
 - [Blog](https://blog.akbardhia.me): Writing and experiments
