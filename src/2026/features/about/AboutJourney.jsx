@@ -15,9 +15,9 @@ const rows = [
     align: 'right',
     num: '02',
     content: [
-      'i ship.',
-      'you use it.',
-      'simple.',
+      'I write the code.',
+      'ship the product.',
+      'people use it.',
     ],
   },
   {
