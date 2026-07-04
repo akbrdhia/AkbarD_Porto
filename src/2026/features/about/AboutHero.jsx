@@ -38,7 +38,7 @@ const AboutHero = () => {
 
             <div className="hidden md:block absolute top-0 left-[clamp(350px,48vw,850px)] z-[-1] w-[clamp(350px,42vw,650px)]">
               <motion.img
-                src="/about-portrait.jpg"
+                src="/about-portrait.webp"
                 alt=""
                 initial={reduce ? {} : { opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}

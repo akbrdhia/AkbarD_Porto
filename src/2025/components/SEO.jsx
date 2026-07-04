@@ -5,7 +5,7 @@ const SEO = ({ title, description, keywords, image, url }) => {
   const siteTitle = "Akbar Dhia | Mobile & Full-Stack Developer";
   const defaultDescription = "Software Engineer specialized in Mobile and Full-Stack Web Development. Explore my portfolio showcasing innovative projects and solutions.";
   const siteUrl = "https://akbardhia.me"; // Update this with your actual production URL
-  const defaultImage = "/about-portrait.jpg";
+  const defaultImage = "/about-portrait.webp";
 
   const seoTitle = title ? `${title} | Akbar Dhia` : siteTitle;
   const seoDescription = description || defaultDescription;

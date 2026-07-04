@@ -58,7 +58,7 @@ const navVariants = {
 };
 
 const meshStyle = {
-  backgroundImage: 'linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url(/image-mesh-gradient.png)',
+  backgroundImage: 'linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url(/image-mesh-gradient.webp)',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundColor: '#000000',

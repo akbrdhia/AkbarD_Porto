@@ -120,7 +120,7 @@ const Hero = () => {
             className="inline-block align-middle mx-6 overflow-hidden"
           >
             <img 
-              src="/about-portrait.jpg" 
+              src="/about-portrait.webp"
               alt="Portrait" 
               className="h-[1.4em] md:h-[1.6em] w-auto object-cover"
             />

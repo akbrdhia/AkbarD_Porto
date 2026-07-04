@@ -1,26 +1,32 @@
-# Akbar Dhia - Portfolio
+# Akbar Dhia
 
-Akbar Dhia is a Mobile and Full-Stack Web Developer specializing in Android (Kotlin) and modern Web (React, Laravel) technologies.
+> Android and full-stack developer from Bogor, Indonesia. Builds mobile apps with Kotlin, web interfaces with React and Next.js, and backend systems with Laravel, Express, and Go. 18 years old, fresh out of vocational school, already shipping to production.
 
-## Core Expertise
-- **Android Development**: Kotlin, Jetpack Compose, MVVM, Coroutines, Retrofit.
-- **Web Development**: React.js, Vite, Laravel, Tailwind CSS.
-- **UI/UX Design**: Human-centered interfaces, Brutalist and Minimalist styles.
+## About
 
-## Experience Modes
-This portfolio offers two distinct viewing experiences:
-1. **Web Mode**: A modern, responsive web layout showcasing projects and skills.
-2. **IDE Mode**: An interactive Android Studio simulation where you can explore code and project structures.
-
-## Links
-- Website: https://akbardhia.me
-- GitHub: https://github.com/akbrdhia
-- LinkedIn: https://linkedin.com/in/akbardhia
-- Email: akbardhia19@gmail.com (Update with actual email)
+- [About](https://akbardhia.me/2026/about): Background, skills, and experience. Interned at KEMENKOP RI building ODS Form — a data system used by cooperatives across Indonesia.
 
 ## Projects
-- **ODS Mandiri**: A robust backend system for cooperative management.
-- **Interactive Portfolio**: This current React-based environment.
-- **Cogito**: Various Android applications using Kotlin and modern libraries.
-- **Manager Usaha v1 and V2**: Various Android applications using Kotlin and modern libraries.
-- **Mobile Apps**: Various Android applications using Kotlin and modern libraries.
+
+- [ODS Form](https://akbardhia.me/2026/project/ods-form): Custom form builder integrated with ODS Mandiri for real-time cooperative data tracking. Built with React, Tailwind, Laravel. Live at KEMENKOP RI.
+- [ODS Mandiri](https://akbardhia.me/2026/project/ods-mandiri): National online data system for Indonesian cooperatives — financial reporting, member profiles, legal documentation. React + Laravel.
+- [Manager Usaha V2](https://akbardhia.me/2026/project/manager-usaha-v2): Android business management app with on-device ML classification. Kotlin + Laravel + ML Kit. Live on Play Store.
+- [Cogito](https://akbardhia.me/2026/project/cogito): AI debate companion for real-time counter-argument generation. Hackathon project. Kotlin + Express + PostgreSQL + Qwen.
+- [YAMLens](https://akbardhia.me/2026/project/yamlens): YAML validation and visualization tool.
+- [Solera](https://akbardhia.me/2026/project/solera): Web project. React-based.
+
+## Stack
+
+Mobile: Kotlin, Android SDK, Jetpack Compose, Flutter, Dart
+Web: React, Next.js, TypeScript, JavaScript, Tailwind CSS, Framer Motion
+Backend: Laravel, Express.js, Go, Node.js, PHP, Python, Prisma
+Database: PostgreSQL, MySQL, Redis, Room DB
+Tools: Docker, Git, Figma
+
+## Links
+
+- [Portfolio](https://akbardhia.me): Main portfolio site
+- [GitHub](https://github.com/akbrdhia): Open source projects and contributions
+- [LinkedIn](https://linkedin.com/in/akbardhia): Professional profile
+- [Blog](https://blog.akbardhia.me): Writing and experiments
+- [Email](mailto:akbardhia19@proton.me): Direct contact

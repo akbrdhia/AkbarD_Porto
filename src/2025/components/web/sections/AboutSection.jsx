@@ -214,7 +214,7 @@ const AboutSection = () => {
                   aspectRatio: "3 / 4",
                   borderRadius: "14px",
                   border: "1px solid rgba(255,255,255,0.08)",
-                  backgroundImage: `linear-gradient(120deg, rgba(0,0,0,0.5), rgba(0,0,0,0.1)), url('/about-portrait.jpg')`,
+                  backgroundImage: `linear-gradient(120deg, rgba(0,0,0,0.5), rgba(0,0,0,0.1)), url('/about-portrait.webp')`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   boxShadow: "0 18px 30px rgba(0,0,0,0.45)",

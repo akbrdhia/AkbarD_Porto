@@ -35,7 +35,7 @@ const HeroSection = ({ glitchActive }) => {
     },
   ];
 
-  const setupImage = "/setup.jpg"; // place your setup photo at public/setup.jpg
+  const setupImage = "/setup.webp";
 
   const [firstName = "AKBAR", lastName = "DHIA"] =
     PERSONAL_INFO.name?.split(" ") ?? [];

@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useForm, ValidationError } from '@formspree/react';
+import confetti from 'canvas-confetti';
 import { CONFIG_2026 } from '../../constants/config';
 import { PERSONAL_INFO } from '../../../2025/constants/portfolioData';
 
@@ -10,7 +11,7 @@ const projectTypes = [
   { value: 'Mobile App', label: 'Mobile App' },
   { value: 'Web App', label: 'Web App' },
   { value: 'Just Say Hi', label: 'Just Say Hi' },
-  { value: 'Lainnya', label: 'Lainnya' },
+  { value: 'Other', label: 'Other' },
 ];
 
 const backdropVariants = {
@@ -59,11 +60,42 @@ const itemVariants = {
   },
 };
 
+const HOLD_DURATION = 2000;
+
 const ContactSheet = ({ isOpen, onClose }) => {
   const sheetRef = useRef(null);
   const [time, setTime] = useState('');
   const formspreeId = import.meta.env.VITE_FORMSPREE_ID;
   const [state, handleSubmit] = useForm(formspreeId);
+
+  const [holding, setHolding] = useState(false);
+  const [holdProgress, setHoldProgress] = useState(0);
+  const holdInterval = useRef(null);
+  const holdStart = useRef(null);
+  const formRef = useRef(null);
+
+  const startHold = useCallback(() => {
+    if (state.submitting || state.succeeded) return;
+    setHolding(true);
+    holdStart.current = Date.now();
+    holdInterval.current = setInterval(() => {
+      const elapsed = Date.now() - holdStart.current;
+      const progress = Math.min(elapsed / HOLD_DURATION, 1);
+      setHoldProgress(progress);
+      if (progress >= 1) {
+        clearInterval(holdInterval.current);
+        setHolding(false);
+        setHoldProgress(0);
+        formRef.current?.requestSubmit();
+      }
+    }, 16);
+  }, [state.submitting, state.succeeded]);
+
+  const cancelHold = useCallback(() => {
+    if (holdInterval.current) clearInterval(holdInterval.current);
+    setHolding(false);
+    setHoldProgress(0);
+  }, []);
 
   useEffect(() => {
     const updateTime = () => {
@@ -102,6 +134,17 @@ const ContactSheet = ({ isOpen, onClose }) => {
       document.body.style.overflow = '';
     };
   }, [isOpen]);
+
+  useEffect(() => {
+    if (!state.succeeded) return;
+    const end = Date.now() + 1800;
+    const frame = () => {
+      confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#1a1a1a', '#888', '#fff'] });
+      confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#1a1a1a', '#888', '#fff'] });
+      if (Date.now() < end) requestAnimationFrame(frame);
+    };
+    frame();
+  }, [state.succeeded]);
 
   const socialLinks = CONFIG_2026.social.filter((s) => s.name !== 'Email');
 
@@ -179,7 +222,7 @@ const ContactSheet = ({ isOpen, onClose }) => {
                 <p className="text-xs uppercase tracking-[0.25em] text-[#888] mb-2">(Mail to)</p>
                 <a
                   href={`mailto:${PERSONAL_INFO.email}`}
-                  className="text-2xl md:text-3xl font-bold text-[#1a1a1a] hover:text-[#3B82F6] transition-colors duration-300 break-all"
+                  className="text-2xl md:text-3xl font-bold text-[#1a1a1a] hover:text-[#1a1a1a]/60 transition-colors duration-300 break-all"
                 >
                   {PERSONAL_INFO.email}
                 </a>
@@ -196,7 +239,7 @@ const ContactSheet = ({ isOpen, onClose }) => {
                   </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
                   <div>
                     <div className="flex items-center gap-2 mb-1.5">
                       <label htmlFor="contact-name" className="text-xs uppercase tracking-[0.25em] text-[#888]">
@@ -278,18 +321,33 @@ const ContactSheet = ({ isOpen, onClose }) => {
 
                   <div className="pt-1">
                     <button
-                      type="submit"
-                      disabled={state.submitting}
-                      className="w-full bg-[#1a1a1a] text-white py-4 px-8 text-sm font-bold uppercase tracking-[0.25em] hover:bg-[#3B82F6] hover:text-[#1a1a1a] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                      type="button"
+                      disabled={state.submitting || state.succeeded}
+                      onMouseDown={startHold}
+                      onMouseUp={cancelHold}
+                      onMouseLeave={cancelHold}
+                      onTouchStart={startHold}
+                      onTouchEnd={cancelHold}
+                      className="relative w-full overflow-hidden bg-[#1a1a1a] text-white py-4 px-8 text-sm font-bold uppercase tracking-[0.25em] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 select-none"
                     >
-                      {state.submitting ? (
-                        <>
-                          <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                          Sending...
-                        </>
-                      ) : (
-                        'Send Message'
-                      )}
+                      <span
+                        className="absolute inset-0 bg-white/20 origin-left transition-none"
+                        style={{ transform: `scaleX(${holdProgress})` }}
+                      />
+                      <span className="relative z-10">
+                        {state.submitting ? (
+                          <>
+                            <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-3" />
+                            Sending...
+                          </>
+                        ) : state.succeeded ? (
+                          'Sent ✓'
+                        ) : holding ? (
+                          'Hold...'
+                        ) : (
+                          'Hold to Send'
+                        )}
+                      </span>
                     </button>
                   </div>
                 </form>
