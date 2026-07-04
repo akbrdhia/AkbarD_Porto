@@ -48,7 +48,7 @@ const FloatingIsland = ({ onOpenContact }) => {
       </AnimatePresence>
 
       <motion.div
-        className="lg:hidden fixed top-5 left-1/2 -translate-x-1/2 z-[200] bg-[#111] text-[#f8f8f8] overflow-hidden"
+        className="lg:hidden fixed top-5 left-1/2 -translate-x-1/2 z-[200] bg-white/10 backdrop-blur-xl text-[#f8f8f8] overflow-hidden border border-white/15"
         animate={{
           width: isOpen ? '344px' : '10em',
           height: isOpen ? 'auto' : '2.6em',

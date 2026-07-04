@@ -252,7 +252,7 @@ const AboutIdentity = ({ onOpenContact }) => {
             </div>
 
             <div className='hidden md:block text-white/30 text-[0.85rem] tracking-[0.15em] uppercase font-bold'>
-              <a href='/CV_Akbardhia_EN.pdf' download className='hover:text-white/60 transition-all duration-300'>See My Work</a>
+              <a href='/CV_Akbardhia_EN.pdf' download className='text-white hover:text-white/60 transition-all duration-300'>See My Work (CV)</a>
               <span>, </span>
               <button onClick={onOpenContact} className='hover:text-white/60 transition-all duration-300 bg-transparent border-none text-white/30 text-[0.85rem] tracking-[0.15em] uppercase font-bold cursor-pointer'>Get In Touch</button>
             </div>
@@ -263,7 +263,7 @@ const AboutIdentity = ({ onOpenContact }) => {
           variants={navVariants}
           className='mt-8 md:hidden text-white/30 text-[0.85rem] tracking-[0.15em] uppercase font-bold shrink-0'
         >
-          <a href='/CV_Akbardhia_EN.pdf' download className='hover:text-white/60 transition-all duration-300'>See My Work</a>
+          <a href='/CV_Akbardhia_EN.pdf' download className='text-white hover:text-white/60 transition-all duration-300'>See My Work (CV)</a>
           <span>, </span>
           <button onClick={onOpenContact} className='hover:text-white/60 transition-all duration-300 bg-transparent border-none text-white/30 text-[0.85rem] tracking-[0.15em] uppercase font-bold cursor-pointer'>Get In Touch</button>
         </motion.div>
