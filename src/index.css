@@ -80,3 +80,8 @@
     to { transform: rotate(360deg); }
   }
 }
+
+/* debug: show all element boundaries */
+/** {
+  border: 1px solid rgba(255, 0, 0, 0.3) !important;
+}*/

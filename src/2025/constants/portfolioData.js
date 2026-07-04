@@ -2,7 +2,7 @@
 export const PERSONAL_INFO = {
     name: "Akbar Dhia",
     username: "{ AkbarD }",
-    email: "akbardhia19@gmail.com",
+    email: "akbardhia19@proton.me",
     github: "akbrdhia | Akbardhia",
     linkedin: "Akbardhia",
     location: "Bogor, Indonesia",

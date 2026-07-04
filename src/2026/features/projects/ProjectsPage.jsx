@@ -78,7 +78,7 @@ const ProjectsPage = () => {
                   <Link
                     to={`/2026/project/${project.id}`}
                     viewTransition
-                    className='group relative block overflow-hidden bg-zinc-900'
+                    className='group relative block overflow-hidden bg-black border border-white/10'
                   >
                     <img
                       src={project.preview}
@@ -87,7 +87,7 @@ const ProjectsPage = () => {
                       className='w-full h-auto block transition-transform duration-700 ease-out group-hover:scale-[1.03]'
                     />
 
-                    <div className='absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent' />
+                    <div className='absolute inset-0 bg-black/45 group-hover:bg-black/20 transition-colors duration-500' />
 
                     <div className='absolute bottom-0 left-0 right-0 p-6 md:p-8'>
                       <p className='text-[0.65rem] md:text-[0.75rem] uppercase tracking-[0.25em] text-white/50 font-bold mb-1.5'>
