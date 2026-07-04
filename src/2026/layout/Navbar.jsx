@@ -66,7 +66,7 @@ const Navbar = ({ onOpenContact }) => {
         layout
         className={`z-[100] transition-all duration-500 ease-in-out font-['Sora',sans-serif] text-white top-0 left-0 right-0 py-8 px-6 md:px-12 bg-transparent ${
           isScrolled 
-            ? 'lg:fixed lg:top-4 lg:left-4 lg:right-4 lg:py-4 lg:px-10 lg:max-w-[1800px] lg:mx-auto' 
+            ? 'lg:fixed lg:top-4 lg:left-4 lg:right-4 lg:py-4 lg:px-10 lg:bg-white/10 lg:backdrop-blur-2xl lg:rounded-3xl lg:shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] lg:max-w-[1800px] lg:mx-auto' 
             : 'lg:fixed'
         }`}
       >
