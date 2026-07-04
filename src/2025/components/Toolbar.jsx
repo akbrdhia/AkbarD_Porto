@@ -21,7 +21,7 @@ const Toolbar = ({ onBuild }) => {
       {/* Left section - Logo & Title */}
       <div className="toolbar-left" onClick={handleModeSwitch} style={{ cursor: 'pointer' }}>
         <div className="toolbar-logo">
-          <img src="/logo.png" alt="logo" width={24} height={24} />
+          <img src="/favicon-32x32.png" alt="logo" width={24} height={24} />
         </div>
         <span className="toolbar-title">
           {PERSONAL_INFO.username} Portfolio

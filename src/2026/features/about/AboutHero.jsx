@@ -79,7 +79,7 @@ const AboutHero = () => {
           className="block md:hidden w-full max-w-[70vw] mx-auto mt-8"
         >
           <img
-            src="/about-portrait.jpg"
+            src="/about-portrait.webp"
             alt=""
             className="w-full h-auto block"
           />
